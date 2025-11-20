@@ -3,6 +3,16 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+	cam.setDistance(10);
+	cam.setNearClip(.1);
+	cam.setFov(65.5);
+	ofSetVerticalSync(true);
+	cam.disableMouseInput();
+	ofEnableSmoothing();
+	ofEnableDepthTest();
+
+	mars.loadModel("geo/mars-low-5x-v2.obj");
+
 }
 
 //--------------------------------------------------------------
@@ -12,6 +22,8 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+	cam.begin();
 
 }
 

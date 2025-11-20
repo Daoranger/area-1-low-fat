@@ -240,11 +240,12 @@
     <ClCompile Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxSlider.cpp" />
     <ClCompile Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxToggle.cpp" />
-    <ClCompile Include="src\box.cc" />
+    <ClCompile Include="src\collision\box.cc" />
+    <ClCompile Include="src\collision\Octree.cpp" />
+    <ClCompile Include="src\collision\Util.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Octree.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="src\Util.cpp" />
+    <ClCompile Include="src\player\Lander.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h" />
@@ -348,13 +349,13 @@
     <ClInclude Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxSlider.h" />
     <ClInclude Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxToggle.h" />
-    <ClInclude Include="src\box.h" />
-    <ClInclude Include="src\Octree.h" />
+    <ClInclude Include="src\collision\box.h" />
+    <ClInclude Include="src\collision\Octree.h" />
+    <ClInclude Include="src\collision\ray.h" />
+    <ClInclude Include="src\collision\Util.h" />
+    <ClInclude Include="src\collision\vector3.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\Primitives.h" />
-    <ClInclude Include="src\ray.h" />
-    <ClInclude Include="src\Util.h" />
-    <ClInclude Include="src\vector3.h" />
+    <ClInclude Include="src\player\Lander.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

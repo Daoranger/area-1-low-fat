@@ -43,20 +43,23 @@
     <ClCompile Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxToggle.cpp">
       <Filter>addons\ofxGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\box.cc">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Octree.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Util.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\collision\box.cc">
+      <Filter>src\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\Octree.cpp">
+      <Filter>src\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\Util.cpp">
+      <Filter>src\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\Lander.cpp">
+      <Filter>src\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +101,12 @@
     </Filter>
     <Filter Include="addons\ofxGui\src">
       <UniqueIdentifier>{184CC381--221-7-41-BA-A-D7E-4D71EA09136C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\collision">
+      <UniqueIdentifier>{e9e9a1df-d298-4ad6-a789-2f48d6a6166c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\player">
+      <UniqueIdentifier>{2b18de81-309e-4716-a4a8-65a9dbc8d42d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -404,26 +413,26 @@
     <ClInclude Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxGui\src\ofxToggle.h">
       <Filter>addons\ofxGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\box.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Octree.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primitives.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\collision\box.h">
+      <Filter>src\collision</Filter>
     </ClInclude>
-    <ClInclude Include="src\ray.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\collision\Octree.h">
+      <Filter>src\collision</Filter>
     </ClInclude>
-    <ClInclude Include="src\Util.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\collision\ray.h">
+      <Filter>src\collision</Filter>
     </ClInclude>
-    <ClInclude Include="src\vector3.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\collision\Util.h">
+      <Filter>src\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\vector3.h">
+      <Filter>src\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\Lander.h">
+      <Filter>src\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
