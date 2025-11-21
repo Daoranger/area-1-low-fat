@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "ofxAssimpModelLoader.h"
 #include "player/Lander.h"
+#include "collision/Octree.h"
 
 class ofApp : public ofBaseApp
 {
@@ -42,11 +43,16 @@ class ofApp : public ofBaseApp
 		Lander lander;
 
 		// Terrrain Model
-		ofxAssimpModelLoader mars;
+		ofxAssimpModelLoader terrain;
 
 		// Keys Map to help with keybinds
 		map<int, bool> keysMap;
 
+
+		// Octree and Collision Detection
+		Octree terrainOctree;
+
+		vector<Box> bboxList;
 
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
-#include  "ofxAssimpModelLoader.h"
+#include "ofxAssimpModelLoader.h"
+#include "../collision/box.h"
 
 class Lander
 {
@@ -26,5 +27,8 @@ public:
 	float rotationForce;
 	float mass;
 	float damping;
+
 	ofxAssimpModelLoader ufoModel;
+	Box ufoBoundingBox;
+
 };

@@ -1,4 +1,5 @@
 ﻿#include "ofApp.h"
+#include "collision/Util.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -9,8 +10,8 @@ void ofApp::setup()
 	ofSetColor(255);
 
 	// Terrain setup
-	mars.loadModel("geo/ha.obj");
-	mars.setScaleNormalization(false);
+	terrain.loadModel("geo/ha.obj");
+	terrain.setScaleNormalization(false);
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -23,6 +24,8 @@ void ofApp::setup()
 	ofEnableDepthTest();
 	initLightingAndMaterials();
 
+	terrainOctree.create(terrain.getMesh(0), 20);
+
 }
 
 //--------------------------------------------------------------
@@ -32,10 +35,10 @@ void ofApp::update()
 	const glm::vec3 moonGravity = glm::vec3(0.0f, -1.68f, 0.0f);
 
 	// will move these variables outside later
-	const float THRUST_ACCEL = 15.0f;   
-	const float FORWARD_ACCEL = 15.0f;   
-	const float STRAFE_ACCEL = 15.0f;  
-	const float YAW_TORQUE = 50.0f;   
+	constexpr float THRUST_ACCEL = 15.0f;   
+	constexpr float FORWARD_ACCEL = 15.0f;   
+	constexpr float STRAFE_ACCEL = 15.0f;  
+	constexpr float YAW_TORQUE = 50.0f;   
 
 	if (keysMap[' ']) lander.force +=  THRUST_ACCEL  * lander.getHeadingY();		// up (space)
 	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();		// forward (w)
@@ -58,10 +61,25 @@ void ofApp::draw()
 {
 
 	activeCam->begin();
-		
-	lander.draw();
-	mars.drawFaces();
+	ofPushMatrix();
 
+	lander.draw();
+	terrain.drawFaces();
+
+	//ofNoFill();
+	//ofSetColor(ofColor::white);
+	//terrainOctree.drawLeafNodes(terrainOctree.root);
+
+	ofNoFill();
+	ofSetColor(ofColor::white);
+	ofVec3f min = lander.ufoModel.getSceneMin() + lander.ufoModel.getPosition();
+	ofVec3f max = lander.ufoModel.getSceneMax() + lander.ufoModel.getPosition();
+
+	Box bounds = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
+	ofSetColor(ofColor::white);
+	Octree::drawBox(bounds);
+
+	ofPopMatrix();
 	activeCam->end();
 
 }
