@@ -24,20 +24,28 @@ class ofApp : public ofBaseApp
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		// Help functions:
+		// Helper functions:
 		void initLightingAndMaterials();
 
-		// Keys Map to help with keybinds
-		map<int, bool> keysMap;
+		// Helper functions for cameras:
+		void updateGameCamera();
+		void nextGameCameraView();
 		
-		// Camera
-		ofEasyCam cam;
+		// Cameras
+		ofEasyCam debugCam;	// for debug/diagnostic
+		ofCamera gameCam;	// for gameplay
+		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP };
+		CamView camView = CAM_THIRD;
+		ofCamera* activeCam = &gameCam;	// pointer to camera that is currently being use
 
 		// UFO (Player)
 		Lander lander;
 
 		// Terrrain Model
 		ofxAssimpModelLoader mars;
+
+		// Keys Map to help with keybinds
+		map<int, bool> keysMap;
 
 
 };
