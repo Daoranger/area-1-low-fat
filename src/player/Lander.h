@@ -2,6 +2,7 @@
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
 #include "../collision/box.h"
+#include "../collision/Octree.h"
 
 class Lander
 {
@@ -10,6 +11,7 @@ public:
 	void draw();
 	void integrate();
 	void loadModel();
+	void createBoundingBox();
 	glm::mat4 getTransform();
 	glm::vec3 getHeadingX();
 	glm::vec3 getHeadingY();

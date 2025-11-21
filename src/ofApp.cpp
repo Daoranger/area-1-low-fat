@@ -7,10 +7,11 @@ void ofApp::setup()
 {
 	// UFO setup
 	lander.loadModel();
+	lander.createBoundingBox();
 	ofSetColor(255);
 
 	// Terrain setup
-	terrain.loadModel("geo/ha.obj");
+	terrain.loadModel("geo/mars-low-5x-v2.obj");
 	terrain.setScaleNormalization(false);
 
 	// Debug Camera setup
@@ -60,24 +61,25 @@ void ofApp::update()
 void ofApp::draw()
 {
 
+	ofBackground(ofColor::black);
+
+	glDepthMask(false);
+	//if (!bHide) gui.draw();
+	glDepthMask(true);
+
 	activeCam->begin();
 	ofPushMatrix();
-
+	
+	ofEnableLighting();
 	lander.draw();
 	terrain.drawFaces();
+	ofDisableLighting();
 
-	//ofNoFill();
-	//ofSetColor(ofColor::white);
-	//terrainOctree.drawLeafNodes(terrainOctree.root);
-
+	/*int level = 0;
 	ofNoFill();
 	ofSetColor(ofColor::white);
-	ofVec3f min = lander.ufoModel.getSceneMin() + lander.ufoModel.getPosition();
-	ofVec3f max = lander.ufoModel.getSceneMax() + lander.ufoModel.getPosition();
-
-	Box bounds = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
-	ofSetColor(ofColor::white);
-	Octree::drawBox(bounds);
+	terrainOctree.draw(11, 0);*/
+	// Drawing the octree
 
 	ofPopMatrix();
 	activeCam->end();

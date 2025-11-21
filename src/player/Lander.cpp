@@ -23,7 +23,14 @@ void Lander::draw()
 {
 	ofPushMatrix();
 	ofMultMatrix(getTransform());
+	// Draw the UFO model faces
 	ufoModel.drawFaces();
+
+	// Draw the UFO bounding box
+	ofNoFill();
+	ofSetColor(ofColor::white);
+	Octree::drawBox(ufoBoundingBox);
+
 	ofPopMatrix();
 }
 
@@ -56,9 +63,19 @@ void Lander::integrate()
 
 void Lander::loadModel()
 {
-	ufoModel.loadModel("geo/LEM-combined.obj");
-	ufoModel.setScaleNormalization(false);
-	ufoModel.setPosition(position.x, position.y, position.z);
+	
+	if (ufoModel.loadModel("geo/LEM-combined.obj"))
+	{
+		ufoModel.setScaleNormalization(false);
+		ufoModel.setPosition(position.x, position.y, position.z);
+	}
+}
+
+void Lander::createBoundingBox()
+{
+	ofVec3f min = ufoModel.getSceneMin() + ufoModel.getPosition();
+	ofVec3f max = ufoModel.getSceneMax() + ufoModel.getPosition();
+	ufoBoundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
 
 glm::mat4 Lander::getTransform()

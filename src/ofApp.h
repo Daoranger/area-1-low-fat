@@ -5,6 +5,7 @@
 #include "ofxAssimpModelLoader.h"
 #include "player/Lander.h"
 #include "collision/Octree.h"
+#include "glm/gtx/intersect.hpp"
 
 class ofApp : public ofBaseApp
 {
