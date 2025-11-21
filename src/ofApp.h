@@ -3,14 +3,15 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxAssimpModelLoader.h"
+#include "player/Lander.h"
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp
+{
 
 	public:
 		void setup();
 		void update();
 		void draw();
-
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -22,8 +23,21 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		// Help functions:
+		void initLightingAndMaterials();
+
+		// Keys Map to help with keybinds
+		map<int, bool> keysMap;
 		
+		// Camera
 		ofEasyCam cam;
 
-		ofxAssimpModelLoader mars, lander;
+		// UFO (Player)
+		Lander lander;
+
+		ofxAssimpModelLoader mars;
+
+
 };
+

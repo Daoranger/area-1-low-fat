@@ -5,7 +5,6 @@
 class Lander
 {
 public:
-
 	Lander();
 	void draw();
 	void integrate();
@@ -15,8 +14,7 @@ public:
 	glm::vec3 getHeadingY();
 	glm::vec3 getHeadingZ();
 
-private:
-
+public:
 	ofVec3f position;
 	float rotation;
 	ofVec3f scale;
@@ -28,6 +26,5 @@ private:
 	float rotationForce;
 	float mass;
 	float damping;
-
 	ofxAssimpModelLoader ufoModel;
 };
