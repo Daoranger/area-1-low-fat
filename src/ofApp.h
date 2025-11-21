@@ -36,6 +36,7 @@ class ofApp : public ofBaseApp
 		// UFO (Player)
 		Lander lander;
 
+		// Terrrain Model
 		ofxAssimpModelLoader mars;
 
 

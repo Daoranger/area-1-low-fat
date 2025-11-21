@@ -16,6 +16,7 @@ Lander::Lander()
 
 	damping = 0.99;
 	mass = 1;
+
 }
 
 void Lander::draw()
@@ -56,18 +57,29 @@ void Lander::integrate()
 void Lander::loadModel()
 {
 	ufoModel.loadModel("geo/LEM-combined.obj");
+	ufoModel.setScaleNormalization(false);
 	ufoModel.setPosition(position.x, position.y, position.z);
 }
 
 glm::mat4 Lander::getTransform()
 {
 	glm::mat4 T = glm::translate(glm::mat4(1.0), glm::vec3(position));
-	glm::mat4 R = glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 0, 1));
+	glm::mat4 R = glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 1, 0));	// rotate around y-axis
 	glm::mat4 S = glm::scale(glm::mat4(1.0), glm::vec3(scale));
 	return T * R * S;
+}
+
+glm::vec3 Lander::getHeadingX()
+{
+	return glm::normalize(glm::vec3(getTransform() * glm::vec4(1, 0, 0, 0)));
 }
 
 glm::vec3 Lander::getHeadingY()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 1, 0, 0)));
+}
+
+glm::vec3 Lander::getHeadingZ()
+{
+	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 0, -1, 0)));
 }
