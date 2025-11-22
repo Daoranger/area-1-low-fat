@@ -1,4 +1,7 @@
 .vs/
+.vscode/
+*.code-workspace
+*.dll
 dll/
 obj/
 build/

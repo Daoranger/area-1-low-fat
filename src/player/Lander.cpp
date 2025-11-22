@@ -65,7 +65,7 @@ void Lander::integrate()
 void Lander::loadModel()
 {
 	
-	if (ufoModel.loadModel("geo/LEM-combined.obj"))
+	if (ufoModel.loadModel("geo/newUFO.obj"))
 	{
 		ufoModel.setScaleNormalization(false);
 		ufoModel.setPosition(position.x, position.y, position.z);
