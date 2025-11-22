@@ -61,6 +61,18 @@
     <ClCompile Include="src\player\Lander.cpp">
       <Filter>src\player</Filter>
     </ClCompile>
+    <ClCompile Include="src\particle\Particle.cpp">
+      <Filter>src\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particle\ParticleEmitter.cpp">
+      <Filter>src\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particle\ParticleSystem.cpp">
+      <Filter>src\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particle\TransformObject.cpp">
+      <Filter>src\particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -107,6 +119,9 @@
     </Filter>
     <Filter Include="src\player">
       <UniqueIdentifier>{2b18de81-309e-4716-a4a8-65a9dbc8d42d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\particle">
+      <UniqueIdentifier>{6113986e-962d-4c20-aa71-1aeb221a9678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +448,18 @@
     </ClInclude>
     <ClInclude Include="src\player\Lander.h">
       <Filter>src\player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particle\Particle.h">
+      <Filter>src\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particle\ParticleEmitter.h">
+      <Filter>src\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particle\ParticleSystem.h">
+      <Filter>src\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particle\TransformObject.h">
+      <Filter>src\particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -245,6 +245,10 @@
     <ClCompile Include="src\collision\Util.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\particle\Particle.cpp" />
+    <ClCompile Include="src\particle\ParticleEmitter.cpp" />
+    <ClCompile Include="src\particle\ParticleSystem.cpp" />
+    <ClCompile Include="src\particle\TransformObject.cpp" />
     <ClCompile Include="src\player\Lander.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +359,10 @@
     <ClInclude Include="src\collision\Util.h" />
     <ClInclude Include="src\collision\vector3.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\particle\Particle.h" />
+    <ClInclude Include="src\particle\ParticleEmitter.h" />
+    <ClInclude Include="src\particle\ParticleSystem.h" />
+    <ClInclude Include="src\particle\TransformObject.h" />
     <ClInclude Include="src\player\Lander.h" />
   </ItemGroup>
   <ItemGroup>

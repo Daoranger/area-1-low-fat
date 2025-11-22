@@ -52,6 +52,7 @@ void ofApp::update()
 	constexpr float STRAFE_ACCEL = 15.0f;  
 	constexpr float YAW_TORQUE = 50.0f;   
 
+	// Thrust Force
 	if (keysMap[' ']) lander.force +=  THRUST_ACCEL  * lander.getHeadingY();		// up (space)
 	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();		// forward (w)
 	if (keysMap['s']) lander.force += -FORWARD_ACCEL * lander.getHeadingZ();	    // backward (d)
@@ -59,8 +60,15 @@ void ofApp::update()
 	if (keysMap['d']) lander.force +=  STRAFE_ACCEL  * lander.getHeadingX();		// right (d)
 	if (keysMap['e']) lander.rotationForce -= YAW_TORQUE;							// yaw right (q)
 	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;							// yaw left (e)
-	 
+	
+	// Gravity Force
 	lander.force += lander.mass * gravity;
+
+	// Turbulence Force
+	lander.force.x += ofRandom(-5, 5);
+	lander.force.y += ofRandom(-5, 5);
+	lander.force.z += ofRandom(-5, 5);
+
 	lander.integrate();
 
 	// Gameplay Camera setup
@@ -79,7 +87,6 @@ void ofApp::update()
 		lander.handleTerrainCollision();
 	}
 
-	
 }
 
 //--------------------------------------------------------------
