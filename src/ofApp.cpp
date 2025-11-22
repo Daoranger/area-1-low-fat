@@ -5,6 +5,15 @@
 void ofApp::setup()
 
 {
+	if (fontUI.load("font/Stardock.ttf", 20, true, true))
+	{
+		ofSetLineWidth(5);
+	}
+	else
+	{
+		cout << "Failed to load font\n";
+	}
+
 	// UFO setup
 	lander.loadModel();
 	ofSetColor(255);
@@ -31,8 +40,11 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+
+	lander.calculateAltitude(terrainOctree);
+	//cout << "Altitude: " << lander.altitude;
 	// gravity force apply to lander, I used the moon gravity as default but we can play with it
-	const glm::vec3 moonGravity = glm::vec3(0.0f, -1.68f, 0.0f);
+	const glm::vec3 gravity = glm::vec3(0.0f, -1.68f, 0.0f);
 
 	// will move these variables outside later
 	constexpr float THRUST_ACCEL = 15.0f;   
@@ -48,7 +60,7 @@ void ofApp::update()
 	if (keysMap['e']) lander.rotationForce -= YAW_TORQUE;							// yaw right (q)
 	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;							// yaw left (e)
 	 
-	lander.force += lander.mass * moonGravity;
+	lander.force += lander.mass * gravity;
 	lander.integrate();
 
 	// Gameplay Camera setup
@@ -61,10 +73,13 @@ void ofApp::update()
 	colNodeList.clear();
 	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
 
-	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+	//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+	if (colBoxList.size() >= 1000)
+	{
+		lander.handleTerrainCollision();
+	}
 
-
-
+	
 }
 
 //--------------------------------------------------------------
@@ -85,14 +100,10 @@ void ofApp::draw()
 	terrain.drawFaces();
 	ofDisableLighting();
 
-	/* // For Leaf Nodes Dbeug
-	ofNoFill();
-	ofSetColor(ofColor::white);
-	terrainOctree.drawLeafNodes(terrainOctree.root);
-	*/
-
 	ofPopMatrix();
 	activeCam->end();
+
+	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
 
 }
 
