@@ -79,21 +79,38 @@ void Lander::updateBoundingBox()
 	ofVec3f max = ufoModel.getSceneMax() + position;
 	ufoBoundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
-void Lander::handleTerrainCollision()
+void Lander::handleLanding()
 {
-	force += 5 * getHeadingY();
+	velocity.set(0, 0, 0);
+	rotationSpeed = 0.0;
+	// When the 
+	if (!bLandingImpulseDone)
+	{
+		//force += 5 * getHeadingY();
+		velocity.set(0, 2, 0);
+		bLandingImpulseDone = true;
+	}
 }
 
-	void Lander::calculateAltitude(Octree& terrain)
+void Lander::handleTakeOff()
+{
+	bLandingImpulseDone = false;
+}
+
+void Lander::calculateAltitude(Octree& terrain)
+{
+	// Origin is the UFO's position, Direction is downward (-Y)
+	Ray rayAltutideSensor = Ray(Vector3(position.x, position.y, position.z), Vector3(0, -1,0));
+	if (terrain.intersect(rayAltutideSensor, terrain.root, terrainHitNode))
 	{
-		// Origin is the UFO's position, Direction is downward (-Y)
-		Ray rayAltutideSensor = Ray(Vector3(position.x, position.y, position.z), Vector3(0, -1,0));
-		if (terrain.intersect(rayAltutideSensor, terrain.root, terrainHitNode))
-		{
-			terrainHitLocation = terrain.mesh.getVertex(terrainHitNode.points[0]);
-			altitude = position.y - terrainHitLocation.y;
-		}
+		terrainHitLocation = terrain.mesh.getVertex(terrainHitNode.points[0]);
+		altitude = glm::max(static_cast<float>(0.0), position.y - terrainHitLocation.y);
 	}
+	else
+	{
+		altitude = 0.0;
+	}
+}
 
 
 glm::mat4 Lander::getTransform()

@@ -53,13 +53,14 @@ void ofApp::update()
 	constexpr float YAW_TORQUE = 50.0f;   
 
 	// Thrust Force
-	if (keysMap[' ']) lander.force +=  THRUST_ACCEL  * lander.getHeadingY();		// up (space)
-	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();		// forward (w)
-	if (keysMap['s']) lander.force += -FORWARD_ACCEL * lander.getHeadingZ();	    // backward (d)
-	if (keysMap['a']) lander.force += -STRAFE_ACCEL  * lander.getHeadingX();		// left (a)
-	if (keysMap['d']) lander.force +=  STRAFE_ACCEL  * lander.getHeadingX();		// right (d)
-	if (keysMap['e']) lander.rotationForce -= YAW_TORQUE;							// yaw right (q)
-	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;							// yaw left (e)
+	if (keysMap[OF_KEY_CONTROL]) lander.force += -THRUST_ACCEL * lander.getHeadingY();	// down (ctrl)
+	if (keysMap[' ']) lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
+	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();			// forward (w)
+	if (keysMap['s']) lander.force += -FORWARD_ACCEL * lander.getHeadingZ();			// backward (d)
+	if (keysMap['a']) lander.force += -STRAFE_ACCEL  * lander.getHeadingX();			// left (a)
+	if (keysMap['d']) lander.force +=  STRAFE_ACCEL  * lander.getHeadingX();			// right (d)
+	if (keysMap['e']) lander.rotationForce -= YAW_TORQUE;								// yaw right (q)
+	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;								// yaw left (e)
 	
 	// Gravity Force
 	lander.force += lander.mass * gravity;
@@ -75,16 +76,22 @@ void ofApp::update()
 	updateGameCamera();
 
 	// Handle Collision Terrain vs UFO
-
 	lander.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
 	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
 
 	//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-	if (colBoxList.size() >= 1000)
+	if (colBoxList.size() >= 1000 && lander.altitude == 0.0)
 	{
-		lander.handleTerrainCollision();
+		if (!keysMap[' '])
+		{
+			lander.handleLanding();
+		}
+	}
+	else
+	{
+		lander.handleTakeOff();
 	}
 
 }
@@ -96,7 +103,8 @@ void ofApp::draw()
 	ofBackground(ofColor::black);
 
 	glDepthMask(false);
-	//if (!bHide) gui.draw();
+	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
+	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
 	glDepthMask(true);
 
 	activeCam->begin();
@@ -109,8 +117,6 @@ void ofApp::draw()
 
 	ofPopMatrix();
 	activeCam->end();
-
-	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
 
 }
 
@@ -231,7 +237,6 @@ void ofApp::initLightingAndMaterials()
 void ofApp::updateGameCamera()
 {
 	
-	// cout << "Heading Z : " << lander.getHeadingZ() << '\n';
 	switch (camView)
 	{
 	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the lander, looks 3 ahead
