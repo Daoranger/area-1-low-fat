@@ -5,6 +5,10 @@
 void ofApp::setup()
 
 {
+
+	skyBox.load("images/stars.png");
+
+	// Fonts setup
 	if (fontUI.load("font/Stardock.ttf", 20, true, true))
 	{
 		ofSetLineWidth(5);
@@ -88,7 +92,7 @@ void ofApp::update()
 	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
 
 	//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-	if (colBoxList.size() >= 1000 && lander.altitude == 0.0)
+	if (colBoxList.size() >= 1000 && lander.altitude <= 0.2)
 	{
 		if (!keysMap[' '])
 		{
@@ -103,6 +107,10 @@ void ofApp::draw()
 {
 
 	ofBackground(ofColor::black);
+
+	ofDisableDepthTest();
+	skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
+	ofEnableDepthTest();
 
 	glDepthMask(false);
 	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
@@ -131,6 +139,10 @@ void ofApp::keyPressed(int key)
 	case 'c':
 		if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
 		else debugCam.enableMouseInput();
+		break;
+	case 'R':
+	case 'r':
+		camGroundPosition.set(lander.terrainHitLocation);
 		break;
 	case '1':
 		activeCam = &debugCam;
@@ -242,16 +254,20 @@ void ofApp::updateGameCamera()
 	switch (camView)
 	{
 	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the lander, looks 3 ahead
-		gameCam.setPosition(lander.position + lander.getHeadingY() * 15 - lander.getHeadingZ() * 20);	
-		gameCam.lookAt(lander.position + lander.getHeadingZ() * 3);				
+		gameCam.setPosition(lander.position + lander.getHeadingY() * 20 - lander.getHeadingZ() * 25);
+		gameCam.lookAt(lander.position + lander.getHeadingZ() * 3);
 		break;
 	case CAM_FIRST: //1st person: camera at lander position, looks straight forward
-		gameCam.setPosition(lander.position);												
-		gameCam.lookAt(lander.position + lander.getHeadingZ());								
+		gameCam.setPosition(lander.position.x, lander.position.y + 10, lander.position.z);
+		gameCam.lookAt(gameCam.getPosition() + lander.getHeadingZ() * 3);
 		break;
 	case CAM_TOP:	// Top-down: camera 20 up above lander, looks straight down
-		gameCam.setPosition(lander.position.x, lander.position.y + 40, lander.position.z);	
-		gameCam.lookAt(lander.position);													
+		gameCam.setPosition(lander.position.x, lander.position.y + 50, lander.position.z);
+		gameCam.lookAt(lander.position);
+		break;
+	case CAM_GROUND:
+		gameCam.setPosition(camGroundPosition);
+		gameCam.lookAt(lander.position);
 		break;
 	}
 }
@@ -261,5 +277,5 @@ void ofApp::updateGameCamera()
  */
 void ofApp::nextGameCameraView()
 {
-	camView = static_cast<CamView>((camView + 1) % 3);
+	camView = static_cast<CamView>((camView + 1) % 4);
 }

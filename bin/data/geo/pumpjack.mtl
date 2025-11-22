@@ -1,0 +1,54 @@
+newmtl pumpjack4:lambert1SG
+illum 4
+Kd 0.23 0.11 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:lambert1SG2
+illum 4
+Kd 0.23 0.11 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:lambert2SG
+illum 4
+Kd 0.00 0.05 0.07
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:lambert3SG
+illum 4
+Kd 0.04 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:lambert3SG2
+illum 4
+Kd 0.04 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:pasted__lambert1SG
+illum 4
+Kd 0.23 0.11 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:pasted__lambert1SG3
+illum 4
+Kd 0.23 0.11 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:pasted__pasted__lambert1SG4
+illum 4
+Kd 0.23 0.11 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl pumpjack4:pasted__pasted__pasted__lambert1SG4
+illum 4
+Kd 0.23 0.11 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00

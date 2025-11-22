@@ -35,13 +35,17 @@ class ofApp : public ofBaseApp
 
 		// Game States
 		enum GameState { STATE_TILE, STATE_STARTED };
+
+		// World
+		ofImage skyBox;
 		
 		// Cameras
 		ofEasyCam debugCam;	// for debug/diagnostic
 		ofCamera gameCam;	// for gameplay
-		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP };
+		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP, CAM_GROUND };
 		CamView camView = CAM_THIRD;
 		ofCamera* activeCam = &gameCam;	// pointer to camera that is currently being use
+		ofVec3f camGroundPosition;
 
 		// UFO (Player)
 		Lander lander;
