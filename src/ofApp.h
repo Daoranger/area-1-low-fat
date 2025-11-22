@@ -32,6 +32,9 @@ class ofApp : public ofBaseApp
 		// Helper functions for cameras:
 		void updateGameCamera();
 		void nextGameCameraView();
+
+		// Game States
+		enum GameState { STATE_TILE, STATE_STARTED };
 		
 		// Cameras
 		ofEasyCam debugCam;	// for debug/diagnostic
@@ -42,7 +45,6 @@ class ofApp : public ofBaseApp
 
 		// UFO (Player)
 		Lander lander;
-		enum LanderState { STATE_PARKED, STATE_FLYING };
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;

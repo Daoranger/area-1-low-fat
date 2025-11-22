@@ -41,6 +41,8 @@ void ofApp::setup()
 void ofApp::update()
 {
 
+	cout << "Lander Impsule Reset? " << lander.bLandingImpulseDone << '\n';
+
 	lander.calculateAltitude(terrainOctree);
 	//cout << "Altitude: " << lander.altitude;
 	// gravity force apply to lander, I used the moon gravity as default but we can play with it
@@ -54,7 +56,11 @@ void ofApp::update()
 
 	// Thrust Force
 	if (keysMap[OF_KEY_CONTROL]) lander.force += -THRUST_ACCEL * lander.getHeadingY();	// down (ctrl)
-	if (keysMap[' ']) lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
+	if (keysMap[' '])
+	{
+		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
+		lander.handleTakeOff();
+	}
 	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();			// forward (w)
 	if (keysMap['s']) lander.force += -FORWARD_ACCEL * lander.getHeadingZ();			// backward (d)
 	if (keysMap['a']) lander.force += -STRAFE_ACCEL  * lander.getHeadingX();			// left (a)
@@ -88,10 +94,6 @@ void ofApp::update()
 		{
 			lander.handleLanding();
 		}
-	}
-	else
-	{
-		lander.handleTakeOff();
 	}
 
 }
