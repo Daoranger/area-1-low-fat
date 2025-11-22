@@ -12,6 +12,8 @@ public:
 	void integrate();
 	void loadModel();
 	void updateBoundingBox();
+	void handleTerrainCollision();
+	void calculateAltitude(Octree&);
 	glm::mat4 getTransform();
 	glm::vec3 getHeadingX();
 	glm::vec3 getHeadingY();
@@ -32,5 +34,8 @@ public:
 
 	ofxAssimpModelLoader ufoModel;
 	Box ufoBoundingBox;
+	TreeNode terrainHitNode;
+	ofVec3f terrainHitLocation;
+	float altitude;
 
 };

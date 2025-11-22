@@ -29,10 +29,10 @@ void Lander::draw()
 
 	ofPopMatrix();
 
-	// Draw the UFO bounding box
-	ofNoFill();
-	ofSetColor(ofColor::white);
-	Octree::drawBox(ufoBoundingBox);
+	// DEBUG: Draw the UFO bounding box
+	//ofNoFill();
+	//ofSetColor(ofColor::white);
+	//Octree::drawBox(ufoBoundingBox);
 }
 
 void Lander::integrate()
@@ -65,7 +65,7 @@ void Lander::integrate()
 void Lander::loadModel()
 {
 	
-	if (ufoModel.loadModel("geo/mars-low-5x-v2.obj"))
+	if (ufoModel.loadModel("geo/newUFO.obj"))
 	{
 		ufoModel.setScaleNormalization(false);
 	}
@@ -78,7 +78,23 @@ void Lander::updateBoundingBox()
 	ofVec3f min = ufoModel.getSceneMin() + position;
 	ofVec3f max = ufoModel.getSceneMax() + position;
 	ufoBoundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
-} 
+}
+void Lander::handleTerrainCollision()
+{
+	force += 5 * getHeadingY();
+}
+
+	void Lander::calculateAltitude(Octree& terrain)
+	{
+		// Origin is the UFO's position, Direction is downward (-Y)
+		Ray rayAltutideSensor = Ray(Vector3(position.x, position.y, position.z), Vector3(0, -1,0));
+		if (terrain.intersect(rayAltutideSensor, terrain.root, terrainHitNode))
+		{
+			terrainHitLocation = terrain.mesh.getVertex(terrainHitNode.points[0]);
+			altitude = position.y - terrainHitLocation.y;
+		}
+	}
+
 
 glm::mat4 Lander::getTransform()
 {
