@@ -49,22 +49,20 @@ void ofApp::update()
 	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;							// yaw left (e)
 	 
 	lander.force += lander.mass * moonGravity;
+	lander.integrate();
 
 	// Gameplay Camera setup
 	updateGameCamera();
 
 	// Handle Collision Terrain vs UFO
-	lander.createBoundingBox();
+
+	lander.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
 	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
 
-	//lander.ufoModel.setPosition(lander.position.x, lander.position.y, lander.position.z);
-
-	//cout << "UFO Model Pos: " << lander.ufoModel.getSceneCentr() << '\n';
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 
-	lander.integrate();
 
 
 }
@@ -219,7 +217,7 @@ void ofApp::updateGameCamera()
 	switch (camView)
 	{
 	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the lander, looks 3 ahead
-		gameCam.setPosition(lander.position + lander.getHeadingY() * 7 - lander.getHeadingZ() * 12);	
+		gameCam.setPosition(lander.position + lander.getHeadingY() * 15 - lander.getHeadingZ() * 20);	
 		gameCam.lookAt(lander.position + lander.getHeadingZ() * 3);				
 		break;
 	case CAM_FIRST: //1st person: camera at lander position, looks straight forward
@@ -227,7 +225,7 @@ void ofApp::updateGameCamera()
 		gameCam.lookAt(lander.position + lander.getHeadingZ());								
 		break;
 	case CAM_TOP:	// Top-down: camera 20 up above lander, looks straight down
-		gameCam.setPosition(lander.position.x, lander.position.y + 20, lander.position.z);	
+		gameCam.setPosition(lander.position.x, lander.position.y + 40, lander.position.z);	
 		gameCam.lookAt(lander.position);													
 		break;
 	}

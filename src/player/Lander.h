@@ -11,7 +11,7 @@ public:
 	void draw();
 	void integrate();
 	void loadModel();
-	void createBoundingBox();
+	void updateBoundingBox();
 	glm::mat4 getTransform();
 	glm::vec3 getHeadingX();
 	glm::vec3 getHeadingY();

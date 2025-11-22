@@ -23,9 +23,9 @@ void Lander::draw()
 {
 	ofPushMatrix();
 	ofMultMatrix(getTransform());
+
 	// Draw the UFO model faces
 	ufoModel.drawFaces();
-
 
 	ofPopMatrix();
 
@@ -49,7 +49,7 @@ void Lander::integrate()
 		velocity += accel * dt;
 		velocity *= damping;
 
-		// Eulter integration for rotation motion
+		// Euler integration for rotation motion
 		float rotAccel = rotationAcceleration;
 		rotAccel += rotationForce / mass;
 		rotation += rotationSpeed * dt;
@@ -65,20 +65,20 @@ void Lander::integrate()
 void Lander::loadModel()
 {
 	
-	if (ufoModel.loadModel("geo/newUFO.obj"))
+	if (ufoModel.loadModel("geo/mars-low-5x-v2.obj"))
 	{
 		ufoModel.setScaleNormalization(false);
-		ufoModel.setPosition(position.x, position.y, position.z);
 	}
 }
 
-void Lander::createBoundingBox()
+void Lander::updateBoundingBox()
 {
-
-	ofVec3f min = ufoModel.getSceneMin() + ufoModel.getPosition();
-	ofVec3f max = ufoModel.getSceneMax() + ufoModel.getPosition();
+	// Might be useful if want to rotate the bouding box
+	// https://gamedev.stackexchange.com/questions/162819/how-do-axis-aligned-bounding-boxes-update-with-rotations
+	ofVec3f min = ufoModel.getSceneMin() + position;
+	ofVec3f max = ufoModel.getSceneMax() + position;
 	ufoBoundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
-}
+} 
 
 glm::mat4 Lander::getTransform()
 {
