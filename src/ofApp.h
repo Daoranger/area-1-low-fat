@@ -51,9 +51,10 @@ class ofApp : public ofBaseApp
 
 
 		// Octree and Collision Detection
-		Octree terrainOctree;
-
-		vector<Box> bboxList;
+		Octree terrainOctree;				// The octree of the terrain
+		vector<TreeNode> colNodeList;		// Store all collided (leaf) nodes
+		vector<Box> colBoxList;				// Store all collided (leaf) nodes's boxes
+		
 
 };
 

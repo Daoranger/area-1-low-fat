@@ -26,12 +26,13 @@ void Lander::draw()
 	// Draw the UFO model faces
 	ufoModel.drawFaces();
 
+
+	ofPopMatrix();
+
 	// Draw the UFO bounding box
 	ofNoFill();
 	ofSetColor(ofColor::white);
 	Octree::drawBox(ufoBoundingBox);
-
-	ofPopMatrix();
 }
 
 void Lander::integrate()
@@ -73,6 +74,7 @@ void Lander::loadModel()
 
 void Lander::createBoundingBox()
 {
+
 	ofVec3f min = ufoModel.getSceneMin() + ufoModel.getPosition();
 	ofVec3f max = ufoModel.getSceneMax() + ufoModel.getPosition();
 	ufoBoundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));

@@ -7,7 +7,6 @@ void ofApp::setup()
 {
 	// UFO setup
 	lander.loadModel();
-	lander.createBoundingBox();
 	ofSetColor(255);
 
 	// Terrain setup
@@ -50,10 +49,23 @@ void ofApp::update()
 	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;							// yaw left (e)
 	 
 	lander.force += lander.mass * moonGravity;
-	lander.integrate();
 
 	// Gameplay Camera setup
 	updateGameCamera();
+
+	// Handle Collision Terrain vs UFO
+	lander.createBoundingBox();
+	colBoxList.clear();
+	colNodeList.clear();
+	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
+
+	//lander.ufoModel.setPosition(lander.position.x, lander.position.y, lander.position.z);
+
+	//cout << "UFO Model Pos: " << lander.ufoModel.getSceneCentr() << '\n';
+	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+
+	lander.integrate();
+
 
 }
 
@@ -75,11 +87,11 @@ void ofApp::draw()
 	terrain.drawFaces();
 	ofDisableLighting();
 
-	/*int level = 0;
+	/* // For Leaf Nodes Dbeug
 	ofNoFill();
 	ofSetColor(ofColor::white);
-	terrainOctree.draw(11, 0);*/
-	// Drawing the octree
+	terrainOctree.drawLeafNodes(terrainOctree.root);
+	*/
 
 	ofPopMatrix();
 	activeCam->end();
