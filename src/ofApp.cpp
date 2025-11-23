@@ -56,18 +56,12 @@ void ofApp::update()
 
 	// Thrust Force
 	if (keysMap[OF_KEY_CONTROL]) lander.force += -THRUST_ACCEL * lander.getHeadingY();	// down (ctrl)
-	if (keysMap[' '])
+	if (keysMap[' '] && lander.fuelLeftTime > 0.0)
 	{
 		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
 		//lander.handleTakeOff();
-
-		if (!lander.bfuelActive)
-		{
-			lander.fuelStartTime = ofGetElapsedTimef();
-			lander.bfuelActive = true;
-		}
 		
-		lander.fuelLeftTime = lander.fuelTotalTime - (ofGetElapsedTimef() - lander.fuelStartTime);
+		lander.fuelLeftTime = max(0.0, lander.fuelLeftTime - ofGetLastFrameTime());
 	}
 	
 	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();			// forward (w)

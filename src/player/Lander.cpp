@@ -106,7 +106,7 @@ void Lander::calculateAltitude(Octree& terrain)
 	if (terrain.intersect(rayAltutideSensor, terrain.root, terrainHitNode))
 	{
 		terrainHitLocation = terrain.mesh.getVertex(terrainHitNode.points[0]);
-		altitude = glm::max(static_cast<float>(0.0), position.y - terrainHitLocation.y);
+		altitude = max(static_cast<float>(0.0), position.y - terrainHitLocation.y);
 	}
 	else
 	{
