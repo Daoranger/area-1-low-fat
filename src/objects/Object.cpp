@@ -30,7 +30,7 @@ void Object::updateBoundingBox()
 
 void Object::createOctree()
 {
-    octree.create(model.getMesh(0), 20);
+    octree.create(model.getMesh(0), 10);
 }
 
 void Object::handleCollision()

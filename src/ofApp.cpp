@@ -59,10 +59,14 @@ void ofApp::update()
 	constexpr float YAW_TORQUE = 50.0f;   
 
 	// Thrust Force
-	if (keysMap[OF_KEY_CONTROL]) lander.force += -THRUST_ACCEL * lander.getHeadingY();	// down (ctrl)
-	if (keysMap[' '] && lander.hasFuel())
+	if (keysMap[OF_KEY_CONTROL])														// down (ctrl)
 	{
-		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
+		lander.force += -THRUST_ACCEL * lander.getHeadingY();
+	}
+
+	if (keysMap[' '] && lander.hasFuel())												// up (space)
+	{
+		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			
 		//lander.handleTakeOff();
 		
 		float deltaTime = 1.0 / ofGetFrameRate();
@@ -95,11 +99,13 @@ void ofApp::update()
 	colBoxList.clear();
 	colNodeList.clear();
 	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
+	landingPad.octree.intersect(lander.ufoBoundingBox, landingPad.octree.root, colBoxList, colNodeList);
 
-	//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 	if (colBoxList.size() >= 1000 && lander.altitude <= 0.2)
 	{
-		//lander.handleLanding();
+		if (!keysMap[' '])
+			lander.handleLanding();
 	}
 
 }
@@ -128,6 +134,11 @@ void ofApp::draw()
 	terrain.drawFaces();
 	landingPad.draw();
 	ofDisableLighting();
+
+	ofNoFill();
+	ofSetColor(ofColor::white);
+	//terrainOctree.drawLeafNodes(terrainOctree.root);
+	landingPad.octree.drawLeafNodes(landingPad.octree.root);
 
 	ofPopMatrix();
 	activeCam->end();
