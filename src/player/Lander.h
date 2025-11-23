@@ -15,6 +15,7 @@ public:
 	void handleLanding();
 	void handleTakeOff();
 	void calculateAltitude(Octree&);
+	bool hasFuel();
 	glm::mat4 getTransform();
 	glm::vec3 getHeadingX();
 	glm::vec3 getHeadingY();
@@ -43,7 +44,7 @@ public:
 	bool bLandingImpulseDone = false;
 
 	// Variables: fuel
-	float fuelTotalTime = 120;		// 2 minutes = 120 seconds
+	float fuelTotalTime = 10;		// 2 minutes = 120 seconds
 	float fuelLeftTime;
 	float fuelStartTime;
 	bool  bfuelActive = false;

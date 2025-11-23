@@ -20,7 +20,6 @@ Lander::Lander()
 	fuelLeftTime = fuelTotalTime;
 
 }
-
 void Lander::draw()
 {
 	ofPushMatrix();
@@ -36,7 +35,6 @@ void Lander::draw()
 	//ofSetColor(ofColor::white);
 	//Octree::drawBox(ufoBoundingBox);
 }
-
 void Lander::integrate()
 {
 	if (ofGetFrameRate() == 0) return;
@@ -63,7 +61,6 @@ void Lander::integrate()
 		rotationForce = 0;
 	}
 }
-
 void Lander::loadModel()
 {
 	
@@ -72,7 +69,6 @@ void Lander::loadModel()
 		ufoModel.setScaleNormalization(false);
 	}
 }
-
 void Lander::updateBoundingBox()
 {
 	// Might be useful if want to rotate the bouding box
@@ -93,12 +89,10 @@ void Lander::handleLanding()
 		bLandingImpulseDone = true;
 	}
 }
-
 void Lander::handleTakeOff()
 {
 	bLandingImpulseDone = false;
 }
-
 void Lander::calculateAltitude(Octree& terrain)
 {
 	// Origin is the UFO's position, Direction is downward (-Y)
@@ -113,6 +107,10 @@ void Lander::calculateAltitude(Octree& terrain)
 		altitude = 0.0;
 	}
 }
+bool Lander::hasFuel()
+{
+	return fuelLeftTime > 0.0;
+}
 glm::mat4 Lander::getTransform()
 {
 	glm::mat4 T = glm::translate(glm::mat4(1.0), glm::vec3(position));
@@ -120,17 +118,14 @@ glm::mat4 Lander::getTransform()
 	glm::mat4 S = glm::scale(glm::mat4(1.0), glm::vec3(scale));
 	return T * R * S;
 }
-
 glm::vec3 Lander::getHeadingX()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(1, 0, 0, 0)));
 }
-
 glm::vec3 Lander::getHeadingY()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 1, 0, 0)));
 }
-
 glm::vec3 Lander::getHeadingZ()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 0, -1, 0)));

@@ -56,12 +56,13 @@ void ofApp::update()
 
 	// Thrust Force
 	if (keysMap[OF_KEY_CONTROL]) lander.force += -THRUST_ACCEL * lander.getHeadingY();	// down (ctrl)
-	if (keysMap[' '] && lander.fuelLeftTime > 0.0)
+	if (keysMap[' '] && lander.hasFuel())
 	{
 		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
 		//lander.handleTakeOff();
 		
-		lander.fuelLeftTime = max(0.0, lander.fuelLeftTime - ofGetLastFrameTime());
+		float deltaTime = 1.0 / ofGetFrameRate();
+		lander.fuelLeftTime = max(static_cast<float>(0,0), lander.fuelLeftTime - deltaTime);
 	}
 	
 	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();			// forward (w)
@@ -112,7 +113,7 @@ void ofApp::draw()
 	glDepthMask(false);
 	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
 	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
-	fontUI.drawString("Fuel time left: " + ofToString(lander.fuelLeftTime, 2), 20, 210);
+	fontUI.drawString("Fuel time left: " + (lander.hasFuel() ? ofToString(lander.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
 	glDepthMask(true);
 
 	activeCam->begin();
