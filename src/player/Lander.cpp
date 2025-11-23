@@ -17,6 +17,8 @@ Lander::Lander()
 	damping = 0.99;
 	mass = 1;
 
+	fuelLeftTime = fuelTotalTime;
+
 }
 
 void Lander::draw()
@@ -87,7 +89,7 @@ void Lander::handleLanding()
 	if (!bLandingImpulseDone)
 	{
 		//force += 5 * getHeadingY();
-		velocity.set(0, 2, 0);
+		//velocity.set(0, 10, 0);
 		bLandingImpulseDone = true;
 	}
 }
@@ -111,8 +113,6 @@ void Lander::calculateAltitude(Octree& terrain)
 		altitude = 0.0;
 	}
 }
-
-
 glm::mat4 Lander::getTransform()
 {
 	glm::mat4 T = glm::translate(glm::mat4(1.0), glm::vec3(position));

@@ -45,12 +45,8 @@ void ofApp::setup()
 void ofApp::update()
 {
 
-	cout << "Lander Impsule Reset? " << lander.bLandingImpulseDone << '\n';
-
 	lander.calculateAltitude(terrainOctree);
 	//cout << "Altitude: " << lander.altitude;
-	// gravity force apply to lander, I used the moon gravity as default but we can play with it
-	const glm::vec3 gravity = glm::vec3(0.0f, -1.68f, 0.0f);
 
 	// will move these variables outside later
 	constexpr float THRUST_ACCEL = 15.0f;   
@@ -63,8 +59,17 @@ void ofApp::update()
 	if (keysMap[' '])
 	{
 		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			// up (space)
-		lander.handleTakeOff();
+		//lander.handleTakeOff();
+
+		if (!lander.bfuelActive)
+		{
+			lander.fuelStartTime = ofGetElapsedTimef();
+			lander.bfuelActive = true;
+		}
+		
+		lander.fuelLeftTime = lander.fuelTotalTime - (ofGetElapsedTimef() - lander.fuelStartTime);
 	}
+	
 	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();			// forward (w)
 	if (keysMap['s']) lander.force += -FORWARD_ACCEL * lander.getHeadingZ();			// backward (d)
 	if (keysMap['a']) lander.force += -STRAFE_ACCEL  * lander.getHeadingX();			// left (a)
@@ -73,6 +78,7 @@ void ofApp::update()
 	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;								// yaw left (e)
 	
 	// Gravity Force
+	const glm::vec3 gravity = glm::vec3(0.0f, -1.68f, 0.0f);
 	lander.force += lander.mass * gravity;
 
 	// Turbulence Force
@@ -94,10 +100,7 @@ void ofApp::update()
 	//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 	if (colBoxList.size() >= 1000 && lander.altitude <= 0.2)
 	{
-		if (!keysMap[' '])
-		{
-			lander.handleLanding();
-		}
+		//lander.handleLanding();
 	}
 
 }
@@ -115,6 +118,7 @@ void ofApp::draw()
 	glDepthMask(false);
 	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
 	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
+	fontUI.drawString("Fuel time left: " + ofToString(lander.fuelLeftTime, 2), 20, 210);
 	glDepthMask(true);
 
 	activeCam->begin();

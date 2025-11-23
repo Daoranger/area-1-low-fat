@@ -34,11 +34,18 @@ public:
 	float damping;
 
 	ofxAssimpModelLoader ufoModel;
+
+	// Variables: collision
 	Box ufoBoundingBox;
 	TreeNode terrainHitNode;
 	ofVec3f terrainHitLocation;
 	float altitude = 0.0;
-
 	bool bLandingImpulseDone = false;
+
+	// Variables: fuel
+	float fuelTotalTime = 120;		// 2 minutes = 120 seconds
+	float fuelLeftTime;
+	float fuelStartTime;
+	bool  bfuelActive = false;
 
 };
