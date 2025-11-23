@@ -3,15 +3,17 @@
 #include "ofxAssimpModelLoader.h"
 #include "../collision/box.h"
 #include "../collision/Octree.h"
+#include <string>
 
 class Object
 {
 
 public:
-    Object(string&);
+    Object();
     virtual void draw();
-    virtual void loadModel(string&);
+    virtual void loadModel();
     virtual void updateBoundingBox();
+    virtual void createOctree();
     virtual void handleCollision();
     glm::mat4 getTransform();
 

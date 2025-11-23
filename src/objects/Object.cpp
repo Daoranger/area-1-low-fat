@@ -1,12 +1,10 @@
 #include "Object.h"
 
-Object::Object(string& path)
+Object::Object()
 {
-	position.set(0, 0, 0);
+	position.set(0, 50, 0);
 	rotation = 0.0;
 	scale.set(1, 1, 1);
-
-    loadModel(path);
 }
 
 void Object::draw()
@@ -17,9 +15,9 @@ void Object::draw()
     ofPopMatrix();
 }
 
-void Object::loadModel(string& path)
+void Object::loadModel()
 {
-    if (model.loadModel(path))
+    if (model.loadModel("geo/charging-station.obj"))
     {
         model.setScaleNormalization(false);
     }
@@ -28,6 +26,11 @@ void Object::loadModel(string& path)
 void Object::updateBoundingBox()
 {
     return;
+}
+
+void Object::createOctree()
+{
+    octree.create(model.getMesh(0), 20);
 }
 
 void Object::handleCollision()

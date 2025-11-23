@@ -6,6 +6,9 @@
 #include "player/Lander.h"
 #include "collision/Octree.h"
 #include "glm/gtx/intersect.hpp"
+#include "objects/Object.h"
+#include <string>
+#include <filesystem>
 
 class ofApp : public ofBaseApp
 {
@@ -65,6 +68,7 @@ class ofApp : public ofBaseApp
 		// UI 
 		ofTrueTypeFont fontUI;
 		
-
+		// Game Object
+		Object landingPad;
 };
 

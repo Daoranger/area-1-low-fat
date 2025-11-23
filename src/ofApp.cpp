@@ -25,6 +25,12 @@ void ofApp::setup()
 	// Terrain setup
 	terrain.loadModel("geo/mars-low-5x-v2.obj");
 	terrain.setScaleNormalization(false);
+	terrainOctree.create(terrain.getMesh(0), 20);
+
+	// Game Object
+	//
+	landingPad.loadModel();
+	landingPad.createOctree();
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -36,8 +42,6 @@ void ofApp::setup()
 	ofEnableSmoothing();
 	ofEnableDepthTest();
 	initLightingAndMaterials();
-
-	terrainOctree.create(terrain.getMesh(0), 20);
 
 }
 
@@ -122,6 +126,7 @@ void ofApp::draw()
 	ofEnableLighting();
 	lander.draw();
 	terrain.drawFaces();
+	landingPad.draw();
 	ofDisableLighting();
 
 	ofPopMatrix();
