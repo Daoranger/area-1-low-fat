@@ -69,6 +69,7 @@ class ofApp : public ofBaseApp
 		ofTrueTypeFont fontUI;
 		
 		// Game Object
-		Object landingPad;
+		ofxAssimpModelLoader landingPad;
+		Octree landingPadOctree;
 };
 

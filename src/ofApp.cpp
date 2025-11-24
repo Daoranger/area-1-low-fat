@@ -29,8 +29,11 @@ void ofApp::setup()
 
 	// Game Object
 	//
-	landingPad.loadModel();
-	landingPad.createOctree();
+	//landingPad.loadModel();
+	//landingPad.createOctree();
+	landingPad.loadModel("geo/charging-station.obj");
+	landingPad.setScaleNormalization(false);
+	landingPadOctree.create(landingPad.getMesh(0), 20);
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -98,11 +101,11 @@ void ofApp::update()
 	lander.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
-	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
-	landingPad.octree.intersect(lander.ufoBoundingBox, landingPad.octree.root, colBoxList, colNodeList);
+	//terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
+	landingPadOctree.intersect(lander.ufoBoundingBox, landingPadOctree.root, colBoxList, colNodeList);
 
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-	if (colBoxList.size() >= 1000 && lander.altitude <= 0.2)
+	if (colBoxList.size() >= 1 && lander.altitude <= 0.2)
 	{
 		if (!keysMap[' '])
 			lander.handleLanding();
@@ -131,14 +134,14 @@ void ofApp::draw()
 	
 	ofEnableLighting();
 	lander.draw();
-	terrain.drawFaces();
-	landingPad.draw();
+	//terrain.drawFaces();
+	landingPad.drawFaces();
 	ofDisableLighting();
 
 	ofNoFill();
 	ofSetColor(ofColor::white);
 	//terrainOctree.drawLeafNodes(terrainOctree.root);
-	landingPad.octree.drawLeafNodes(landingPad.octree.root);
+	landingPadOctree.drawLeafNodes(landingPadOctree.root);
 
 	ofPopMatrix();
 	activeCam->end();
