@@ -7,6 +7,7 @@
 #include "collision/Octree.h"
 #include "glm/gtx/intersect.hpp"
 #include "objects/Object.h"
+#include "objects/ChargingStation.h"
 #include <string>
 #include <filesystem>
 
@@ -69,6 +70,6 @@ class ofApp : public ofBaseApp
 		ofTrueTypeFont fontUI;
 		
 		// Game Object
-		Object landingPad;
+		ChargingStation station1;
 };
 

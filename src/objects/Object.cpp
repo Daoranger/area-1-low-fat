@@ -17,10 +17,7 @@ void Object::draw()
 
 void Object::loadModel()
 {
-    if (model.loadModel("geo/charging-station.obj"))
-    {
-        model.setScaleNormalization(false);
-    }
+    return;
 }
 
 void Object::updateBoundingBox()
@@ -33,7 +30,7 @@ void Object::createOctree()
     octree.create(model.getMesh(0), 10);
 }
 
-void Object::handleCollision()
+void Object::handleCollision(Lander& ufo)
 {
     return;
 }
