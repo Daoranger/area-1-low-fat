@@ -2,7 +2,7 @@
 
 Object::Object()
 {
-	position.set(0, 50, 0);
+	position.set(0, 0, 0);
 	rotation = 0.0;
 	scale.set(1, 1, 1);
 }

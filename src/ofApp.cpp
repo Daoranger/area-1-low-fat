@@ -98,11 +98,14 @@ void ofApp::update()
 	lander.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
-	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
-	landingPad.octree.intersect(lander.ufoBoundingBox, landingPad.octree.root, colBoxList, colNodeList);
+	//terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
+	if (landingPad.octree.intersect(lander.ufoBoundingBox, landingPad.octree.root, colBoxList, colNodeList))
+	{
+		cout << "Collided with landing path\n";
+	}
 
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-	if (colBoxList.size() >= 1000 && lander.altitude <= 0.2)
+	if (colBoxList.size() >= 2)
 	{
 		if (!keysMap[' '])
 			lander.handleLanding();
