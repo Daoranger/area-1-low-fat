@@ -59,9 +59,11 @@ void ofApp::update()
 	constexpr float YAW_TORQUE = 50.0f;   
 
 	// Thrust Force
-	if (keysMap[OF_KEY_CONTROL])														// down (ctrl)
+	if (keysMap[OF_KEY_CONTROL] && lander.hasFuel())														// down (ctrl)
 	{
 		lander.force += -THRUST_ACCEL * lander.getHeadingY();
+		float deltaTime = 1.0 / ofGetFrameRate();
+		lander.fuelLeftTime = max(static_cast<float>(0.0), lander.fuelLeftTime - deltaTime);
 	}
 
 	if (keysMap[' '] && lander.hasFuel())												// up (space)
