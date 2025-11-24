@@ -2,7 +2,7 @@
 
 Lander::Lander()
 {
-	position.set(0, 0, 0);
+	position.set(0, 200, 0);
 	rotation = 0.0;
 	scale.set(1, 1, 1);
 
@@ -31,9 +31,9 @@ void Lander::draw()
 	ofPopMatrix();
 
 	// DEBUG: Draw the UFO bounding box
-	//ofNoFill();
-	//ofSetColor(ofColor::white);
-	//Octree::drawBox(ufoBoundingBox);
+	ofNoFill();
+	ofSetColor(ofColor::white);
+	Octree::drawBox(ufoBoundingBox);
 }
 void Lander::integrate()
 {

@@ -23,7 +23,7 @@ void ofApp::setup()
 	ofSetColor(255);
 
 	// Terrain setup
-	terrain.loadModel("geo/mars-low-5x-v2.obj");
+	terrain.loadModel("geo/terrain.obj");
 	terrain.setScaleNormalization(false);
 	terrainOctree.create(terrain.getMesh(0), 20);
 
@@ -100,7 +100,7 @@ void ofApp::update()
 	lander.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
-	//terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
+	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
 	if (station1.octree.intersect(lander.ufoBoundingBox, station1.octree.root, colBoxList, colNodeList))
 	{
 		cout << "Collided with charging station 1\n";
@@ -141,10 +141,13 @@ void ofApp::draw()
 	station1.draw();
 	ofDisableLighting();
 
-	ofNoFill();
-	ofSetColor(ofColor::white);
-	//terrainOctree.drawLeafNodes(terrainOctree.root);
-	station1.octree.drawLeafNodes(station1.octree.root);
+	if (bDrawOctree)
+	{
+		ofNoFill();
+		ofSetColor(ofColor::white);
+		terrainOctree.drawLeafNodes(terrainOctree.root);
+		station1.octree.drawLeafNodes(station1.octree.root);
+	}
 
 	ofPopMatrix();
 	activeCam->end();
@@ -164,6 +167,10 @@ void ofApp::keyPressed(int key)
 	case 'R':
 	case 'r':
 		camGroundPosition.set(lander.terrainHitLocation);
+		break;
+	case 'L':
+	case 'l':
+		bDrawOctree = !bDrawOctree;
 		break;
 	case '1':
 		activeCam = &debugCam;
