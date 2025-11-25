@@ -140,7 +140,6 @@ void ofApp::draw()
 		ofNoFill();
 		ofSetColor(ofColor::white);
 		terrainOctree.drawLeafNodes(terrainOctree.root);
-		station1.octree.drawLeafNodes(station1.octree.root);
 		Octree::drawBox(lander.ufoBoundingBox);
 	}
 

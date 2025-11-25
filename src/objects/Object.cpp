@@ -12,6 +12,7 @@ void Object::draw()
     ofPushMatrix();
     ofMultMatrix(getTransform());
     model.drawFaces();
+    octree.drawLeafNodes(octree.root);
     ofPopMatrix();
 }
 
