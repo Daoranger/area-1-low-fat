@@ -126,12 +126,6 @@ void ofApp::draw()
 	skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
 	ofEnableDepthTest();
 
-	glDepthMask(false);
-	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
-	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
-	fontUI.drawString("Fuel time left: " + (lander.hasFuel() ? ofToString(lander.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
-	glDepthMask(true);
-
 	activeCam->begin();
 	ofPushMatrix();
 	
@@ -147,10 +141,17 @@ void ofApp::draw()
 		ofSetColor(ofColor::white);
 		terrainOctree.drawLeafNodes(terrainOctree.root);
 		station1.octree.drawLeafNodes(station1.octree.root);
+		Octree::drawBox(lander.ufoBoundingBox);
 	}
 
 	ofPopMatrix();
 	activeCam->end();
+
+	glDepthMask(false);
+	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
+	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
+	fontUI.drawString("Fuel time left: " + (lander.hasFuel() ? ofToString(lander.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
+	glDepthMask(true);
 
 }
 

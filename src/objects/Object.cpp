@@ -2,7 +2,7 @@
 
 Object::Object()
 {
-	position.set(0, 0, 0);
+	position.set(0, 200, 0);
 	rotation = 0.0;
 	scale.set(1, 1, 1);
 }
@@ -28,6 +28,11 @@ void Object::updateBoundingBox()
 void Object::createOctree()
 {
     octree.create(model.getMesh(0), 10);
+}
+
+void Object::updateOctree()
+{
+    //octree.box 
 }
 
 void Object::handleCollision(Lander& ufo)

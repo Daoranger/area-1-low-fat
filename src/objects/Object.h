@@ -15,6 +15,7 @@ public:
     virtual void loadModel();
     virtual void updateBoundingBox();
     virtual void createOctree();
+    virtual void updateOctree();
     virtual void handleCollision(Lander&);
     glm::mat4 getTransform();
 
