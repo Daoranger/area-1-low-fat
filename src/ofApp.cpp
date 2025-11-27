@@ -101,7 +101,7 @@ void ofApp::update()
 	colBoxList.clear();
 	colNodeList.clear();
 	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
-	if (station1.octree.intersect(lander.ufoBoundingBox, station1.octree.root, colBoxList, colNodeList))
+	if (station1.octree.intersect(lander.ufoBoundingBox, station1.octree.root, station1, colBoxList, colNodeList))
 	{
 		cout << "Collided with charging station 1\n";
 		station1.handleCollision(lander);

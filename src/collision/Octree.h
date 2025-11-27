@@ -13,6 +13,9 @@
 #include "box.h"
 #include "ray.h"
 
+// Forward declaration
+class Object;
+
 
 // Each node have a "box", a "list of points", and a "list of children"
 //
@@ -31,6 +34,7 @@ public:
 	void subdivide(const ofMesh & mesh, TreeNode & node, int numLevels, int level);		// Recursively subdivides a node into 8 smaller boxes until the desired depth (once numLevels is reached) or until each node contains only one point
 	bool intersect(const Ray &, const TreeNode & node, TreeNode & nodeRtn);				// Checks whether a ray (from mouse click) intersects with any boxes in the tree.
 	bool intersect(const Box &, TreeNode & node, vector<Box> & boxListRtn, vector<TreeNode> & nodeListRtn);				// Check if a given box (like the moon lander's boudning box) overlaps any boxes in the octree. Stores all intersecting boxes in boxListRtn
+	bool intersect(const Box& box, TreeNode& node, Object& object, vector<Box>& boxListRtn, vector<TreeNode>&);
 	void draw(TreeNode & node, int numLevels, int level);								// Draws the octree recursively, showing the boxes at each level (used to visualize how the space is subdivided)
 	void draw(int numLevels, int level) {												// Helper function that starts drawing from the root node (just call the recursive "draw" version above)
 		draw(root, numLevels, level);

@@ -11,6 +11,7 @@
 
 
 #include "Octree.h"
+#include "../objects/Object.h" 
  
 
 
@@ -275,6 +276,7 @@ bool Octree::intersect(const Ray &ray, const TreeNode & node, TreeNode & nodeRtn
 // the bouding box of spacecraft
 //
 bool Octree::intersect(const Box &box, TreeNode & node, vector<Box> & boxListRtn, vector<TreeNode> & nodeListRtn) {
+	
 	// skip if no overlap
 	if (!box.overlap(node.box)) return false;
 
@@ -296,6 +298,33 @@ bool Octree::intersect(const Box &box, TreeNode & node, vector<Box> & boxListRtn
 		}
 	}
 	return hit;	
+}
+
+bool Octree::intersect(const Box& box, TreeNode& node, Object& object, vector<Box>& boxListRtn, vector<TreeNode>& nodeListRtn)
+{
+	// Inverse Transformation Matrix
+	glm::mat4 Tinv = glm::inverse(object.getTransform());
+
+	// Get the Min and Max corners of the bounding box
+	Vector3 worldBoxMin = box.parameters[0];
+	Vector3 worldBoxMax = box.parameters[1];
+
+	// Convert the Min and Max corners to vector 4 using glm::vec4
+	glm::vec4 worldMin4 = glm::vec4(worldBoxMin.x(), worldBoxMin.y(), worldBoxMin.z(), 1.0);
+	glm::vec4 worldMax4 = glm::vec4(worldBoxMax.x(), worldBoxMax.y(), worldBoxMax.z(), 1.0);
+
+	// Transform the the Min and Max corner from world to object's local (coordinate) space
+	glm::vec4 localMin4 = Tinv * worldMin4;
+	glm::vec4 localMax4 = Tinv * worldMax4;
+
+	// Create a new box with the local Min and local Max corners
+	Box localBox;
+	localBox.parameters[0] = Vector3(localMin4.x, localMin4.y, localMin4.z);
+	localBox.parameters[1] = Vector3(localMax4.x, localMax4.y, localMax4.z);
+
+	// Use the new local box with the original intersect function
+	return intersect(localBox, node, boxListRtn, nodeListRtn);
+
 }
 	
 
