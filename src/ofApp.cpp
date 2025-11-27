@@ -45,11 +45,10 @@ void ofApp::setup()
 
 	// Lightnings Setup
 	//
-	ufoLight.setup();
-	ufoLight.enable();
-	ofSetColor(255);
+	//ufoLight.setup();
+	//ufoLight.enable();
 	//ufoLight.setSpotlight();
-	//ufoLight.setScale(1.0);
+	//ufoLight.setScale(0.05);
 	//ufoLight.setSpotlightCutOff(15);
 	//ufoLight.setAttenuation(2, .001, .001);
 	//ufoLight.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
@@ -127,9 +126,6 @@ void ofApp::update()
 		if (!keysMap[' '])
 			lander.handleLanding();
 	}
-
-	// UFO lightning update
-	ufoLight.setPosition(lander.position);
 }
 
 //--------------------------------------------------------------
@@ -139,17 +135,22 @@ void ofApp::draw()
 	ofBackground(ofColor::black);
 
 	ofDisableDepthTest();
+	// The 2D sky box image (don't draw it in 3D)
 	skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
 	ofEnableDepthTest();
 
+	ofEnableLighting();
 	activeCam->begin();
 	ofPushMatrix();
-	
-	ofEnableLighting();
+
+	// UFO lightning update
+	ufoLight.setPosition(lander.position);
+	ufoLight.enable();
+
+	ofSetColor(255);
 	lander.draw();
 	terrain.drawFaces();
 	station1.draw();
-	ofDisableLighting();
 
 	if (bDrawOctree)
 	{
@@ -161,7 +162,11 @@ void ofApp::draw()
 
 	ofPopMatrix();
 	activeCam->end();
+	ofDisableDepthTest();
+	ofDisableLighting();
 
+
+	// UI draw: don't include it in the 3D stuff (within camera)
 	glDepthMask(false);
 	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
 	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
