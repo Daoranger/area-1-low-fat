@@ -72,5 +72,8 @@ class ofApp : public ofBaseApp
 		
 		// Game Object
 		ChargingStation station1;
+
+		// Lightnings
+		ofLight ufoLight;
 };
 

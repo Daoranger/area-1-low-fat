@@ -5,6 +5,11 @@
 void ofApp::setup()
 
 {
+	ofSetVerticalSync(true);
+	ofEnableSmoothing();
+	ofEnableDepthTest();
+	ofEnableLighting();
+	initLightingAndMaterials();
 
 	skyBox.load("images/stars.png");
 
@@ -38,10 +43,19 @@ void ofApp::setup()
 	debugCam.setFov(65.5);
 	debugCam.disableMouseInput();
 
-	ofSetVerticalSync(true);
-	ofEnableSmoothing();
-	ofEnableDepthTest();
-	initLightingAndMaterials();
+	// Lightnings Setup
+	//
+	ufoLight.setup();
+	ufoLight.enable();
+	ofSetColor(255);
+	//ufoLight.setSpotlight();
+	//ufoLight.setScale(1.0);
+	//ufoLight.setSpotlightCutOff(15);
+	//ufoLight.setAttenuation(2, .001, .001);
+	//ufoLight.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
+	//ufoLight.setDiffuseColor(ofFloatColor(1, 1, 1));
+	//ufoLight.setSpecularColor(ofFloatColor(1, 1, 1));
+	//ufoLight.setPosition(lander.position);
 
 }
 
@@ -93,7 +107,7 @@ void ofApp::update()
 
 	lander.integrate();
 
-	// Gameplay Camera setup
+	// Gameplay Camera update
 	updateGameCamera();
 
 	// Handle Collision Terrain vs UFO
@@ -114,6 +128,8 @@ void ofApp::update()
 			lander.handleLanding();
 	}
 
+	// UFO lightning update
+	ufoLight.setPosition(lander.position);
 }
 
 //--------------------------------------------------------------
