@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxAssimpModelLoader.h"
-#include "player/Lander.h"
+#include "player/Ufo.h"
 #include "collision/Octree.h"
 #include "glm/gtx/intersect.hpp"
 #include "objects/Object.h"
@@ -52,7 +52,7 @@ class ofApp : public ofBaseApp
 		ofVec3f camGroundPosition;
 
 		// UFO (Player)
-		Lander lander;
+		Ufo ufo;
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;

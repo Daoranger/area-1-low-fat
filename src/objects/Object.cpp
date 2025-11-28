@@ -41,7 +41,7 @@ void Object::updateOctree()
     //octree.box 
 }
 
-void Object::handleCollision(Lander& ufo)
+void Object::handleCollision(Ufo& ufo)
 {
     return;
 }

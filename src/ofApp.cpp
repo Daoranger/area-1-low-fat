@@ -24,7 +24,7 @@ void ofApp::setup()
 	}
 
 	// UFO setup
-	lander.loadModel();
+	ufo.loadModel();
 
 	// Terrain setup
 	terrain.loadModel("geo/terrain.obj");
@@ -73,8 +73,8 @@ void ofApp::update()
 
 	if (bToggleUFOLight)
 	{
-		ufoLight.setPosition(lander.position - lander.getHeadingY() * 5);
-		ufoLight.lookAt(lander.position - lander.getHeadingY() * 50);
+		ufoLight.setPosition(ufo.position - ufo.getHeadingY() * 5);
+		ufoLight.lookAt(ufo.position - ufo.getHeadingY() * 50);
 		ufoLight.enable();
 	}
 	else
@@ -82,8 +82,8 @@ void ofApp::update()
 		ufoLight.disable();
 	}
 
-	lander.calculateAltitude(terrainOctree);
-	//cout << "Altitude: " << lander.altitude;
+	ufo.calculateAltitude(terrainOctree);
+	//cout << "Altitude: " << ufo.altitude;
 
 	// will move these variables outside later
 	constexpr float THRUST_ACCEL = 15.0f;   
@@ -92,59 +92,59 @@ void ofApp::update()
 	constexpr float YAW_TORQUE = 50.0f;   
 
 	// Thrust Force
-	if (keysMap[OF_KEY_CONTROL] && lander.hasFuel())														// down (ctrl)
+	if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
 	{
-		lander.force += -THRUST_ACCEL * lander.getHeadingY();
+		ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
 		float deltaTime = 1.0 / ofGetFrameRate();
-		lander.fuelLeftTime = max(static_cast<float>(0.0), lander.fuelLeftTime - deltaTime);
+		ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 	}
 
-	if (keysMap[' '] && lander.hasFuel())												// up (space)
+	if (keysMap[' '] && ufo.hasFuel())												// up (space)
 	{
-		lander.force +=  THRUST_ACCEL  * lander.getHeadingY();			
-		//lander.handleTakeOff();
+		ufo.force +=  THRUST_ACCEL * ufo.getHeadingY();
+		//ufo.handleTakeOff();
 		
 		float deltaTime = 1.0 / ofGetFrameRate();
-		lander.fuelLeftTime = max(static_cast<float>(0.0), lander.fuelLeftTime - deltaTime);
+		ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 	}
 	
-	if (keysMap['w']) lander.force +=  FORWARD_ACCEL * lander.getHeadingZ();			// forward (w)
-	if (keysMap['s']) lander.force += -FORWARD_ACCEL * lander.getHeadingZ();			// backward (d)
-	if (keysMap['a']) lander.force += -STRAFE_ACCEL  * lander.getHeadingX();			// left (a)
-	if (keysMap['d']) lander.force +=  STRAFE_ACCEL  * lander.getHeadingX();			// right (d)
-	if (keysMap['e']) lander.rotationForce -= YAW_TORQUE;								// yaw right (q)
-	if (keysMap['q']) lander.rotationForce += YAW_TORQUE;								// yaw left (e)
+	if (keysMap['w']) ufo.force +=  FORWARD_ACCEL * ufo.getHeadingZ();			// forward (w)
+	if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();			// backward (d)
+	if (keysMap['a']) ufo.force += -STRAFE_ACCEL  * ufo.getHeadingX();			// left (a)
+	if (keysMap['d']) ufo.force +=  STRAFE_ACCEL  * ufo.getHeadingX();			// right (d)
+	if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
+	if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
 	
 	// Gravity Force
 	const glm::vec3 gravity = glm::vec3(0.0f, -1.68f, 0.0f);
-	lander.force += lander.mass * gravity;
+	ufo.force += ufo.mass * gravity;
 
 	// Turbulence Force
-	lander.force.x += ofRandom(-5, 5);
-	lander.force.y += ofRandom(-5, 5);
-	lander.force.z += ofRandom(-5, 5);
+	ufo.force.x += ofRandom(-5, 5);
+	ufo.force.y += ofRandom(-5, 5);
+	ufo.force.z += ofRandom(-5, 5);
 
-	lander.integrate();
+	ufo.integrate();
 
 	// Gameplay Camera update
 	updateGameCamera();
 
 	// Handle Collision Terrain vs UFO
-	lander.updateBoundingBox();
+	ufo.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
-	terrainOctree.intersect(lander.boundingBox, terrainOctree.root, colBoxList, colNodeList);
-	if (station1.octree.intersect(lander.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
+	terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
+	if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
 	{
 		cout << "Collided with charging station 1\n";
-		station1.handleCollision(lander);
+		station1.handleCollision(ufo);
 	}
 
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 	if (colBoxList.size() >= 2)
 	{
 		if (!keysMap[' '])
-			lander.handleLanding();
+			ufo.handleLanding();
 	}
 }
 
@@ -164,7 +164,7 @@ void ofApp::draw()
 	activeCam->begin();
 	ofPushMatrix();
 
-	lander.draw();
+	ufo.draw();
 	terrain.drawFaces();
 	station1.draw();
 
@@ -173,7 +173,7 @@ void ofApp::draw()
 		ofNoFill();
 		ofSetColor(ofColor::white);
 		terrainOctree.drawLeafNodes(terrainOctree.root);
-		Octree::drawBox(lander.boundingBox);
+		Octree::drawBox(ufo.boundingBox);
 	}
 
 	ofPopMatrix();
@@ -184,9 +184,9 @@ void ofApp::draw()
 
 	// UI draw: don't include it in the 3D stuff (within camera)
 	glDepthMask(false);
-	fontUI.drawString("Altitude: " + ofToString(lander.altitude, 2), 20, 70);
-	fontUI.drawString("Velocity: " + ofToString(lander.velocity.length(), 2), 20, 140);
-	fontUI.drawString("Fuel time left: " + (lander.hasFuel() ? ofToString(lander.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
+	fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
+	fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
+	fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
 	glDepthMask(true);
 
 }
@@ -318,21 +318,21 @@ void ofApp::updateGameCamera()
 	
 	switch (camView)
 	{
-	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the lander, looks 3 ahead
-		gameCam.setPosition(lander.position + lander.getHeadingY() * 20 - lander.getHeadingZ() * 25);
-		gameCam.lookAt(lander.position + lander.getHeadingZ() * 3);
+	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the ufo, looks 3 ahead
+		gameCam.setPosition(ufo.position + ufo.getHeadingY() * 20 - ufo.getHeadingZ() * 25);
+		gameCam.lookAt(ufo.position + ufo.getHeadingZ() * 3);
 		break;
-	case CAM_FIRST: //1st person: camera at lander position, looks straight forward
-		gameCam.setPosition(lander.position.x, lander.position.y + 10, lander.position.z);
-		gameCam.lookAt(gameCam.getPosition() + lander.getHeadingZ() * 3);
+	case CAM_FIRST: //1st person: camera at ufo position, looks straight forward
+		gameCam.setPosition(ufo.position.x, ufo.position.y + 10, ufo.position.z);
+		gameCam.lookAt(gameCam.getPosition() + ufo.getHeadingZ() * 3);
 		break;
-	case CAM_TOP:	// Top-down: camera 20 up above lander, looks straight down
-		gameCam.setPosition(lander.position.x, lander.position.y + 50, lander.position.z);
-		gameCam.lookAt(lander.position, lander.getHeadingZ());
+	case CAM_TOP:	// Top-down: camera 20 up above ufo, looks straight down
+		gameCam.setPosition(ufo.position.x, ufo.position.y + 50, ufo.position.z);
+		gameCam.lookAt(ufo.position, ufo.getHeadingZ());
 		break;
 	case CAM_GROUND:
-		gameCam.setPosition(lander.position + lander.getHeadingY() * 5.5);
-		gameCam.lookAt(lander.position - lander.getHeadingY(), lander.getHeadingZ());
+		gameCam.setPosition(ufo.position + ufo.getHeadingY() * 5.5);
+		gameCam.lookAt(ufo.position - ufo.getHeadingY(), ufo.getHeadingZ());
 		break;
 	}
 }

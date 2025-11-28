@@ -247,7 +247,7 @@
     <ClCompile Include="src\objects\ChargingStation.cpp" />
     <ClCompile Include="src\objects\Object.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="src\player\Lander.cpp" />
+    <ClCompile Include="src\player\Ufo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CS134\OF\of_v0.12.1_vs_64_release\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h" />
@@ -359,7 +359,7 @@
     <ClInclude Include="src\objects\ChargingStation.h" />
     <ClInclude Include="src\objects\Object.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\player\Lander.h" />
+    <ClInclude Include="src\player\Ufo.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

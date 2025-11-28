@@ -8,7 +8,7 @@ void ChargingStation::loadModel()
     }
 }
 
-void ChargingStation::handleCollision(Lander& ufo)
+void ChargingStation::handleCollision(Ufo& ufo)
 {
     float deltaTime = 1.0 / ofGetFrameRate();
     ufo.fuelLeftTime = std::min(ufo.fuelLeftTime + 20 * deltaTime, ufo.fuelTotalTime);

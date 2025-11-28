@@ -4,12 +4,12 @@
 #include "Object.h"
 #include "../collision/box.h"
 #include "../collision/Octree.h"
-#include "../player/Lander.h"
+#include "../player/Ufo.h"
 #include <string>
 
 class ChargingStation : public Object
 {
 public:
     void loadModel() override;
-    void handleCollision(Lander&) override;
+    void handleCollision(Ufo&) override;
 };

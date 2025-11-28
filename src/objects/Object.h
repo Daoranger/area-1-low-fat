@@ -6,7 +6,7 @@
 #include <string>
 
 // Forward declaration
-class Lander;
+class Ufo;
 
 class Object
 {
@@ -22,7 +22,7 @@ public:
     virtual void updateBoundingBox();
     virtual void createOctree();
     virtual void updateOctree();
-    virtual void handleCollision(Lander&);
+    virtual void handleCollision(Ufo&);
     glm::mat4 getTransform();
 
 public:

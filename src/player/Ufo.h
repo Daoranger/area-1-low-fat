@@ -5,10 +5,10 @@
 #include "../collision/box.h"
 #include "../collision/Octree.h"
 
-class Lander : public Object
+class Ufo: public Object
 {
 public:
-	Lander();
+	Ufo();
 	void draw() override;
 	void integrate() override;
 	void loadModel() override;

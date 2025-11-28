@@ -58,7 +58,7 @@
     <ClCompile Include="src\collision\Util.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
-    <ClCompile Include="src\player\Lander.cpp">
+    <ClCompile Include="src\player\Ufo.cpp">
       <Filter>src\player</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\Object.cpp">
@@ -440,7 +440,7 @@
     <ClInclude Include="src\collision\vector3.h">
       <Filter>src\collision</Filter>
     </ClInclude>
-    <ClInclude Include="src\player\Lander.h">
+    <ClInclude Include="src\player\Ufo.h">
       <Filter>src\player</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\Object.h">

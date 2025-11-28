@@ -1,6 +1,6 @@
-#include "Lander.h"
+#include "Ufo.h"
 
-Lander::Lander()
+Ufo::Ufo()
 {
 	position.set(0, 200, 0);
 	rotation = 0.0;
@@ -20,7 +20,7 @@ Lander::Lander()
 	fuelLeftTime = fuelTotalTime;
 
 }
-void Lander::draw()
+void Ufo::draw()
 {
 	ofPushMatrix();
 	ofMultMatrix(getTransform());
@@ -35,7 +35,7 @@ void Lander::draw()
 	//ofSetColor(ofColor::white);
 	//Octree::drawBox(ufoBoundingBox);
 }
-void Lander::integrate()
+void Ufo::integrate()
 {
 	if (ofGetFrameRate() == 0) return;
 
@@ -61,7 +61,7 @@ void Lander::integrate()
 		rotationForce = 0;
 	}
 }
-void Lander::loadModel()
+void Ufo::loadModel()
 {
 	
 	if (model.loadModel("geo/newUFO.obj"))
@@ -69,7 +69,7 @@ void Lander::loadModel()
 		model.setScaleNormalization(false);
 	}
 }
-void Lander::updateBoundingBox()
+void Ufo::updateBoundingBox()
 {
 	// Might be useful if want to rotate the bouding box
 	// https://gamedev.stackexchange.com/questions/162819/how-do-axis-aligned-bounding-boxes-update-with-rotations
@@ -77,7 +77,7 @@ void Lander::updateBoundingBox()
 	ofVec3f max = model.getSceneMax() + position;
 	boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
-void Lander::handleLanding()
+void Ufo::handleLanding()
 {
 	velocity.set(0, 0, 0);
 	rotationSpeed = 0.0;
@@ -89,11 +89,11 @@ void Lander::handleLanding()
 		bLandingImpulseDone = true;
 	}
 }
-void Lander::handleTakeOff()
+void Ufo::handleTakeOff()
 {
 	bLandingImpulseDone = false;
 }
-void Lander::calculateAltitude(Octree& terrain)
+void Ufo::calculateAltitude(Octree& terrain)
 {
 	// Origin is the UFO's position, Direction is downward (-Y)
 	Ray rayAltutideSensor = Ray(Vector3(position.x, position.y, position.z), Vector3(0, -1,0));
@@ -107,22 +107,22 @@ void Lander::calculateAltitude(Octree& terrain)
 		altitude = 0.0;
 	}
 }
-bool Lander::hasFuel()
+bool Ufo::hasFuel()
 {
 	return fuelLeftTime > 0.0;
 }
 
-glm::vec3 Lander::getHeadingX()
+glm::vec3 Ufo::getHeadingX()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(1, 0, 0, 0)));
 }
 
-glm::vec3 Lander::getHeadingY()
+glm::vec3 Ufo::getHeadingY()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 1, 0, 0)));
 }
 
-glm::vec3 Lander::getHeadingZ()
+glm::vec3 Ufo::getHeadingZ()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 0, -1, 0)));
 }
