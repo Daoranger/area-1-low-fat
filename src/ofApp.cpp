@@ -115,7 +115,7 @@ void ofApp::update()
 	if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
 	
 	// Gravity Force
-	const glm::vec3 gravity = glm::vec3(0.0f, -1.68f, 0.0f);
+	const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
 	ufo.force += ufo.mass * gravity;
 
 	// Turbulence Force
@@ -141,7 +141,7 @@ void ofApp::update()
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 	if (colBoxList.size() >= 1)
 	{
-		if (!keysMap[' '] && bTerrainLoaded)
+		if (!keysMap[' '])
 		{
 			ofVec3f contactNormal = getNormalAtContactPoint();
 			ufo.handleLanding(contactNormal);

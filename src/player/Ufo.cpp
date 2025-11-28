@@ -92,11 +92,10 @@ void Ufo::handleLanding(const ofVec3f contactNormal)
 	glm::vec3 n = glm::normalize(glm::vec3(contactNormal));  // make sure it's unit length
 
 	float vDotn = glm::dot(v, n);
-	if (vDotn >= 0.0f) return; 
 	float e = 0.1f;  // bounciness
 	glm::vec3 impulse = (e + 1.0f) * (-vDotn) * n;
 	velocity += 3 * impulse;   // apply bounce once
-	bLandingImpulseDone = true;
+	bLandingImpulseDone = true; 
 }
 
 void Ufo::handleTakeoff()
