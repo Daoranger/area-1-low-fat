@@ -73,8 +73,8 @@ void ofApp::update()
 
 	if (bToggleUFOLight)
 	{
-		ufoLight.setPosition(lander.position - lander.getHeadingY() * 5.0f);
-		ufoLight.lookAt(lander.position - lander.getHeadingY() * 50.0f);
+		ufoLight.setPosition(lander.position - lander.getHeadingY() * 5);
+		ufoLight.lookAt(lander.position - lander.getHeadingY() * 50);
 		ufoLight.enable();
 	}
 	else
@@ -155,6 +155,7 @@ void ofApp::draw()
 	ofBackground(ofColor::black);
 
 	ofDisableDepthTest();
+	ofDisableLighting();
 	// The 2D sky box image (don't draw it in 3D)
 	skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
 	ofEnableDepthTest();
@@ -327,11 +328,11 @@ void ofApp::updateGameCamera()
 		break;
 	case CAM_TOP:	// Top-down: camera 20 up above lander, looks straight down
 		gameCam.setPosition(lander.position.x, lander.position.y + 50, lander.position.z);
-		gameCam.lookAt(lander.position);
+		gameCam.lookAt(lander.position, lander.getHeadingZ());
 		break;
 	case CAM_GROUND:
-		gameCam.setPosition(camGroundPosition);
-		gameCam.lookAt(lander.position);
+		gameCam.setPosition(lander.position + lander.getHeadingY() * 5.5);
+		gameCam.lookAt(lander.position - lander.getHeadingY(), lander.getHeadingZ());
 		break;
 	}
 }
