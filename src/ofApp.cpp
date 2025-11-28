@@ -44,13 +44,15 @@ void ofApp::setup()
 
 	// Lightnings Setup
 	//
+
+	// 
 	ufoLight.setup();
 	ufoLight.setSpotlight();
-	ufoLight.setSpotlightCutOff(20);
-	ufoLight.setSpotConcentration(0.1);
-	ufoLight.setAmbientColor(ofFloatColor(0.05f, 0.1f, 0.1f));   // soft cyan-ish ambient
-	ufoLight.setDiffuseColor(ofColor::cyan);    // bright cyan
-	ufoLight.setSpecularColor(ofFloatColor(0.6f, 1.0f, 1.0f));
+	ufoLight.setSpotlightCutOff(25);
+	ufoLight.setSpotConcentration(10);
+	ufoLight.setDiffuseColor(ofColor::red);
+	ufoLight.setAmbientColor(ofColor::red);
+	ufoLight.setAttenuation(0.001f, 0.0001f, 0.00001f);
 
 	// World light (sun)
 	sunLight.setup();
@@ -68,11 +70,17 @@ void ofApp::update()
 {
 
 	// UFO lightning update
-	// light 5 units below the lander, along -getHeadingY()
-	ufoLight.setPosition(lander.position - lander.getHeadingY() * 5.0f);
-	// aim 50 units below the lander, along -getHeadingY()
-	ufoLight.lookAt(lander.position - lander.getHeadingY() * 50.0f);
-	ufoLight.enable();
+
+	if (bToggleUFOLight)
+	{
+		ufoLight.setPosition(lander.position - lander.getHeadingY() * 5.0f);
+		ufoLight.lookAt(lander.position - lander.getHeadingY() * 50.0f);
+		ufoLight.enable();
+	}
+	else
+	{
+		ufoLight.disable();
+	}
 
 	lander.calculateAltitude(terrainOctree);
 	//cout << "Altitude: " << lander.altitude;
@@ -194,7 +202,7 @@ void ofApp::keyPressed(int key)
 		break;
 	case 'R':
 	case 'r':
-		camGroundPosition.set(lander.terrainHitLocation);
+		bToggleUFOLight = !bToggleUFOLight;
 		break;
 	case 'L':
 	case 'l':

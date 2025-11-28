@@ -75,6 +75,7 @@ class ofApp : public ofBaseApp
 
 		// Lightnings
 		ofLight ufoLight;			// Spotlight underneath the UFO like a beam
+		bool bToggleUFOLight = false;
 		ofLight sunLight;			// Directional light to represent sun light
 };
 
