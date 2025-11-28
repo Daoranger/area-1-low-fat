@@ -7,13 +7,13 @@ Ni 1.00
 Ks 0.50 0.50 0.50
 newmtl standardSurface2SG
 illum 4
-Kd 0.00 0.00 0.00
+Kd 0.02 0.02 0.03
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
-Ni 0.00
+Ni 1.00
 newmtl standardSurface3SG
 illum 4
-Kd 0.00 0.00 0.00
+Kd 0.05 0.05 0.05
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
-Ni 0.00
+Ni 1.00
