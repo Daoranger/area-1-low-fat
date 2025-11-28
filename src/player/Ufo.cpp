@@ -77,17 +77,19 @@ void Ufo::updateBoundingBox()
 	ofVec3f max = model.getSceneMax() + position;
 	boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
-void Ufo::handleLanding()
+void Ufo::handleLanding(const ofVec3f contactNormal)
 {
-	velocity.set(0, 0, 0);
-	rotationSpeed = 0.0;
-	// When the 
-	if (!bLandingImpulseDone)
-	{
-		//force += 5 * getHeadingY();
-		//velocity.set(0, 10, 0);
-		bLandingImpulseDone = true;
-	}
+	//velocity.set(0, 0, 0);
+	//rotationSpeed = 0.0;
+	glm::vec3 v = velocity;
+	glm::vec3 n = contactNormal;
+	float vDotn = glm::dot(v, n);
+	if (vDotn >= 0.0f) return;
+
+	float e = 0.1f;
+	glm::vec3 impulse = (e + 1.0f) * (-vDotn) * n;
+
+	velocity += 5 * impulse;
 }
 void Ufo::handleTakeOff()
 {

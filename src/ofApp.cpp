@@ -27,7 +27,7 @@ void ofApp::setup()
 	ufo.loadModel();
 
 	// Terrain setup
-	terrain.loadModel("geo/terrain.obj");
+	bTerrainLoaded = terrain.loadModel("geo/terrain.obj");
 	terrain.setScaleNormalization(false);
 	terrainOctree.create(terrain.getMesh(0), 20);
 
@@ -143,8 +143,11 @@ void ofApp::update()
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 	if (colBoxList.size() >= 2)
 	{
-		if (!keysMap[' '])
-			ufo.handleLanding();
+		if (!keysMap[' '] && bTerrainLoaded)
+		{
+			ofVec3f contactNormal = getNormalAtContactPoint();
+			ufo.handleLanding(contactNormal);
+		}
 	}
 }
 
@@ -309,6 +312,42 @@ void ofApp::initLightingAndMaterials()
 	//	glEnable(GL_LIGHT1);
 	glShadeModel(GL_SMOOTH);
 }
+
+ofVec3f ofApp::getNormalAtContactPoint()
+{
+	ofMesh mesh = terrain.getMesh(0);
+	const auto numNormals = mesh.getNumNormals();
+
+	std::unordered_set<int> collidedVerts;
+	for (auto& node : colNodeList)
+	{
+		for (auto vi : node.points)
+		{
+			collidedVerts.insert(vi);
+		}
+	}
+
+	ofVec3f avgVertexNormal(0, 0, 0);
+
+	for (auto vi : collidedVerts)
+	{
+		// if the index not in range, skip it
+		if (vi < 0 || vi >= static_cast<int>(numNormals))
+		{
+			continue;
+		}
+		avgVertexNormal += mesh.getNormals().at(vi);
+	}
+
+	avgVertexNormal.normalize();
+
+	if (avgVertexNormal.length() == 0.0f) {
+		return ofVec3f(0, 1, 0);
+	}
+	avgVertexNormal.normalize();
+	return avgVertexNormal;
+}
+
 
 /**
  * Update the gameplay camera based on the current view mode

@@ -13,7 +13,7 @@ public:
 	void integrate() override;
 	void loadModel() override;
 	void updateBoundingBox() override;
-	void handleLanding();
+	void handleLanding(const ofVec3f contactNormal);
 	void handleTakeOff();
 	void calculateAltitude(Octree&);
 	bool hasFuel();

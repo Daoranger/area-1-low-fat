@@ -32,6 +32,7 @@ class ofApp : public ofBaseApp
 
 		// Helper functions:
 		void initLightingAndMaterials();
+		ofVec3f getNormalAtContactPoint();
 
 		// Helper functions for cameras:
 		void updateGameCamera();
@@ -56,6 +57,7 @@ class ofApp : public ofBaseApp
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;
+		bool bTerrainLoaded;
 
 		// Keys Map to help with keybinds
 		map<int, bool> keysMap;
