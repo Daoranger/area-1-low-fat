@@ -8,8 +8,8 @@ void ofApp::setup()
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	ofEnableDepthTest();
-	ofEnableLighting();
-	initLightingAndMaterials();
+	//ofEnableLighting();
+	//initLightingAndMaterials();
 
 	skyBox.load("images/stars.png");
 
@@ -25,7 +25,6 @@ void ofApp::setup()
 
 	// UFO setup
 	lander.loadModel();
-	ofSetColor(255);
 
 	// Terrain setup
 	terrain.loadModel("geo/terrain.obj");
@@ -45,22 +44,35 @@ void ofApp::setup()
 
 	// Lightnings Setup
 	//
-	//ufoLight.setup();
-	//ufoLight.enable();
-	//ufoLight.setSpotlight();
-	//ufoLight.setScale(0.05);
-	//ufoLight.setSpotlightCutOff(15);
-	//ufoLight.setAttenuation(2, .001, .001);
-	//ufoLight.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
-	//ufoLight.setDiffuseColor(ofFloatColor(1, 1, 1));
-	//ufoLight.setSpecularColor(ofFloatColor(1, 1, 1));
-	//ufoLight.setPosition(lander.position);
+	ufoLight.setup();
+	ufoLight.setSpotlight();
+	ufoLight.setSpotlightCutOff(20);
+	ufoLight.setSpotConcentration(0.1);
+	ufoLight.setAmbientColor(ofFloatColor(0.05f, 0.1f, 0.1f));   // soft cyan-ish ambient
+	ufoLight.setDiffuseColor(ofColor::cyan);    // bright cyan
+	ufoLight.setSpecularColor(ofFloatColor(0.6f, 1.0f, 1.0f));
+
+	// World light (sun)
+	sunLight.setup();
+	sunLight.enable();
+	sunLight.setDirectional();
+	sunLight.setPosition(500, 400, 0);
+	sunLight.setAreaLight(10000, 10000);
+	sunLight.setDiffuseColor(ofColor::whiteSmoke);				
+	sunLight.setAmbientColor(ofFloatColor(0.2, 0.2, 0.2));    
 
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
+
+	// UFO lightning update
+	// light 5 units below the lander, along -getHeadingY()
+	ufoLight.setPosition(lander.position - lander.getHeadingY() * 5.0f);
+	// aim 50 units below the lander, along -getHeadingY()
+	ufoLight.lookAt(lander.position - lander.getHeadingY() * 50.0f);
+	ufoLight.enable();
 
 	lander.calculateAltitude(terrainOctree);
 	//cout << "Altitude: " << lander.altitude;
@@ -143,11 +155,6 @@ void ofApp::draw()
 	activeCam->begin();
 	ofPushMatrix();
 
-	// UFO lightning update
-	ufoLight.setPosition(lander.position);
-	ufoLight.enable();
-
-	ofSetColor(255);
 	lander.draw();
 	terrain.drawFaces();
 	station1.draw();

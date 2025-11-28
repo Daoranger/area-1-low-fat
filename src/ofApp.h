@@ -74,6 +74,7 @@ class ofApp : public ofBaseApp
 		ChargingStation station1;
 
 		// Lightnings
-		ofLight ufoLight;
+		ofLight ufoLight;			// Spotlight underneath the UFO like a beam
+		ofLight sunLight;			// Directional light to represent sun light
 };
 
