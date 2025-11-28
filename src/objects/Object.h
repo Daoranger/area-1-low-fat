@@ -3,15 +3,21 @@
 #include "ofxAssimpModelLoader.h"
 #include "../collision/box.h"
 #include "../collision/Octree.h"
-#include "../player/Lander.h"
 #include <string>
+
+// Forward declaration
+class Lander;
 
 class Object
 {
 
 public:
+    // Construtor and Destructor
     Object();
+    virtual ~Object() = default;
+
     virtual void draw();
+    virtual void integrate();
     virtual void loadModel();
     virtual void updateBoundingBox();
     virtual void createOctree();
@@ -25,7 +31,7 @@ public:
     ofVec3f scale;
 
     ofxAssimpModelLoader model;
-    Box boudningBox;
+    Box boundingBox;
     Octree octree;
 
 

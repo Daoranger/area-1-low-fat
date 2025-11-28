@@ -133,8 +133,8 @@ void ofApp::update()
 	lander.updateBoundingBox();
 	colBoxList.clear();
 	colNodeList.clear();
-	terrainOctree.intersect(lander.ufoBoundingBox, terrainOctree.root, colBoxList, colNodeList);
-	if (station1.octree.intersect(lander.ufoBoundingBox, station1.octree.root, station1, colBoxList, colNodeList))
+	terrainOctree.intersect(lander.boundingBox, terrainOctree.root, colBoxList, colNodeList);
+	if (station1.octree.intersect(lander.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
 	{
 		cout << "Collided with charging station 1\n";
 		station1.handleCollision(lander);
@@ -173,7 +173,7 @@ void ofApp::draw()
 		ofNoFill();
 		ofSetColor(ofColor::white);
 		terrainOctree.drawLeafNodes(terrainOctree.root);
-		Octree::drawBox(lander.ufoBoundingBox);
+		Octree::drawBox(lander.boundingBox);
 	}
 
 	ofPopMatrix();

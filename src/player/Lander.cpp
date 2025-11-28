@@ -26,7 +26,7 @@ void Lander::draw()
 	ofMultMatrix(getTransform());
 
 	// Draw the UFO model faces
-	ufoModel.drawFaces();
+	model.drawFaces();
 
 	ofPopMatrix();
 
@@ -64,18 +64,18 @@ void Lander::integrate()
 void Lander::loadModel()
 {
 	
-	if (ufoModel.loadModel("geo/newUFO.obj"))
+	if (model.loadModel("geo/newUFO.obj"))
 	{
-		ufoModel.setScaleNormalization(false);
+		model.setScaleNormalization(false);
 	}
 }
 void Lander::updateBoundingBox()
 {
 	// Might be useful if want to rotate the bouding box
 	// https://gamedev.stackexchange.com/questions/162819/how-do-axis-aligned-bounding-boxes-update-with-rotations
-	ofVec3f min = ufoModel.getSceneMin() + position;
-	ofVec3f max = ufoModel.getSceneMax() + position;
-	ufoBoundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
+	ofVec3f min = model.getSceneMin() + position;
+	ofVec3f max = model.getSceneMax() + position;
+	boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
 void Lander::handleLanding()
 {
@@ -111,21 +111,17 @@ bool Lander::hasFuel()
 {
 	return fuelLeftTime > 0.0;
 }
-glm::mat4 Lander::getTransform()
-{
-	glm::mat4 T = glm::translate(glm::mat4(1.0), glm::vec3(position));
-	glm::mat4 R = glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 1, 0));	// rotate around y-axis
-	glm::mat4 S = glm::scale(glm::mat4(1.0), glm::vec3(scale));
-	return T * R * S;
-}
+
 glm::vec3 Lander::getHeadingX()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(1, 0, 0, 0)));
 }
+
 glm::vec3 Lander::getHeadingY()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 1, 0, 0)));
 }
+
 glm::vec3 Lander::getHeadingZ()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(0, 0, -1, 0)));

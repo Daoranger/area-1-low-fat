@@ -16,6 +16,11 @@ void Object::draw()
     ofPopMatrix();
 }
 
+void Object::integrate()
+{
+    return;
+}
+
 void Object::loadModel()
 {
     return;
