@@ -77,24 +77,33 @@ void Ufo::updateBoundingBox()
 	ofVec3f max = model.getSceneMax() + position;
 	boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
+
 void Ufo::handleLanding(const ofVec3f contactNormal)
 {
-	//velocity.set(0, 0, 0);
-	//rotationSpeed = 0.0;
+
+	/*if (bLandingImpulseDone) 
+	{
+		velocity.set(0, 0, 0);
+		rotationSpeed = 0.0f;
+		return;
+	}*/
+
 	glm::vec3 v = velocity;
-	glm::vec3 n = contactNormal;
+	glm::vec3 n = glm::normalize(glm::vec3(contactNormal));  // make sure it's unit length
+
 	float vDotn = glm::dot(v, n);
-	if (vDotn >= 0.0f) return;
-
-	float e = 0.1f;
+	if (vDotn >= 0.0f) return; 
+	float e = 0.1f;  // bounciness
 	glm::vec3 impulse = (e + 1.0f) * (-vDotn) * n;
-
-	velocity += 5 * impulse;
+	velocity += 5 * impulse;   // apply bounce once
+	bLandingImpulseDone = true;
 }
-void Ufo::handleTakeOff()
+
+void Ufo::handleTakeoff()
 {
 	bLandingImpulseDone = false;
 }
+
 void Ufo::calculateAltitude(Octree& terrain)
 {
 	// Origin is the UFO's position, Direction is downward (-Y)

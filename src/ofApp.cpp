@@ -101,6 +101,7 @@ void ofApp::update()
 
 	if (keysMap[' '] && ufo.hasFuel())												// up (space)
 	{
+		ufo.handleTakeoff();
 		ufo.force +=  THRUST_ACCEL * ufo.getHeadingY();
 		//ufo.handleTakeOff();
 		
@@ -347,7 +348,6 @@ ofVec3f ofApp::getNormalAtContactPoint()
 	avgVertexNormal.normalize();
 	return avgVertexNormal;
 }
-
 
 /**
  * Update the gameplay camera based on the current view mode

@@ -14,7 +14,7 @@ public:
 	void loadModel() override;
 	void updateBoundingBox() override;
 	void handleLanding(const ofVec3f contactNormal);
-	void handleTakeOff();
+	void handleTakeoff();
 	void calculateAltitude(Octree&);
 	bool hasFuel();
 	glm::vec3 getHeadingX();
