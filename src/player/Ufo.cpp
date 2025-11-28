@@ -81,12 +81,12 @@ void Ufo::updateBoundingBox()
 void Ufo::handleLanding(const ofVec3f contactNormal)
 {
 
-	/*if (bLandingImpulseDone) 
+	if (bLandingImpulseDone) 
 	{
 		velocity.set(0, 0, 0);
 		rotationSpeed = 0.0f;
 		return;
-	}*/
+	}
 
 	glm::vec3 v = velocity;
 	glm::vec3 n = glm::normalize(glm::vec3(contactNormal));  // make sure it's unit length
@@ -95,7 +95,7 @@ void Ufo::handleLanding(const ofVec3f contactNormal)
 	if (vDotn >= 0.0f) return; 
 	float e = 0.1f;  // bounciness
 	glm::vec3 impulse = (e + 1.0f) * (-vDotn) * n;
-	velocity += 5 * impulse;   // apply bounce once
+	velocity += 3 * impulse;   // apply bounce once
 	bLandingImpulseDone = true;
 }
 

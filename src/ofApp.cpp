@@ -92,19 +92,17 @@ void ofApp::update()
 	constexpr float YAW_TORQUE = 50.0f;   
 
 	// Thrust Force
-	if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
-	{
-		ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
-		float deltaTime = 1.0 / ofGetFrameRate();
-		ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
-	}
+	//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
+	//{
+	//	ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
+	//	float deltaTime = 1.0 / ofGetFrameRate();
+	//	ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
+	//}
 
 	if (keysMap[' '] && ufo.hasFuel())												// up (space)
 	{
 		ufo.handleTakeoff();
 		ufo.force +=  THRUST_ACCEL * ufo.getHeadingY();
-		//ufo.handleTakeOff();
-		
 		float deltaTime = 1.0 / ofGetFrameRate();
 		ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 	}
@@ -137,12 +135,11 @@ void ofApp::update()
 	terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
 	if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
 	{
-		cout << "Collided with charging station 1\n";
 		station1.handleCollision(ufo);
 	}
 
 	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-	if (colBoxList.size() >= 2)
+	if (colBoxList.size() >= 1)
 	{
 		if (!keysMap[' '] && bTerrainLoaded)
 		{
