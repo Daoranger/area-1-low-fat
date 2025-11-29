@@ -40,6 +40,10 @@ void ofApp::setup()
 	speedRing1.bVertical = true;
 	speedRing1.loadModel();
 	speedRing1.createOctree();
+	cow1.loadModel();
+
+	cow1.position.y += 50;
+	cow1.position.x += 30;
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -152,6 +156,20 @@ void ofApp::update()
 			ufo.handleLanding(contactNormal);
 		}
 	}
+
+	// Handle collision of cow 
+	cow1.updateBoundingBox();
+	vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
+	vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
+	terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
+	station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
+	if (cowBoxList.size() >= 1)
+	{
+		cow1.handleLanding();
+	}
+
+	cow1.integrate();
+
 }
 
 //--------------------------------------------------------------
@@ -175,6 +193,7 @@ void ofApp::draw()
 	station1.draw();
 	mothership.draw();
 	speedRing1.draw();
+	cow1.draw();
 
 	if (bDrawOctree)
 	{

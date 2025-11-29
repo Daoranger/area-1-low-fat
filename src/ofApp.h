@@ -10,6 +10,7 @@
 #include "objects/ChargingStation.h"
 #include "objects/Mothership.h"
 #include "objects/SpeedRing.h"
+#include "objects/Cow.h"
 #include <string>
 #include <filesystem>
 
@@ -70,6 +71,7 @@ class ofApp : public ofBaseApp
 		Octree terrainOctree;				// The octree of the terrain
 		vector<TreeNode> colNodeList;		// Store all collided (leaf) nodes
 		vector<Box> colBoxList;				// Store all collided (leaf) nodes's boxes
+		bool cowLanded = false;
 
 		// UI 
 		ofTrueTypeFont fontUI;
@@ -78,6 +80,7 @@ class ofApp : public ofBaseApp
 		ChargingStation station1;
 		Mothership mothership;
 		SpeedRing speedRing1;
+		Cow cow1;
 
 		// Lightnings
 		ofLight ufoLight;			// Spotlight underneath the UFO like a beam

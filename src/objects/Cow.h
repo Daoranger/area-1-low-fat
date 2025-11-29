@@ -3,38 +3,37 @@
 #include "ofxAssimpModelLoader.h"
 #include "../collision/box.h"
 #include "../collision/Octree.h"
+#include "Object.h"
+#include <string>
 
-class Cow 
+class Cow : public Object
 {
 public:
     Cow();
-    void integrate();
-    void draw();
-    void loadModel();
+    void loadModel() override;
+	void updateBoundingBox() override;
+	void integrate() override;
+	void handleLanding();
 	void follow(glm::vec3 * Pos);
 	void free();
-    glm::mat4 getTransform();
 
-    enum STATE {FREE, ABDUCTED};
+    enum STATE {FREE, ABDUCTED, LANDED};
 	STATE state = FREE;
 
 	glm::vec3 * followedPoint;
 
-    ofVec3f position;
-	float rotation;
-	ofVec3f scale;
+	ofVec3f force;
 	ofVec3f velocity;
 	ofVec3f acceleration;
-	ofVec3f force;
 	float forceStrength = 1;
-	float rotationSpeed;
-	float rotationAcceleration;
-	float rotationForce;
-	float mass;
-	float damping;
 
-	ofxAssimpModelLoader cowModel;
-	Box cowBoundingBox;
+	float rotForce = 0;
+	float rotSpeed = 0;
+	float rotAcceleration = 0;
+
+	float damping;
+	float mass;
+
 	TreeNode terrainHitNode;
 	ofVec3f terrainHitLocation;
 

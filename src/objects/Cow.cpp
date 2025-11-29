@@ -3,17 +3,13 @@
 
 
 Cow::Cow() {
-    position.set(0, 0, 0);
-	rotation = 0.0;
-	scale.set(1, 1, 1);
-
 	velocity.set(0, 0, 0);
 	acceleration.set(0, 0, 0);
 	force.set(0, 0, 0);
 
-	rotationSpeed = 0.0;
-	rotationAcceleration = 0.0;
-	rotationForce = 0.0;
+	rotSpeed = 0.0;
+	rotAcceleration = 0.0;
+	rotForce = 0.0;
 
 	damping = 0.99;
 	mass = 1;
@@ -21,16 +17,18 @@ Cow::Cow() {
 
 
 void Cow::integrate() {
-    if (ofGetFrameRate() == 0) return;
+    if (ofGetFrameRate() == 0 || state == LANDED) return;
     switch (state) {
         case FREE:
             force.set(0, -10, 0);
-            rotationAcceleration = 0;
+            rotAcceleration = 0;
+			break;
         case ABDUCTED:
             glm::vec3 direction = glm::vec3(followedPoint->x, followedPoint->y, followedPoint->z) - position;
             direction = glm::normalize(direction);
             force.set(direction*forceStrength);
-            rotationAcceleration = 5;
+            rotAcceleration = 5;
+			break;
     }
 
 	// Euler integration for linear motion
@@ -42,25 +40,16 @@ void Cow::integrate() {
 	velocity *= damping;
 
     // Euler integration for rotation motion
-	float rotAccel = rotationAcceleration;
-	rotAccel += rotationForce / mass;
-	rotation += rotationSpeed * dt;
-	rotationSpeed += rotAccel * dt;
-	rotationSpeed *= damping;
+	float rotAccel = rotAcceleration;
+	rotAccel += rotForce / mass;
+	rotation += rotSpeed * dt;
+	rotSpeed += rotAccel * dt;
+	rotSpeed *= damping;
 
     // Reset force after integration
 	force.set(0, 0, 0);
-	rotationForce = 0;
+	rotForce = 0;
 	
-};
-
-void Cow::draw() {
-    ofPushMatrix();
-	ofMultMatrix(getTransform());
-
-	cowModel.drawFaces();
-
-	ofPopMatrix();
 };
 
 void Cow::follow(glm::vec3 * Pos) {
@@ -73,16 +62,23 @@ void Cow::free() {
     state = FREE;
 };
 
+
 void Cow::loadModel() {
-    if (cowModel.loadModel("geo/cow.obj"))
+    if (model.loadModel("geo/cow.obj", true))
 	{
-		cowModel.setScaleNormalization(false);
+		model.getMesh(0).enableTextures();
+		model.setScaleNormalization(false);
 	}
 };
 
-glm::mat4 Cow::getTransform() {
-    glm::mat4 T = glm::translate(glm::mat4(1.0), glm::vec3(position));
-	glm::mat4 R = glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 1, 0));	// rotate around y-axis
-	glm::mat4 S = glm::scale(glm::mat4(1.0), glm::vec3(scale));
-	return T * R * S;
+void Cow::updateBoundingBox()
+{
+	ofVec3f min = model.getSceneMin() + position;
+	ofVec3f max = model.getSceneMax() + position;
+	boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
+};
+
+void Cow::handleLanding()
+{
+	state = LANDED;
 };
