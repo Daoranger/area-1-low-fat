@@ -1,7 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
 mtllib Cow.mtl
-g default
 v -1.750000 3.000000 4.000000
 v -0.583333 3.000000 4.000000
 v 0.583333 3.000000 4.000000
@@ -927,8 +926,7 @@ vn -1.000000 0.000000 0.000000
 vn -1.000000 0.000000 0.000000
 vn -1.000000 0.000000 0.000000
 s 1
-g pCube1
-usemtl initialShadingGroup
+usemtl blinn1SG
 f 1/1/1 2/2/2 6/6/3 5/5/4
 f 2/2/2 3/3/5 7/7/6 6/6/3
 f 3/3/5 4/4/7 8/8/8 7/7/6
