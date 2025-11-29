@@ -44,6 +44,8 @@ void ofApp::setup()
 
 	cow1.position.y += 50;
 	cow1.position.x += 30;
+	cowPlatform.loadModel();
+	cowPlatform.createOctree();
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -194,6 +196,7 @@ void ofApp::draw()
 	mothership.draw();
 	speedRing1.draw();
 	cow1.draw();
+	cowPlatform.draw();
 
 	if (bDrawOctree)
 	{
