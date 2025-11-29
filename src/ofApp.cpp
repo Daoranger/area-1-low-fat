@@ -12,7 +12,7 @@ void ofApp::setup()
 	//initLightingAndMaterials();
 
 	skyBox.load("images/stars.png");
-	titleBackground.load("images/bg_title.jpg");
+	titleBackground.load("images/titlebg.png");
 
 	// Fonts setup
 	if (fontUI.load("font/Stardock.ttf", 20, true, true))
@@ -234,10 +234,10 @@ void ofApp::draw()
 			ofSetColor(ofColor::lightCyan);
 			fontTitle.drawString(strGameTitle, (ofGetWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, centerY - 150);
 		
-			drawMenuItem(MENU_START, strStart, centerY + 100);
-			drawMenuItem(MENU_INSTR, strInstr, centerY + 200);
-			drawMenuItem(MENU_DIAG, strSand, centerY + 300);
-			drawMenuItem(MENU_QUIT, strQuit, centerY + 400);
+			drawMenuItem(MENU_START, strStart, centerY + 120);
+			drawMenuItem(MENU_INSTR, strInstr, centerY + 220);
+			drawMenuItem(MENU_DIAG, strSand, centerY + 320);
+			drawMenuItem(MENU_QUIT, strQuit, centerY + 420);
 
 			break;
 		}
