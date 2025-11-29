@@ -2,16 +2,26 @@
 
 SpeedRing::SpeedRing()
 {
-    position.set(100, 100, 0);
-    rotation = 0.0;
+    position.set(100, 200, 0);
+    rotation = 90.0;
     scale.set(1, 1, 1);
 }
 
 void SpeedRing::loadModel()
 {
-    if (model.loadModel("geo/charging-station.obj"))
+    if (bVertical)
     {
-        model.setScaleNormalization(false);
+        if (model.loadModel("geo/speed-ring-vertical.obj"))
+        {
+            model.setScaleNormalization(false);
+        }
+    }
+    else
+    {
+        if (model.loadModel("geo/speed-ring-horizontal.obj"))
+        {
+            model.setScaleNormalization(false);
+        }
     }
 }
 

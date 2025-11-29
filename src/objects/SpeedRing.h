@@ -14,4 +14,7 @@ public:
     void loadModel() override;
     void handleCollision(Ufo&) override;
 
-}
+public:
+    bool bVertical = false;
+
+};

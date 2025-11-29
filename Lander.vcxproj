@@ -247,6 +247,7 @@
     <ClCompile Include="src\objects\ChargingStation.cpp" />
     <ClCompile Include="src\objects\Mothership.cpp" />
     <ClCompile Include="src\objects\Object.cpp" />
+    <ClCompile Include="src\objects\SpeedRing.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\player\Ufo.cpp" />
   </ItemGroup>
@@ -360,6 +361,7 @@
     <ClInclude Include="src\objects\ChargingStation.h" />
     <ClInclude Include="src\objects\Mothership.h" />
     <ClInclude Include="src\objects\Object.h" />
+    <ClInclude Include="src\objects\SpeedRing.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\player\Ufo.h" />
   </ItemGroup>
