@@ -67,6 +67,12 @@
     <ClCompile Include="src\objects\ChargingStation.cpp">
       <Filter>src\objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\Mothership.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\SpeedRing.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -447,6 +453,12 @@
       <Filter>src\objects</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\ChargingStation.h">
+      <Filter>src\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\Mothership.h">
+      <Filter>src\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\SpeedRing.h">
       <Filter>src\objects</Filter>
     </ClInclude>
   </ItemGroup>

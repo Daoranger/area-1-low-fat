@@ -35,6 +35,11 @@ void ofApp::setup()
 	//
 	station1.loadModel();
 	station1.createOctree();
+	mothership.loadModel();
+	mothership.createOctree();
+	speedRing1.bVertical = true;
+	speedRing1.loadModel();
+	speedRing1.createOctree();
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -168,6 +173,8 @@ void ofApp::draw()
 	ufo.draw();
 	terrain.drawFaces();
 	station1.draw();
+	mothership.draw();
+	speedRing1.draw();
 
 	if (bDrawOctree)
 	{
