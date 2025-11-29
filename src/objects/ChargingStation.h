@@ -10,6 +10,7 @@
 class ChargingStation : public Object
 {
 public:
+    ChargingStation();
     void loadModel() override;
     void handleCollision(Ufo&) override;
 };

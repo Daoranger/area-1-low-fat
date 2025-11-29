@@ -8,6 +8,7 @@
 #include "glm/gtx/intersect.hpp"
 #include "objects/Object.h"
 #include "objects/ChargingStation.h"
+#include "objects/Mothership.h"
 #include <string>
 #include <filesystem>
 
@@ -74,6 +75,7 @@ class ofApp : public ofBaseApp
 		
 		// Game Object
 		ChargingStation station1;
+		Mothership mothership;
 
 		// Lightnings
 		ofLight ufoLight;			// Spotlight underneath the UFO like a beam

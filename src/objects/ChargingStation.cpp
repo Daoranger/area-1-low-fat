@@ -1,5 +1,12 @@
 #include "ChargingStation.h"
 
+ChargingStation::ChargingStation()
+{
+    position.set(100, 100, 0);
+    rotation = 0.0;
+    scale.set(1, 1, 1);
+}
+
 void ChargingStation::loadModel()
 {
     if (model.loadModel("geo/charging-station.obj"))
