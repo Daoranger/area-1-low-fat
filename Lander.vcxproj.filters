@@ -76,6 +76,9 @@
     <ClCompile Include="src\objects\CowPlatform.cpp">
       <Filter>src\objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\Cow.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -465,6 +468,9 @@
       <Filter>src\objects</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\CowPlatform.h">
+      <Filter>src\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\Cow.h">
       <Filter>src\objects</Filter>
     </ClInclude>
   </ItemGroup>

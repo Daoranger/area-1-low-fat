@@ -35,7 +35,6 @@ class ofApp : public ofBaseApp
 		void gotMessage(ofMessage msg);
 
 		// Helper functions:
-		void initLightingAndMaterials();
 		ofVec3f getNormalAtContactPoint();
 
 		// Helper functions for cameras:
@@ -43,10 +42,15 @@ class ofApp : public ofBaseApp
 		void nextGameCameraView();
 
 		// Game States
-		enum GameState { STATE_TILE, STATE_STARTED };
+		enum GameState { STATE_TITLE, STATE_GAMESTART, STATE_GAMEOVER };
+		GameState gameState = STATE_TITLE;
+
+		enum MenuItem { MENU_START, MENU_INSTR, MENU_DIAG, MENU_QUIT };
+		MenuItem currentMenuItem = MENU_START;
 
 		// World
 		ofImage skyBox;
+		ofImage titleBackground;
 		
 		// Cameras
 		ofEasyCam debugCam;	// for debug/diagnostic
@@ -76,6 +80,7 @@ class ofApp : public ofBaseApp
 
 		// UI 
 		ofTrueTypeFont fontUI;
+		ofTrueTypeFont fontTitle;
 		
 		// Game Object
 		ChargingStation station1;

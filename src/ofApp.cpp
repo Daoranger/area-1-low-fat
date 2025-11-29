@@ -12,11 +12,21 @@ void ofApp::setup()
 	//initLightingAndMaterials();
 
 	skyBox.load("images/stars.png");
+	titleBackground.load("images/bg_title.jpg");
 
 	// Fonts setup
 	if (fontUI.load("font/Stardock.ttf", 20, true, true))
 	{
 		ofSetLineWidth(5);
+	}
+	else
+	{
+		cout << "Failed to load font\n";
+	}
+
+	if (fontTitle.load("font/Stardock.ttf",100, true, true))
+	{
+		ofSetLineWidth(10);
 	}
 	else
 	{
@@ -79,176 +89,280 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-
-	// UFO lightning update
-
-	if (bToggleUFOLight)
+	switch (gameState)
 	{
-		ufoLight.setPosition(ufo.position - ufo.getHeadingY() * 5);
-		ufoLight.lookAt(ufo.position - ufo.getHeadingY() * 50);
-		ufoLight.enable();
+		case STATE_TITLE:
+	{
+		break;
 	}
-	else
+		case STATE_GAMESTART:
 	{
-		ufoLight.disable();
-	}
+		// UFO lightning update
 
-	ufo.calculateAltitude(terrainOctree);
-	//cout << "Altitude: " << ufo.altitude;
-
-	// will move these variables outside later
-	constexpr float THRUST_ACCEL = 15.0f;   
-	constexpr float FORWARD_ACCEL = 15.0f;   
-	constexpr float STRAFE_ACCEL = 15.0f;  
-	constexpr float YAW_TORQUE = 50.0f;   
-
-	// Thrust Force
-	//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
-	//{
-	//	ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
-	//	float deltaTime = 1.0 / ofGetFrameRate();
-	//	ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
-	//}
-
-	if (keysMap[' '] && ufo.hasFuel())												// up (space)
-	{
-		ufo.handleTakeoff();
-		ufo.force +=  THRUST_ACCEL * ufo.getHeadingY();
-		float deltaTime = 1.0 / ofGetFrameRate();
-		ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
-	}
-	
-	if (keysMap['w']) ufo.force +=  FORWARD_ACCEL * ufo.getHeadingZ();			// forward (w)
-	if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();			// backward (d)
-	if (keysMap['a']) ufo.force += -STRAFE_ACCEL  * ufo.getHeadingX();			// left (a)
-	if (keysMap['d']) ufo.force +=  STRAFE_ACCEL  * ufo.getHeadingX();			// right (d)
-	if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
-	if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
-	
-	// Gravity Force
-	const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
-	ufo.force += ufo.mass * gravity;
-
-	// Turbulence Force
-	ufo.force.x += ofRandom(-5, 5);
-	ufo.force.y += ofRandom(-5, 5);
-	ufo.force.z += ofRandom(-5, 5);
-
-	ufo.integrate();
-
-	// Gameplay Camera update
-	updateGameCamera();
-
-	// Handle Collision Terrain vs UFO
-	ufo.updateBoundingBox();
-	colBoxList.clear();
-	colNodeList.clear();
-	terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
-	if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
-	{
-		station1.handleCollision(ufo);
-	}
-
-	cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-	if (colBoxList.size() >= 1)
-	{
-		if (!keysMap[' '])
+		if (bToggleUFOLight)
 		{
-			ofVec3f contactNormal = getNormalAtContactPoint();
-			ufo.handleLanding(contactNormal);
+			ufoLight.setPosition(ufo.position - ufo.getHeadingY() * 5);
+			ufoLight.lookAt(ufo.position - ufo.getHeadingY() * 50);
+			ufoLight.enable();
 		}
+		else
+		{
+			ufoLight.disable();
+		}
+
+		ufo.calculateAltitude(terrainOctree);
+		//cout << "Altitude: " << ufo.altitude;
+
+		// will move these variables outside later
+		constexpr float THRUST_ACCEL = 15.0f;
+		constexpr float FORWARD_ACCEL = 15.0f;
+		constexpr float STRAFE_ACCEL = 15.0f;
+		constexpr float YAW_TORQUE = 50.0f;
+
+		// Thrust Force
+		//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
+		//{
+		//	ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
+		//	float deltaTime = 1.0 / ofGetFrameRate();
+		//	ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
+		//}
+
+		if (keysMap[' '] && ufo.hasFuel())												// up (space)
+		{
+			ufo.handleTakeoff();
+			ufo.force += THRUST_ACCEL * ufo.getHeadingY();
+			float deltaTime = 1.0 / ofGetFrameRate();
+			ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
+		}
+
+		if (keysMap['w']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();			// forward (w)
+		if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();			// backward (d)
+		if (keysMap['a']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();			// left (a)
+		if (keysMap['d']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();			// right (d)
+		if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
+		if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
+
+		// Gravity Force
+		const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
+		ufo.force += ufo.mass * gravity;
+
+		// Turbulence Force
+		ufo.force.x += ofRandom(-5, 5);
+		ufo.force.y += ofRandom(-5, 5);
+		ufo.force.z += ofRandom(-5, 5);
+
+		ufo.integrate();
+
+		// Gameplay Camera update
+		updateGameCamera();
+
+		// Handle Collision Terrain vs UFO
+		ufo.updateBoundingBox();
+		colBoxList.clear();
+		colNodeList.clear();
+		terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
+		if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
+		{
+			station1.handleCollision(ufo);
+		}
+
+		cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+		if (colBoxList.size() >= 1)
+		{
+			if (!keysMap[' '])
+			{
+				ofVec3f contactNormal = getNormalAtContactPoint();
+				ufo.handleLanding(contactNormal);
+			}
+		}
+
+		// Handle collision of cow 
+		cow1.updateBoundingBox();
+		vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
+		vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
+		terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
+		station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
+		if (cowBoxList.size() >= 1)
+		{
+			cow1.handleLanding();
+		}
+
+		cow1.integrate();
 	}
-
-	// Handle collision of cow 
-	cow1.updateBoundingBox();
-	vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
-	vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
-	terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
-	station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
-	if (cowBoxList.size() >= 1)
-	{
-		cow1.handleLanding();
 	}
-
-	cow1.integrate();
-
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-
-	ofBackground(ofColor::black);
-
-	ofDisableDepthTest();
-	ofDisableLighting();
-	// The 2D sky box image (don't draw it in 3D)
-	skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
-	ofEnableDepthTest();
-
-	ofEnableLighting();
-	activeCam->begin();
-	ofPushMatrix();
-
-	ufo.draw();
-	terrain.drawFaces();
-	station1.draw();
-	mothership.draw();
-	speedRing1.draw();
-	cow1.draw();
-	cowPlatform.draw();
-
-	if (bDrawOctree)
+	switch (gameState)
 	{
-		ofNoFill();
-		ofSetColor(ofColor::white);
-		terrainOctree.drawLeafNodes(terrainOctree.root);
-		Octree::drawBox(ufo.boundingBox);
+		case STATE_TITLE:
+		{
+			ofDisableDepthTest();
+			ofDisableLighting();
+
+			ofSetColor(ofColor::white);
+			titleBackground.draw(0, 0, ofGetWidth(), ofGetHeight());
+
+			std::string strGameTitle = "Area 1: Low Fat";
+			std::string strStart = "Start Game";
+			std::string strInstr = "Instructions";
+			std::string strSand = "Diagnostic Mode";
+			std::string strQuit = "Quit Game";
+		
+			// lambda to center each menu items text
+			auto centerX = [&](const std::string str)
+				{
+					return (ofGetWidth() - fontUI.stringWidth(str)) * 0.5f;
+				};
+
+			auto centerY = ofGetHeight() * 0.5f;
+
+			// lambda to draw and check whether or not the item is currently the selected menu item
+			auto drawMenuItem = [&](MenuItem item, const std::string& label, float y)
+				{
+					if (currentMenuItem == item)
+						ofSetColor(ofColor::lightBlue);   // selected
+					else
+						ofSetColor(ofColor::white);       // normal
+
+					fontUI.drawString(label, centerX(label), y);
+				};
+
+			ofSetColor(ofColor::lightCyan);
+			fontTitle.drawString(strGameTitle, (ofGetWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, centerY - 150);
+		
+			drawMenuItem(MENU_START, strStart, centerY + 100);
+			drawMenuItem(MENU_INSTR, strInstr, centerY + 200);
+			drawMenuItem(MENU_DIAG, strSand, centerY + 300);
+			drawMenuItem(MENU_QUIT, strQuit, centerY + 400);
+
+			break;
+		}
+		case STATE_GAMESTART:
+		{
+			ofBackground(ofColor::black);
+
+			ofDisableDepthTest();
+			ofDisableLighting();
+			// The 2D sky box image (don't draw it in 3D)
+			skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
+			ofEnableDepthTest();
+
+			ofEnableLighting();
+			activeCam->begin();
+			ofPushMatrix();
+
+			ufo.draw();
+			terrain.drawFaces();
+			station1.draw();
+			mothership.draw();
+			speedRing1.draw();
+			cow1.draw();
+			cowPlatform.draw();
+
+			if (bDrawOctree)
+			{
+				ofNoFill();
+				ofSetColor(ofColor::white);
+				terrainOctree.drawLeafNodes(terrainOctree.root);
+				Octree::drawBox(ufo.boundingBox);
+			}
+
+			ofPopMatrix();
+			activeCam->end();
+			ofDisableDepthTest();
+			ofDisableLighting();
+
+
+			// UI draw: don't include it in the 3D stuff (within camera)
+			glDepthMask(false);
+			fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
+			fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
+			fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
+			glDepthMask(true);
+			break;
+		}
+		case STATE_GAMEOVER:
+		{
+			break;
+		}
 	}
-
-	ofPopMatrix();
-	activeCam->end();
-	ofDisableDepthTest();
-	ofDisableLighting();
-
-
-	// UI draw: don't include it in the 3D stuff (within camera)
-	glDepthMask(false);
-	fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
-	fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
-	fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
-	glDepthMask(true);
+	
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-	switch (key)
+	switch (gameState)
 	{
-	case 'C':
-	case 'c':
-		if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
-		else debugCam.enableMouseInput();
-		break;
-	case 'R':
-	case 'r':
-		bToggleUFOLight = !bToggleUFOLight;
-		break;
-	case 'L':
-	case 'l':
-		bDrawOctree = !bDrawOctree;
-		break;
-	case '1':
-		activeCam = &debugCam;
-		break;
-	case '2':
-		if (activeCam == &gameCam) nextGameCameraView();
-		else activeCam = &gameCam;
-		break;
-	}
+		case STATE_TITLE:
+		{
+			if (key == OF_KEY_UP)
+			{
+				if (currentMenuItem == MENU_START)
+					currentMenuItem = MENU_QUIT;
+				else
+					currentMenuItem = static_cast<MenuItem>(currentMenuItem - 1);
+			}
+			else if (key == OF_KEY_DOWN)
+			{
+				if (currentMenuItem == MENU_QUIT)
+					currentMenuItem = MENU_START;
+				else
+					currentMenuItem = static_cast<MenuItem>(currentMenuItem + 1);
+			}
+			else if (key == OF_KEY_RETURN)
+			{
+				switch (currentMenuItem)
+				{
+				case MENU_START:
+					gameState = STATE_GAMESTART;
+					break;
+				case MENU_INSTR:
+					break;
+				case MENU_DIAG:
+					break;
+				case MENU_QUIT:
+					ofExit();
+					break;
+				}
+			}
+			break;
+		}
+		case STATE_GAMESTART:
+		{
+			switch (key)
+			{
+			case 'C':
+			case 'c':
+				if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
+				else debugCam.enableMouseInput();
+				break;
+			case 'R':
+			case 'r':
+				bToggleUFOLight = !bToggleUFOLight;
+				break;
+			case 'L':
+			case 'l':
+				bDrawOctree = !bDrawOctree;
+				break;
+			case '1':
+				activeCam = &debugCam;
+				break;
+			case '2':
+				if (activeCam == &gameCam) nextGameCameraView();
+				else activeCam = &gameCam;
+				break;
+			}
 
-	keysMap[key] = true;
+			keysMap[key] = true;
+			break;
+		}
+	}
 
 }
 
@@ -304,41 +418,6 @@ void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
 
-// Need this function or else everything is white
-void ofApp::initLightingAndMaterials()
-{
-	static float ambient[] =
-	{ .5f, .5f, .5, 1.0f };
-	static float diffuse[] =
-	{ 1.0f, 1.0f, 1.0f, 1.0f };
-
-	static float position[] =
-	{ 5.0, 5.0, 5.0, 0.0 };
-
-	static float lmodel_ambient[] =
-	{ 1.0f, 1.0f, 1.0f, 1.0f };
-
-	static float lmodel_twoside[] =
-	{ GL_TRUE };
-
-
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT0, GL_POSITION, position);
-
-	glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT1, GL_POSITION, position);
-
-
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
-	glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE, lmodel_twoside);
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	//	glEnable(GL_LIGHT1);
-	glShadeModel(GL_SMOOTH);
-}
 
 ofVec3f ofApp::getNormalAtContactPoint()
 {
