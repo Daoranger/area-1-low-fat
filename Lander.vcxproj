@@ -245,6 +245,7 @@
     <ClCompile Include="src\collision\Util.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\objects\ChargingStation.cpp" />
+    <ClCompile Include="src\objects\CowPlatform.cpp" />
     <ClCompile Include="src\objects\Mothership.cpp" />
     <ClCompile Include="src\objects\Object.cpp" />
     <ClCompile Include="src\objects\SpeedRing.cpp" />
@@ -359,6 +360,7 @@
     <ClInclude Include="src\collision\Util.h" />
     <ClInclude Include="src\collision\vector3.h" />
     <ClInclude Include="src\objects\ChargingStation.h" />
+    <ClInclude Include="src\objects\CowPlatform.h" />
     <ClInclude Include="src\objects\Mothership.h" />
     <ClInclude Include="src\objects\Object.h" />
     <ClInclude Include="src\objects\SpeedRing.h" />

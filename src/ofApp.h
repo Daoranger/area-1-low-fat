@@ -10,6 +10,7 @@
 #include "objects/ChargingStation.h"
 #include "objects/Mothership.h"
 #include "objects/SpeedRing.h"
+#include "objects/CowPlatform.h"
 #include <string>
 #include <filesystem>
 
@@ -78,6 +79,7 @@ class ofApp : public ofBaseApp
 		ChargingStation station1;
 		Mothership mothership;
 		SpeedRing speedRing1;
+		CowPlatform cowPlatform;
 
 		// Lightnings
 		ofLight ufoLight;			// Spotlight underneath the UFO like a beam

@@ -40,6 +40,8 @@ void ofApp::setup()
 	speedRing1.bVertical = true;
 	speedRing1.loadModel();
 	speedRing1.createOctree();
+	cowPlatform.loadModel();
+	cowPlatform.createOctree();
 
 	// Debug Camera setup
 	debugCam.setDistance(10);
@@ -175,6 +177,7 @@ void ofApp::draw()
 	station1.draw();
 	mothership.draw();
 	speedRing1.draw();
+	cowPlatform.draw();
 
 	if (bDrawOctree)
 	{
