@@ -132,122 +132,124 @@ void ofApp::update()
 	switch (gameState)
 	{
 		case STATE_TITLE:
-	{
-		break;
-	}
+		{
+			break;
+		}
 		case STATE_GAMESTART:
-	{
-		// UFO lightning update
-
-		if (bToggleUFOLight)
 		{
-			ufoLight.setPosition(ufo.position - ufo.getHeadingY() * 5);
-			ufoLight.lookAt(ufo.position - ufo.getHeadingY() * 50);
-			ufoLight.enable();
-		}
-		else
-		{
-			ufoLight.disable();
-		}
+			// UFO lightning update
 
-		ufo.calculateAltitude(terrainOctree);
-		//cout << "Altitude: " << ufo.altitude;
+			if (bToggleUFOLight)
+			{
+				ufoLight.setPosition(ufo.position - ufo.getHeadingY() * 5);
+				ufoLight.lookAt(ufo.position - ufo.getHeadingY() * 50);
+				ufoLight.enable();
+			}
+			else
+			{
+				ufoLight.disable();
+			}
 
-		// will move these variables outside later
-		constexpr float THRUST_ACCEL = 15.0f;
-		constexpr float FORWARD_ACCEL = 15.0f;
-		constexpr float STRAFE_ACCEL = 15.0f;
-		constexpr float YAW_TORQUE = 50.0f;
+			ufo.calculateAltitude(terrainOctree);
+			//cout << "Altitude: " << ufo.altitude;
 
-		// Beam
-		beam.update();
-		beam.pos.x = ufo.position.x;
-		beam.pos.z = ufo.position.z;
-		beam.pos.y = ufo.position.y - (beam.height/2);
+			// will move these variables outside later
+			constexpr float THRUST_ACCEL = 15.0f;
+			constexpr float FORWARD_ACCEL = 15.0f;
+			constexpr float STRAFE_ACCEL = 15.0f;
+			constexpr float YAW_TORQUE = 50.0f;
+
+			// Beam
+			beam.update();
+			beam.pos.x = ufo.position.x;
+			beam.pos.z = ufo.position.z;
+			beam.pos.y = ufo.position.y - (beam.height/2);
 		
 
-		// Thrust Force
-		//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
-		//{
-		//	ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
-		//	float deltaTime = 1.0 / ofGetFrameRate();
-		//	ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
-		//}
+			// Thrust Force
+			//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
+			//{
+			//	ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
+			//	float deltaTime = 1.0 / ofGetFrameRate();
+			//	ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
+			//}
 
-		if (keysMap[' '] && ufo.hasFuel())												// up (space)
-		{
-			ufo.handleTakeoff();
-			ufo.force += THRUST_ACCEL * ufo.getHeadingY();
-			float deltaTime = 1.0 / ofGetFrameRate();
-			ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
-		}
-
-		if (keysMap['w']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();			// forward (w)
-		if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();			// backward (d)
-		if (keysMap['a']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();			// left (a)
-		if (keysMap['d']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();			// right (d)
-		if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
-		if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
-
-		// Gravity Force
-		const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
-		ufo.force += ufo.mass * gravity;
-
-		// Turbulence Force
-		ufo.force.x += ofRandom(-5, 5);
-		ufo.force.y += ofRandom(-5, 5);
-		ufo.force.z += ofRandom(-5, 5);
-
-		ufo.integrate();
-
-		// Gameplay Camera update
-		updateGameCamera();
-
-		// Handle Collision Terrain vs UFO
-		ufo.updateBoundingBox();
-		colBoxList.clear();
-		colNodeList.clear();
-		terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
-		if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
-		{
-			station1.handleCollision(ufo);
-		}
-
-		//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
-		if (colBoxList.size() >= 1)
-		{
-			if (!keysMap[' '])
+			if (keysMap[' '] && ufo.hasFuel())												// up (space)
 			{
-				ofVec3f contactNormal = getNormalAtContactPoint();
-				ufo.handleLanding(contactNormal);
+				ufo.handleTakeoff();
+				ufo.force += THRUST_ACCEL * ufo.getHeadingY();
+				float deltaTime = 1.0 / ofGetFrameRate();
+				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
+
+			if (keysMap['w']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();			// forward (w)
+			if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();			// backward (d)
+			if (keysMap['a']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();			// left (a)
+			if (keysMap['d']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();			// right (d)
+			if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
+			if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
+
+			// Gravity Force
+			const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
+			ufo.force += ufo.mass * gravity;
+
+			// Turbulence Force
+			ufo.force.x += ofRandom(-5, 5);
+			ufo.force.y += ofRandom(-5, 5);
+			ufo.force.z += ofRandom(-5, 5);
+
+			ufo.integrate();
+
+			// Gameplay Camera update
+			updateGameCamera();
+
+			// Handle Collision Terrain vs UFO
+			ufo.updateBoundingBox();
+			colBoxList.clear();
+			colNodeList.clear();
+			terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
+			if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
+			{
+				station1.handleCollision(ufo);
+			}
+
+			//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+			if (colBoxList.size() >= 1)
+			{
+				if (!keysMap[' '])
+				{
+					ofVec3f contactNormal = getNormalAtContactPoint();
+					ufo.handleLanding(contactNormal);
+				}
+			}
+
+			// Handle collision of cow 
+			cow1.updateBoundingBox();
+			vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
+			vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
+			terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
+			station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
+			if (cowBoxList.size() >= 1)
+			{
+				cow1.handleLanding();
+			}
+			else
+			{
+				cow1.integrate();
+			}
+
+			// Beam Collision with cow
+			// for every cow [TBD] make sure to free all other cows after finding 1st cow
+			if (beam.checkInside(cow1.boundingBox) && !cowCaptured) {
+				cow1.follow(&beam.capturePoint);
+				cowCaptured = true;
+			}
+			else if (!beam.active) {
+				cowCaptured = false;
+				cow1.free();
+			}		
+
 		}
-
-		// Handle collision of cow 
-		cow1.updateBoundingBox();
-		vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
-		vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
-		terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
-		station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
-		if (cowBoxList.size() >= 1)
-		{
-			cow1.handleLanding();
-		}
-
-		cow1.integrate();
-
-		// Beam Collision with cow
-		// for every cow [TBD] make sure to free all other cows after finding 1st cow
-		if (beam.checkInside(cow1.boundingBox) && !cowCaptured) {
-			cow1.follow(&beam.capturePoint);
-			cowCaptured = true;
-		}
-		else if (!beam.active) {
-			cowCaptured = false;
-			cow1.free();
-		}		
-
-	}
 	}
 	
 }

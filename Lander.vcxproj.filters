@@ -79,6 +79,9 @@
     <ClCompile Include="src\objects\Cow.cpp">
       <Filter>src\objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\player\beam\Beam.cpp">
+      <Filter>src\player\beam</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -128,6 +131,9 @@
     </Filter>
     <Filter Include="src\objects">
       <UniqueIdentifier>{81434ce2-b343-4bdc-bcec-a096964aa06d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\player\beam">
+      <UniqueIdentifier>{fb1aa655-b80d-4473-8be6-713db929c191}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -472,6 +478,9 @@
     </ClInclude>
     <ClInclude Include="src\objects\Cow.h">
       <Filter>src\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\beam\Beam.h">
+      <Filter>src\player\beam</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

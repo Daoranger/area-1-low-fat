@@ -251,6 +251,7 @@
     <ClCompile Include="src\objects\Object.cpp" />
     <ClCompile Include="src\objects\SpeedRing.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\player\beam\Beam.cpp" />
     <ClCompile Include="src\player\Ufo.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +368,7 @@
     <ClInclude Include="src\objects\Object.h" />
     <ClInclude Include="src\objects\SpeedRing.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\player\beam\Beam.h" />
     <ClInclude Include="src\player\Ufo.h" />
   </ItemGroup>
   <ItemGroup>

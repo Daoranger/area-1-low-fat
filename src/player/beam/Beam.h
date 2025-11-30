@@ -1,7 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
-#include "../collision/box.h"
+#include "../../collision/box.h"
 
 class Beam
 {
