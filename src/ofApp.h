@@ -57,10 +57,10 @@ class ofApp : public ofBaseApp
 		// Cameras
 		ofEasyCam debugCam;	// for debug/diagnostic
 		ofCamera gameCam;	// for gameplay
-		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP, CAM_GROUND };
+		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP, CAM_GROUND, CAM_DEATH };
 		CamView camView = CAM_THIRD;
 		ofCamera* activeCam = &gameCam;	// pointer to camera that is currently being use
-		ofVec3f camGroundPosition;
+		ofVec3f camTrackPosition;
 
 		// UFO (Player)
 		Ufo ufo;

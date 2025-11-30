@@ -214,6 +214,8 @@ void ofApp::update()
 				{
 					ofVec3f contactNormal = getNormalAtContactPoint();
 					ufo.handleDeathByContact(contactNormal);
+					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
+					camView = CAM_DEATH;
 				}
 				else
 				{
@@ -564,6 +566,9 @@ void ofApp::updateGameCamera()
 		gameCam.setPosition(ufo.position + ufo.getHeadingY() * 5.5);
 		gameCam.lookAt(ufo.position - ufo.getHeadingY(), ufo.getHeadingZ());
 		break;
+	case CAM_DEATH:
+		gameCam.setPosition(camTrackPosition);
+		gameCam.lookAt(ufo.position);
 	}
 }
 

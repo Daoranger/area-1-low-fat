@@ -104,7 +104,7 @@ void Ufo::handleTakeoff()
 
 void Ufo::handleDeathByContact(const ofVec3f contactNormal)
 {
-	float launchSpeed = 10000;
+	float launchSpeed = 2000;
 	velocity = launchSpeed * contactNormal;
 }
 
