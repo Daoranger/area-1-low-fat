@@ -137,9 +137,10 @@ void ofApp::update()
 		}
 		case STATE_GAMESTART:
 		{
-			if (!ufo.hasFuel())
-			{
-				;
+			//
+			float deathElapsed = ofGetElapsedTimef() - deathStartTime;
+			if (deathElapsed >= 5.0f) {
+				gameState = STATE_GAMEOVER;
 			}
 			
 			// UFO lightning update
@@ -216,6 +217,7 @@ void ofApp::update()
 					ufo.handleDeathByContact(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
 					camView = CAM_DEATH;
+					deathStartTime = ofGetElapsedTimef();			// save current death time in seconds
 				}
 				else
 				{
@@ -419,35 +421,44 @@ void ofApp::keyPressed(int key)
 		}
 		case STATE_GAMESTART:
 		{
-			switch (key)
+			switch (ufo.ufoState)
 			{
-			case 'C':
-			case 'c':
-				if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
-				else debugCam.enableMouseInput();
-				break;
-			case 'R':
-			case 'r':
-				bToggleUFOLight = !bToggleUFOLight;
-				break;
-			case 'L':
-			case 'l':
-				bDrawOctree = !bDrawOctree;
-				break;
-			case 'F':
-			case 'f':
-				beam.toggle();
-				break;
-			case '1':
-				activeCam = &debugCam;
-				break;
-			case '2':
-				if (activeCam == &gameCam) nextGameCameraView();
-				else activeCam = &gameCam;
+			case ufo.UFO_ALIVE:
+			{
+				switch (key)
+				{
+				case 'C':
+				case 'c':
+					if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
+					else debugCam.enableMouseInput();
+					break;
+				case 'R':
+				case 'r':
+					bToggleUFOLight = !bToggleUFOLight;
+					break;
+				case 'L':
+				case 'l':
+					bDrawOctree = !bDrawOctree;
+					break;
+				case 'F':
+				case 'f':
+					beam.toggle();
+					break;
+				case '1':
+					activeCam = &debugCam;
+					break;
+				case '2':
+					if (activeCam == &gameCam) nextGameCameraView();
+					else activeCam = &gameCam;
+					break;
+				}
+
+				keysMap[key] = true;
 				break;
 			}
-
-			keysMap[key] = true;
+			case ufo.UFO_DEAD:
+				break;
+			}
 			break;
 		}
 	}

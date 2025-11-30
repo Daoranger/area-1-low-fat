@@ -46,4 +46,8 @@ public:
 	float fuelStartTime;
 	bool  bfuelActive = false;
 
+	// Variables: states
+	enum UfoState { UFO_ALIVE, UFO_DEAD };
+	UfoState ufoState = UFO_ALIVE;
+
 };
