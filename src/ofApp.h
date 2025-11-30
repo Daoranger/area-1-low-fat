@@ -45,6 +45,7 @@ class ofApp : public ofBaseApp
 		enum GameState { STATE_TITLE, STATE_GAMESTART, STATE_GAMEOVER };
 		GameState gameState = STATE_TITLE;
 
+		// Menu Items
 		enum MenuItem { MENU_START, MENU_INSTR, MENU_DIAG, MENU_QUIT };
 		MenuItem currentMenuItem = MENU_START;
 

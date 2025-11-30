@@ -247,7 +247,7 @@ void ofApp::draw()
 
 			ofSetColor(ofColor::lightCyan);
 
-			fontTitle.drawString(strGameTitle, (ofGetWindowWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, ofGetWindowHeight() / 3);
+			fontTitle.drawString(strGameTitle, (ofGetWindowWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, ofGetWindowHeight() / 2.5);
 		
 			float space = ofGetWindowHeight() / 12;
 
