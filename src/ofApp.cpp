@@ -137,8 +137,12 @@ void ofApp::update()
 		}
 		case STATE_GAMESTART:
 		{
+			if (!ufo.hasFuel())
+			{
+				;
+			}
+			
 			// UFO lightning update
-
 			if (bToggleUFOLight)
 			{
 				ufoLight.setPosition(ufo.position - ufo.getHeadingY() * 5);
@@ -151,7 +155,6 @@ void ofApp::update()
 			}
 
 			ufo.calculateAltitude(terrainOctree);
-			//cout << "Altitude: " << ufo.altitude;
 
 			// will move these variables outside later
 			constexpr float THRUST_ACCEL = 15.0f;
@@ -165,15 +168,7 @@ void ofApp::update()
 			beam.pos.z = ufo.position.z;
 			beam.pos.y = ufo.position.y - (beam.height/2);
 		
-
 			// Thrust Force
-			//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
-			//{
-			//	ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
-			//	float deltaTime = 1.0 / ofGetFrameRate();
-			//	ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
-			//}
-
 			if (keysMap[' '] && ufo.hasFuel())												// up (space)
 			{
 				ufo.handleTakeoff();
@@ -213,11 +208,11 @@ void ofApp::update()
 				station1.handleCollision(ufo);
 			}
 
-			//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 			if (colBoxList.size() >= 1)
 			{
 				if (!keysMap[' '])
 				{
+					// Handle Impulse Force and Landing
 					ofVec3f contactNormal = getNormalAtContactPoint();
 					ufo.handleLanding(contactNormal);
 				}
