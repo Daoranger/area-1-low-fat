@@ -1,5 +1,5 @@
 
-#include "cow.h"
+#include "Cow.h"
 
 
 Cow::Cow() {
