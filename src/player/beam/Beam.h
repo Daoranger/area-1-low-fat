@@ -5,16 +5,16 @@
 
 class Beam
 {
+public:
     Beam();
-    void activate();
-    void deactivate();
+    void toggle();
     void update();
     void draw();
     bool checkInside(Box box);
 
     glm::vec3 pos;
     glm::vec3 center;
-    bool active = false;
+    bool active;
 
     float radius;
     float height;

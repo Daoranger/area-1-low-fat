@@ -12,6 +12,7 @@
 #include "objects/SpeedRing.h"
 #include "objects/Cow.h"
 #include "objects/CowPlatform.h"
+#include "player/beam/Beam.h"
 #include <string>
 #include <filesystem>
 
@@ -63,6 +64,7 @@ class ofApp : public ofBaseApp
 
 		// UFO (Player)
 		Ufo ufo;
+		Beam beam;
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;

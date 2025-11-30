@@ -2,6 +2,7 @@
 #include "Beam.h"
 
 Beam::Beam() {
+    active = false;
     radius = 1;
     height = 0;
     maxHeight = 10;
@@ -9,24 +10,23 @@ Beam::Beam() {
     retractRate = 4;
 };
 
-void Beam::activate() {
-    active = true;
-};
-
-void Beam::deactivate() {
-    active = false;
-};
+void Beam::toggle() {
+    active = !active;
+    cout << active << endl;
+}
 
 void Beam::update() {
+    center = pos;
+    center.y = pos.y - height/2;
     if (active) {
         if (height < maxHeight)
-            height += 2;
+            height += extendRate;
         else 
             height = maxHeight;
     }
     else {
         if (height > 0)
-            height -= 2;
+            height -= retractRate;
         else
             height = 0;
     }
@@ -34,8 +34,11 @@ void Beam::update() {
 
 void Beam::draw() {
     if (height == 0) return;
+    ofEnableAlphaBlending();
+    ofSetColor(ofColor::lime, 50);
     ofDrawCylinder(pos, radius, height);
-    
+    ofDisableAlphaBlending();
+    ofSetColor(ofColor::white, 255);
 };
 
 bool Beam::checkInside(Box box) {

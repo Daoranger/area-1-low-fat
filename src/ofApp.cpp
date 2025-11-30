@@ -63,6 +63,13 @@ void ofApp::setup()
 	debugCam.setFov(65.5);
 	debugCam.disableMouseInput();
 
+	// Beam Setup
+	//
+	beam.radius = 5;
+	beam.maxHeight = 50;
+	beam.extendRate = 2;
+	beam.retractRate = 5;
+
 	// Lightnings Setup
 	//
 
@@ -133,6 +140,13 @@ void ofApp::update()
 		constexpr float STRAFE_ACCEL = 15.0f;
 		constexpr float YAW_TORQUE = 50.0f;
 
+		// Beam
+		beam.update();
+		beam.pos.x = ufo.position.x;
+		beam.pos.z = ufo.position.z;
+		beam.pos.y = ufo.position.y - (beam.height/2);
+		
+
 		// Thrust Force
 		//if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())														// down (ctrl)
 		//{
@@ -180,7 +194,7 @@ void ofApp::update()
 			station1.handleCollision(ufo);
 		}
 
-		cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
+		//cout << "Number of collided nodes/boxes: " << colBoxList.size() << '\n';
 		if (colBoxList.size() >= 1)
 		{
 			if (!keysMap[' '])
@@ -279,6 +293,7 @@ void ofApp::draw()
 			speedRing1.draw();
 			cow1.draw();
 			cowPlatform.draw();
+			beam.draw();
 
 			if (bDrawOctree)
 			{
@@ -380,6 +395,10 @@ void ofApp::keyPressed(int key)
 			case 'L':
 			case 'l':
 				bDrawOctree = !bDrawOctree;
+				break;
+			case 'F':
+			case 'f':
+				beam.toggle();
 				break;
 			case '1':
 				activeCam = &debugCam;
