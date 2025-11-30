@@ -13,7 +13,7 @@ public:
     bool checkInside(Box box);
 
     glm::vec3 pos;
-    glm::vec3 center;
+    glm::vec3 capturePoint;
     bool active;
 
     float radius;

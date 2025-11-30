@@ -25,7 +25,7 @@ public:
 	ofVec3f force;
 	ofVec3f velocity;
 	ofVec3f acceleration;
-	float forceStrength = 1;
+	float forceStrength = 5;
 
 	float rotForce = 0;
 	float rotSpeed = 0;

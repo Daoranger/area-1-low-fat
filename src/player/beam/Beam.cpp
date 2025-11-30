@@ -12,12 +12,12 @@ Beam::Beam() {
 
 void Beam::toggle() {
     active = !active;
-    cout << active << endl;
 }
 
 void Beam::update() {
-    center = pos;
-    center.y = pos.y - height/2;
+    capturePoint.x = pos.x;
+    capturePoint.z = pos.z;
+    capturePoint.y = pos.y - 2;
     if (active) {
         if (height < maxHeight)
             height += extendRate;
@@ -35,17 +35,18 @@ void Beam::update() {
 void Beam::draw() {
     if (height == 0) return;
     ofEnableAlphaBlending();
-    ofSetColor(ofColor::lime, 50);
+    ofSetColor(152, 255, 153, 50);
     ofDrawCylinder(pos, radius, height);
     ofDisableAlphaBlending();
     ofSetColor(ofColor::white, 255);
 };
 
 bool Beam::checkInside(Box box) {
+    if (!active) return false;
     float boxMinY = box.min().y();
     float boxMaxY = box.max().y();
-    float cylMinY = pos.y;
-    float cylMaxY = pos.y + height;
+    float cylMinY = pos.y - height/2;
+    float cylMaxY = pos.y + height/2;
 
     float boxX = pos.x;
     float boxZ = pos.z;

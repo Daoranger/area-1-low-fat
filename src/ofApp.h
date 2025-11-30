@@ -79,7 +79,7 @@ class ofApp : public ofBaseApp
 		Octree terrainOctree;				// The octree of the terrain
 		vector<TreeNode> colNodeList;		// Store all collided (leaf) nodes
 		vector<Box> colBoxList;				// Store all collided (leaf) nodes's boxes
-		bool cowLanded = false;
+		bool cowCaptured = false;
 
 		// UI 
 		ofTrueTypeFont fontUI;

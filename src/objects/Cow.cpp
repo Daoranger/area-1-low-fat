@@ -25,9 +25,8 @@ void Cow::integrate() {
 			break;
         case ABDUCTED:
             glm::vec3 direction = glm::vec3(followedPoint->x, followedPoint->y, followedPoint->z) - position;
-            direction = glm::normalize(direction);
             force.set(direction*forceStrength);
-            rotAcceleration = 5;
+            rotAcceleration = 8;
 			break;
     }
 
@@ -54,6 +53,7 @@ void Cow::integrate() {
 
 void Cow::follow(glm::vec3 * Pos) {
     followedPoint = Pos;
+	position.y += 1;
     state = ABDUCTED;
 };
 
@@ -80,5 +80,8 @@ void Cow::updateBoundingBox()
 
 void Cow::handleLanding()
 {
-	state = LANDED;
+	if (state == ABDUCTED)
+		position.y += 1;
+	else
+		state = LANDED;
 };

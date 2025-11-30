@@ -216,6 +216,18 @@ void ofApp::update()
 		}
 
 		cow1.integrate();
+
+		// Beam Collision with cow
+		// for every cow [TBD] make sure to free all other cows after finding 1st cow
+		if (beam.checkInside(cow1.boundingBox) && !cowCaptured) {
+			cow1.follow(&beam.capturePoint);
+			cowCaptured = true;
+		}
+		else if (!beam.active) {
+			cowCaptured = false;
+			cow1.free();
+		}		
+
 	}
 	}
 	
