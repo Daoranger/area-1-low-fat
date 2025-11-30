@@ -15,7 +15,7 @@ void ofApp::setup()
 	titleBackground.load("images/titlebg.png");
 
 	// Fonts setup
-	if (fontUI.load("font/Stardock.ttf", 20, true, true))
+	if (fontUI.load("font/Stardock.ttf", 18, true, true))
 	{
 		ofSetLineWidth(5);
 	}
@@ -24,7 +24,7 @@ void ofApp::setup()
 		cout << "Failed to load font\n";
 	}
 
-	if (fontTitle.load("font/Stardock.ttf",100, true, true))
+	if (fontTitle.load("font/Stardock.ttf",50, true, true))
 	{
 		ofSetLineWidth(10);
 	}
@@ -89,6 +89,20 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	float scaleX = ofGetWindowWidth() / (ORIGINAL_WIDTH*1.0);
+	float scaleY = ofGetWindowHeight() / (ORIGINAL_HEIGHT*1.0);
+
+	if (scaleX != lastScaleX || scaleY != lastScaleY) {
+		float scale = std::min(scaleX, scaleY);
+		fontUI.load("font/Stardock.ttf", 18*scale, true, true);
+		ofSetLineWidth(5);
+		if (gameState == STATE_TITLE) {
+			fontTitle.load("font/Stardock.ttf",50*scale, true, true);
+			ofSetLineWidth(10);
+		}
+		lastScaleX = scaleX;
+		lastScaleY = scaleY;
+	}
 	switch (gameState)
 	{
 		case STATE_TITLE:
@@ -204,7 +218,7 @@ void ofApp::draw()
 			ofDisableLighting();
 
 			ofSetColor(ofColor::white);
-			titleBackground.draw(0, 0, ofGetWidth(), ofGetHeight());
+			titleBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
 			std::string strGameTitle = "Area 1: Low Fat";
 			std::string strStart = "Start Game";
@@ -215,10 +229,10 @@ void ofApp::draw()
 			// lambda to center each menu items text
 			auto centerX = [&](const std::string str)
 				{
-					return (ofGetWidth() - fontUI.stringWidth(str)) * 0.5f;
+					return (ofGetWindowWidth() - fontUI.stringWidth(str)) * 0.5f;
 				};
 
-			auto centerY = ofGetHeight() * 0.5f;
+			auto centerY = ofGetWindowHeight() * 0.5f;
 
 			// lambda to draw and check whether or not the item is currently the selected menu item
 			auto drawMenuItem = [&](MenuItem item, const std::string& label, float y)
@@ -232,12 +246,15 @@ void ofApp::draw()
 				};
 
 			ofSetColor(ofColor::lightCyan);
-			fontTitle.drawString(strGameTitle, (ofGetWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, centerY - 150);
+
+			fontTitle.drawString(strGameTitle, (ofGetWindowWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, ofGetWindowHeight() / 3);
 		
-			drawMenuItem(MENU_START, strStart, centerY + 120);
-			drawMenuItem(MENU_INSTR, strInstr, centerY + 220);
-			drawMenuItem(MENU_DIAG, strSand, centerY + 320);
-			drawMenuItem(MENU_QUIT, strQuit, centerY + 420);
+			float space = ofGetWindowHeight() / 12;
+
+			drawMenuItem(MENU_START, strStart, centerY);
+			drawMenuItem(MENU_INSTR, strInstr, centerY + space);
+			drawMenuItem(MENU_DIAG, strSand, centerY + space*2);
+			drawMenuItem(MENU_QUIT, strQuit, centerY + space*3);
 
 			break;
 		}

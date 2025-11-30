@@ -81,6 +81,12 @@ class ofApp : public ofBaseApp
 		// UI 
 		ofTrueTypeFont fontUI;
 		ofTrueTypeFont fontTitle;
+
+		int ORIGINAL_WIDTH = ofGetWindowWidth();
+		int ORIGINAL_HEIGHT = ofGetWindowHeight();
+
+		float lastScaleX = 1;
+		float lastScaleY = 1;
 		
 		// Game Object
 		ChargingStation station1;
