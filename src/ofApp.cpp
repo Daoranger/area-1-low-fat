@@ -210,11 +210,19 @@ void ofApp::update()
 
 			if (colBoxList.size() >= 1)
 			{
-				if (!keysMap[' '])
+				if (ufo.velocity.length() >= 4.0)
 				{
-					// Handle Impulse Force and Landing
 					ofVec3f contactNormal = getNormalAtContactPoint();
-					ufo.handleLanding(contactNormal);
+					ufo.handleDeathByContact(contactNormal);
+				}
+				else
+				{
+					if (!keysMap[' '])
+					{
+						// Handle Impulse Force and Landing
+						ofVec3f contactNormal = getNormalAtContactPoint();
+						ufo.handleLanding(contactNormal);
+					}
 				}
 			}
 

@@ -102,6 +102,13 @@ void Ufo::handleTakeoff()
 	bLandingImpulseDone = false;
 }
 
+void Ufo::handleDeathByContact(const ofVec3f contactNormal)
+{
+	float launchSpeed = 10000;
+	velocity = launchSpeed * contactNormal;
+}
+
+
 void Ufo::calculateAltitude(Octree& terrain)
 {
 	// Origin is the UFO's position, Direction is downward (-Y)

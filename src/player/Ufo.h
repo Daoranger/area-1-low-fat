@@ -15,6 +15,8 @@ public:
 	void updateBoundingBox() override;
 	void handleLanding(const ofVec3f contactNormal);
 	void handleTakeoff();
+	void handleDeathByContact(const ofVec3f contactNormal);
+	void handleDeathByOutOfFuel();
 	void calculateAltitude(Octree&);
 	bool hasFuel();
 	glm::vec3 getHeadingX();
