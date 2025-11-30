@@ -296,9 +296,23 @@ void ofApp::draw()
 
 			// UI draw: don't include it in the 3D stuff (within camera)
 			glDepthMask(false);
+			ofSetColor(ofColor::lightCyan);
 			fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
 			fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
 			fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
+			float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
+			
+			// Fuel bar
+			ofFill();
+			ofSetColor(ofColor::darkSlateGray);
+			ofDrawRectangle(18, 228, 154, 19);
+			ofSetColor(ofColor::black);
+			ofDrawRectangle(20, 230, 150, 15);
+			ofSetColor(ofColor::aqua);
+			ofDrawRectangle(20, 230, 150*fuelPercent, 15);
+			ofSetColor(ofColor::darkSlateGray);
+			ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
+
 			glDepthMask(true);
 			break;
 		}
