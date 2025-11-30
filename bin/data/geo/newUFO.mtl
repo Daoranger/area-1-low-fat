@@ -2,7 +2,7 @@ newmtl blinn1SG
 illum 4
 Kd 0.51 0.94 1.00
 Ka 0.00 0.00 0.00
-Tf 0.08 0.08 0.08
+Tf 0.00 0.00 0.00
 Ni 1.00
 newmtl blinn2SG
 illum 4
