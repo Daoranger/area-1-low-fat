@@ -88,8 +88,27 @@ void ofApp::setup()
 	sunLight.setDirectional();
 	sunLight.setPosition(500, 400, 0);
 	sunLight.setAreaLight(10000, 10000);
-	sunLight.setDiffuseColor(ofColor::whiteSmoke);				
-	sunLight.setAmbientColor(ofFloatColor(0.2, 0.2, 0.2));    
+	sunLight.setSpecularColor(ofFloatColor(0.5, 0.65, 0.7));
+	sunLight.setDiffuseColor(ofFloatColor(0.6, 0.65, 0.7));				
+	sunLight.setAmbientColor(ofFloatColor(0.56, 0.6, 0.6));
+	
+	sunLight2.setup();
+	sunLight2.enable();
+	//sunLight2.setDirectional();
+	sunLight2.setPosition(-500, -400, 500);
+	sunLight2.setAreaLight(1000, 1000);
+	sunLight2.setSpecularColor(ofFloatColor(0.4, 0.45, 0.5));
+	sunLight2.setDiffuseColor(ofFloatColor(0.3, 0.4, 0.5));				
+	sunLight2.setAmbientColor(ofFloatColor(0.3, 0.3, 0.25)); 
+
+	sunLight3.setup();
+	sunLight3.enable();
+	//sunLight3.setDirectional();
+	sunLight3.setPosition(-500, 400, -500);
+	sunLight3.setAreaLight(1000, 1000);
+	sunLight3.setSpecularColor(ofFloatColor(0.4, 0.45, 0.5));
+	sunLight3.setDiffuseColor(ofFloatColor(0.3, 0.4, 0.5));				
+	sunLight3.setAmbientColor(ofFloatColor(0.25, 0.3, 0.3)); 
 
 }
 
