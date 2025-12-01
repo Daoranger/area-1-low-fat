@@ -37,6 +37,7 @@ class ofApp : public ofBaseApp
 
 		// Helper functions:
 		ofVec3f getNormalAtContactPoint();
+		void resetGame();
 
 		// Helper functions for cameras:
 		void updateGameCamera();
@@ -68,6 +69,7 @@ class ofApp : public ofBaseApp
 		// UFO (Player)
 		Ufo ufo;
 		Beam beam;
+		ofVec3f startUfoPos = ofVec3f(0, 200, 0);
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;

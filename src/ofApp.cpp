@@ -260,7 +260,11 @@ void ofApp::update()
 				cowCaptured = false;
 				cow1.free();
 			}
-
+			break;
+		}
+		case STATE_GAMEOVER:
+		{
+			break;
 		}
 	}
 	
@@ -491,6 +495,15 @@ void ofApp::keyPressed(int key)
 			}
 			break;
 		}
+		case STATE_GAMEOVER:
+		{
+			if (key == 'r' || key == 'R')
+			{
+				cout << "Pressing R to restart game\n";
+				resetGame();
+			}
+			break;
+		}
 	}
 
 }
@@ -581,6 +594,25 @@ ofVec3f ofApp::getNormalAtContactPoint()
 	}
 	avgVertexNormal.normalize();
 	return avgVertexNormal;
+}
+
+void ofApp::resetGame()
+{
+	gameState = STATE_GAMESTART;
+	ufo.bDead = false;
+	deathStartTime = 0.0f;
+	camView = CAM_THIRD;
+	activeCam = &gameCam;
+
+	ufo.velocity = glm::vec3(0, 0, 0);
+	ufo.force = glm::vec3(0, 0, 0);
+	ufo.rotationForce = 0.0f;
+	ufo.rotationSpeed = 0.0f;
+	ufo.position = startUfoPos;    
+	ufo.rotation = 0.0f;
+	ufo.ufoState = ufo.UFO_ALIVE; 
+	ufo.fuelLeftTime = ufo.fuelTotalTime;
+	ufo.bLandingImpulseDone = false;
 }
 
 /**
