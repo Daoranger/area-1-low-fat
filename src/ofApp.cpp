@@ -5,12 +5,31 @@
 void ofApp::setup()
 
 {
+
+	// Sounds & Musics setup
+	if (titleMusic.load("sounds/titleMusic.mp3"))
+	{   
+		titleMusic.setLoop(true);
+		titleMusic.setVolume(0.5f);
+		titleMusic.play();
+	}
+
+	if (bgMusic.load("sounds/bgMusic.mp3"))
+	{
+		bgMusic.setLoop(true);
+		bgMusic.setVolume(0.5f);
+	}
+
+	if (goMusic.load("sounds/goMusic.mp3"))
+	{
+		goMusic.setLoop(true);
+		goMusic.setVolume(0.5f);
+	}
+
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	ofEnableDepthTest();
-	//ofEnableLighting();
-	//initLightingAndMaterials();
-
+	
 	skyBox.load("images/stars.png");
 	titleBackground.load("images/titlebg.png");
 
@@ -144,7 +163,11 @@ void ofApp::update()
 				float deathElapsed = ofGetElapsedTimef() - deathStartTime;
 				if (deathElapsed >= 5.0f)
 				{
+					if (bgMusic.isPlaying())
+						bgMusic.stop();
 					gameState = STATE_GAMEOVER;
+					if (!goMusic.isPlaying())
+						goMusic.play();
 				}
 			}
 
@@ -440,7 +463,9 @@ void ofApp::keyPressed(int key)
 				switch (currentMenuItem)
 				{
 				case MENU_START:
+					titleMusic.stop();
 					gameState = STATE_GAMESTART;
+					bgMusic.play();
 					break;
 				case MENU_INSTR:
 					break;
@@ -499,7 +524,7 @@ void ofApp::keyPressed(int key)
 		{
 			if (key == 'r' || key == 'R')
 			{
-				cout << "Pressing R to restart game\n";
+				goMusic.stop();
 				resetGame();
 			}
 			break;
@@ -599,6 +624,7 @@ ofVec3f ofApp::getNormalAtContactPoint()
 void ofApp::resetGame()
 {
 	gameState = STATE_GAMESTART;
+	bgMusic.play();
 	ufo.bDead = false;
 	deathStartTime = 0.0f;
 	camView = CAM_THIRD;
