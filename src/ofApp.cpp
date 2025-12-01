@@ -136,13 +136,18 @@ void ofApp::update()
 			break;
 		}
 		case STATE_GAMESTART:
-		{
-			//
-			float deathElapsed = ofGetElapsedTimef() - deathStartTime;
-			if (deathElapsed >= 5.0f) {
-				gameState = STATE_GAMEOVER;
+		{			
+
+			// Calculating time since dead
+			if (ufo.bDead)
+			{
+				float deathElapsed = ofGetElapsedTimef() - deathStartTime;
+				if (deathElapsed >= 5.0f)
+				{
+					gameState = STATE_GAMEOVER;
+				}
 			}
-			
+
 			// UFO lightning update
 			if (bToggleUFOLight)
 			{
@@ -167,8 +172,8 @@ void ofApp::update()
 			beam.update();
 			beam.pos.x = ufo.position.x;
 			beam.pos.z = ufo.position.z;
-			beam.pos.y = ufo.position.y - (beam.height/2);
-		
+			beam.pos.y = ufo.position.y - (beam.height / 2);
+
 			// Thrust Force
 			if (keysMap[' '] && ufo.hasFuel())												// up (space)
 			{
@@ -254,7 +259,7 @@ void ofApp::update()
 			else if (!beam.active) {
 				cowCaptured = false;
 				cow1.free();
-			}		
+			}
 
 		}
 	}
@@ -373,6 +378,31 @@ void ofApp::draw()
 		}
 		case STATE_GAMEOVER:
 		{
+			ofDisableDepthTest();
+			ofDisableLighting();
+
+			ofSetColor(ofColor::white);
+			titleBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+
+			std::string strGameOver = "GAME OVER";
+			std::string strRestart = "Press R to Restart";
+
+			// lambda to center each menu items text
+			auto centerX = [&](const std::string str)
+				{
+					return (ofGetWindowWidth() - fontUI.stringWidth(str)) * 0.5f;
+				};
+
+			auto centerY = ofGetWindowHeight() * 0.5f;
+
+			ofSetColor(ofColor::lightCyan);
+
+			fontTitle.drawString(strGameOver, (ofGetWindowWidth() - fontTitle.stringWidth(strGameOver)) * 0.5f, ofGetWindowHeight() / 2.0);
+
+			float space = ofGetWindowHeight() / 12;
+
+			fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 2);
+
 			break;
 		}
 	}

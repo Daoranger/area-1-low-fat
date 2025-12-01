@@ -47,6 +47,7 @@ public:
 	bool  bfuelActive = false;
 
 	// Variables: states
+	bool bDead = false;
 	enum UfoState { UFO_ALIVE, UFO_DEAD };
 	UfoState ufoState = UFO_ALIVE;
 
