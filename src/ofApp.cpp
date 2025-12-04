@@ -31,6 +31,12 @@ void ofApp::setup()
 		sparkSound.setVolume(1.0f);
 	}
 
+
+	if (alarmSound.load("sounds/alarm.mp3"))
+	{
+		alarmSound.setVolume(1.0f);
+	}
+
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	ofEnableDepthTest();
@@ -182,12 +188,32 @@ void ofApp::update()
 				}
 			}
 
-			if (!ufo.hasFuel() && !ufo.bDead)            // <- only once
+			if (!ufo.hasFuel() && !ufo.bDead && !bFuelDeathPending)          
 			{
-				ufo.handleDeath(ufo.getHeadingY());
-				camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
-				camView = CAM_DEATH;
-				deathStartTime = ofGetElapsedTimef();    // start timer
+				bFuelDeathPending = true;
+				fuelDeathStartTime = ofGetElapsedTimef();
+
+				// player alarm here
+				if (!alarmSound.isPlaying())
+					alarmSound.play();
+			}
+			
+			// Play alarm for 5 seconds before death
+			if (bFuelDeathPending && !ufo.bDead)
+			{
+				float elapsed = ofGetElapsedTimef() - fuelDeathStartTime;
+
+				if (elapsed >= 5.0f)
+				{
+					if (alarmSound.isPlaying())
+						alarmSound.stop();
+
+					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
+					camView = CAM_DEATH;
+					ufo.handleDeath(ufo.getHeadingY());
+					deathStartTime = ofGetElapsedTimef();
+					bFuelDeathPending = false;
+				}
 			}
 
 			// UFO lightning update

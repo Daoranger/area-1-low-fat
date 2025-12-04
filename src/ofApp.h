@@ -49,6 +49,8 @@ class ofApp : public ofBaseApp
 
 		// Handle Gameover
 		float deathStartTime = 0.0f;
+		float fuelDeathStartTime = 0.0f;
+		float bFuelDeathPending = false;
 
 		// Menu Items
 		enum MenuItem { MENU_START, MENU_INSTR, MENU_DIAG, MENU_QUIT };
@@ -116,6 +118,7 @@ class ofApp : public ofBaseApp
 		ofSoundPlayer bgMusic;
 		ofSoundPlayer goMusic;
 		ofSoundPlayer sparkSound;
+		ofSoundPlayer alarmSound;
 		bool bSparkSoundPlayed = false;
 
 };
