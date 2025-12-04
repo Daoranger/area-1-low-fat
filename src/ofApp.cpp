@@ -486,23 +486,21 @@ void ofApp::draw()
 			ofDisableDepthTest();
 			ofDisableLighting();
 
-
 			// UI draw: don't include it in the 3D stuff (within camera)
 			glDepthMask(false);
-			fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
-
-			ofPushStyle(); 
-			ofSetColor(ufo.velocity.length() >= 4.0f ? ofColor::red : ofColor::white);
-			fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
-			ofPopStyle();
-
-			fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
-			float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
 			
 			if (gameState == STATE_GAMESTART)
 			{
 				// Fuel bar
 				ofPushStyle();
+				fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
+				ofPushStyle();
+				ofSetColor(ufo.velocity.length() >= 4.0f ? ofColor::red : ofColor::white);
+				fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
+				ofPopStyle();
+				fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
+				float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
+
 				ofFill();
 				ofSetColor(ofColor::darkSlateGray);
 				ofDrawRectangle(18, 228, 154, 19);
@@ -512,6 +510,7 @@ void ofApp::draw()
 				ofDrawRectangle(20, 230, 150 * fuelPercent, 15);
 				ofSetColor(ofColor::darkSlateGray);
 				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
+
 				ofPopStyle();
 			}
 			else if (gameState == STATE_DIAGNOSTIC)
@@ -522,6 +521,10 @@ void ofApp::draw()
 				std::string strReturn = "[Press R to Start]";
 				ofRectangle boundReturn = fontSmallText.getStringBoundingBox(strReturn, 0, 0);
 				fontSmallText.drawString(strReturn, (ofGetWidth() - boundReturn.getWidth()) * 0.5f, (ofGetHeight() - boundReturn.getHeight()) * 0.5f + 500);
+
+				std::string strCamera = "[Press C to Enable Debug Camera]";
+				ofRectangle boundCamera = fontSmallText.getStringBoundingBox(strCamera, 0, 0);
+				fontSmallText.drawString(strCamera, (ofGetWidth() - boundCamera.getWidth()) * 0.5f, (ofGetHeight() - boundCamera.getHeight()) * 0.5f + 600);
 				ofPopStyle();
 			}
 
