@@ -190,6 +190,7 @@ void ofApp::update()
 		case STATE_GAMESTART:
 		{			
 
+			activeCam = &gameCam;
 			// Calculating time since dead
 			if (ufo.bDead)
 			{
@@ -445,10 +446,11 @@ void ofApp::draw()
 		case STATE_GAMESTART:
 		case STATE_DIAGNOSTIC:
 		{
-			ofBackground(ofColor::black);
+
 
 			ofDisableDepthTest();
 			ofDisableLighting();
+			ofBackground(ofColor::black);
 			// The 2D sky box image (don't draw it in 3D)
 			skyBox.draw(0, 0, ofGetWidth(), ofGetHeight());
 			ofEnableDepthTest();
@@ -506,6 +508,17 @@ void ofApp::draw()
 			ofDrawRectangle(20, 230, 150*fuelPercent, 15);
 			ofSetColor(ofColor::darkSlateGray);
 			ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
+
+			if (gameState == STATE_DIAGNOSTIC)
+			{
+				// Draw the press R to start
+				ofPushStyle();
+				ofSetColor(ofColor::white);
+				std::string strReturn = "[Press R to Start]";
+				ofRectangle boundReturn = fontSmallText.getStringBoundingBox(strReturn, 0, 0);
+				fontSmallText.drawString(strReturn, (ofGetWidth() - boundReturn.getWidth()) * 0.5f, (ofGetHeight() - boundReturn.getHeight()) * 0.5f + 500);
+				ofPopStyle();
+			}
 
 			glDepthMask(true);
 			break;
@@ -725,6 +738,9 @@ void ofApp::keyPressed(int key)
 				if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
 				else debugCam.enableMouseInput();
 				break;
+			case 'R':
+			case 'r':
+				gameState = STATE_GAMESTART;
 			}
 			break;
 		}
