@@ -197,8 +197,16 @@ void ofApp::update()
 			beam.pos.z = ufo.position.z;
 			beam.pos.y = ufo.position.y - (beam.height / 2);
 
-			// Thrust Force
-			if (keysMap[' '] && ufo.hasFuel())												// up (space)
+
+			// Thrust Forces
+			if (keysMap[OF_KEY_SHIFT] && ufo.hasFuel())														// down (shift)
+			{
+				ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
+				float deltaTime = 1.0 / ofGetFrameRate();
+				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
+			}
+
+			if (keysMap[' '] && ufo.hasFuel())																// up (space)
 			{
 				ufo.handleTakeoff();
 				ufo.force += THRUST_ACCEL * ufo.getHeadingY();
@@ -206,12 +214,12 @@ void ofApp::update()
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
 
-			if (keysMap['w']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();			// forward (w)
-			if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();			// backward (d)
-			if (keysMap['a']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();			// left (a)
-			if (keysMap['d']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();			// right (d)
-			if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
-			if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
+			if (keysMap['w'] || keysMap['W']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();				// forward (w)
+			if (keysMap['s'] || keysMap['S']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();				// backward (d)
+			if (keysMap['a'] || keysMap['A']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();				// left (a)
+			if (keysMap['d'] || keysMap['D']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();				// right (d)
+			if (keysMap['e'] || keysMap['E']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
+			if (keysMap['q'] || keysMap['Q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
 
 			// Gravity Force
 			const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
