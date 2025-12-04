@@ -44,7 +44,7 @@ class ofApp : public ofBaseApp
 		void nextGameCameraView();
 
 		// Game States
-		enum GameState { STATE_TITLE, STATE_GAMESTART, STATE_GAMEOVER };
+		enum GameState { STATE_TITLE, STATE_GAMESTART, STATE_GAMEOVER, STATE_INSTRUCTION, STATE_DIAGNOSTIC };
 		GameState gameState = STATE_TITLE;
 
 		// Handle Gameover
@@ -91,6 +91,8 @@ class ofApp : public ofBaseApp
 		// UI 
 		ofTrueTypeFont fontUI;
 		ofTrueTypeFont fontTitle;
+		ofTrueTypeFont fontInstruction;
+		ofTrueTypeFont fontSmallText;
 
 		int ORIGINAL_WIDTH = ofGetWindowWidth();
 		int ORIGINAL_HEIGHT = ofGetWindowHeight();

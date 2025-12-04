@@ -43,7 +43,8 @@ void ofApp::setup()
 	
 	skyBox.load("images/stars.png");
 	titleBackground.load("images/titlebg.png");
-
+	
+	ofPushStyle();
 	// Fonts setup
 	if (fontUI.load("font/Stardock.ttf", 18, true, true))
 	{
@@ -53,7 +54,9 @@ void ofApp::setup()
 	{
 		cout << "Failed to load font\n";
 	}
+	ofPopStyle();
 
+	ofPushStyle();
 	if (fontTitle.load("font/Stardock.ttf",50, true, true))
 	{
 		ofSetLineWidth(10);
@@ -62,6 +65,22 @@ void ofApp::setup()
 	{
 		cout << "Failed to load font\n";
 	}
+	ofPopStyle();
+
+	ofPushStyle();
+	if (fontInstruction.load("font/Stardock.ttf", 20, true, true))
+	{
+		ofSetLineWidth(5);
+	}
+	ofPopStyle();
+
+	ofPushStyle();
+	if (fontSmallText.load("font/Stardock.ttf", 12, true, true))
+	{
+		ofSetLineWidth(5);
+	}
+	ofPopStyle();
+
 
 	// UFO setup
 	ufo.loadModel();
@@ -356,6 +375,14 @@ void ofApp::update()
 		{
 			break;
 		}
+		case STATE_INSTRUCTION:
+		{
+			break;
+		}
+		case STATE_DIAGNOSTIC:
+		{
+			break;
+		}
 	}
 	
 }
@@ -509,6 +536,54 @@ void ofApp::draw()
 
 			break;
 		}
+		case STATE_INSTRUCTION:
+		{
+			ofDisableDepthTest();
+			ofDisableLighting();
+
+			ofPushStyle();
+			ofBackground(ofColor::black);
+			ofSetColor(ofColor::white);
+
+			// Draw the itro and keybinds text
+			std::string strInstr =
+				"Hi Mr. Green Gremlin,\n"
+				"We will invade Earth in a few years. Our species is small compared to humans.\n"
+				"However, we discovered that there is an animal from Earth called a “cow” that\n"
+				"produces something called “milk” and it makes us grow bigger and stronger.\n"
+				"You are assigned a very important mission: abduct cows from Earth.\n"
+				"Please deliver each cow to the transport platform and they will be automatically\n"
+				"transferred to the mothership.After you finish, return to the mothership.\n"
+				"Good luck on your mission! Try not to blow up!\n"
+				"\n\n\n"
+				"Space: go up\n"
+				"Shift: go down\n"
+				"W: move forward\n"
+				"S: move backward\n"
+				"A: move left\n"
+				"D: move right\n"
+				"\n"
+				"E: yaw right\n"
+				"Q: yaw left\n"
+				"\n"
+				"F: use beam (abduct the cow!)\n"
+				"R: turn on light (just for aesthetics)\n";
+			
+			ofRectangle boundInstr = fontInstruction.getStringBoundingBox(strInstr, 0, 0); // Bouding box of the instruction string
+			float x = (ofGetWidth() - boundInstr.getWidth()) * 0.5f - boundInstr.x;
+			float y = (ofGetHeight() - boundInstr.getHeight()) * 0.5f - boundInstr.y;
+			fontInstruction.drawString(strInstr, x, y);
+
+			// Draw the return to menu text
+			std::string strReturn = "[Press R to return]";
+			ofRectangle boundReturn = fontSmallText.getStringBoundingBox(strReturn, 0, 0);
+			fontSmallText.drawString(strReturn, (ofGetWidth() - boundReturn.getWidth()) * 0.5f, (ofGetHeight() - boundReturn.getHeight()) * 0.5f + 500);
+
+
+
+			ofPopStyle();
+			break;
+		}
 	}
 	
 
@@ -545,6 +620,7 @@ void ofApp::keyPressed(int key)
 					bgMusic.play();
 					break;
 				case MENU_INSTR:
+					gameState = STATE_INSTRUCTION;
 					break;
 				case MENU_DIAG:
 					break;
@@ -624,6 +700,18 @@ void ofApp::keyPressed(int key)
 				gameState = STATE_TITLE;
 				resetGame();
 			}
+			break;
+		}
+		case STATE_INSTRUCTION:
+		{
+			if (key == 'r' || key == 'R')
+			{
+				gameState = STATE_TITLE;
+			}
+			break;
+		}
+		case STATE_DIAGNOSTIC:
+		{
 			break;
 		}
 	}
