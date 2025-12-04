@@ -26,6 +26,11 @@ void ofApp::setup()
 		goMusic.setVolume(0.5f);
 	}
 
+	if (sparkSound.load("sounds/spark.mp3"))
+	{
+		sparkSound.setVolume(1.0f);
+	}
+
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	ofEnableDepthTest();
@@ -169,6 +174,20 @@ void ofApp::update()
 					if (!goMusic.isPlaying())
 						goMusic.play();
 				}
+				else if (deathElapsed >= 3.0f && !bSparkSoundPlayed)
+				{
+					cout << "Spark sound play\n";
+					sparkSound.play();
+					bSparkSoundPlayed = true;
+				}
+			}
+
+			if (!ufo.hasFuel() && !ufo.bDead)            // <- only once
+			{
+				ufo.handleDeath(ufo.getHeadingY());
+				camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
+				camView = CAM_DEATH;
+				deathStartTime = ofGetElapsedTimef();    // start timer
 			}
 
 			// UFO lightning update
@@ -250,7 +269,7 @@ void ofApp::update()
 				if (ufo.velocity.length() >= 4.0)
 				{
 					ofVec3f contactNormal = getNormalAtContactPoint();
-					ufo.handleDeathByContact(contactNormal);
+					ufo.handleDeath(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
 					camView = CAM_DEATH;
 					deathStartTime = ofGetElapsedTimef();			// save current death time in seconds
@@ -532,6 +551,11 @@ void ofApp::keyPressed(int key)
 		{
 			if (key == 'r' || key == 'R')
 			{
+				// reset all keys pressed when game over (to fix the key not being released when switching game mode)
+				for (auto& entry : keysMap)
+				{
+					entry.second = false;
+				}
 				goMusic.stop();
 				resetGame();
 			}
@@ -647,6 +671,9 @@ void ofApp::resetGame()
 	ufo.ufoState = ufo.UFO_ALIVE; 
 	ufo.fuelLeftTime = ufo.fuelTotalTime;
 	ufo.bLandingImpulseDone = false;
+
+	// Misc
+	bSparkSoundPlayed = false;
 }
 
 /**
