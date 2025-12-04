@@ -102,14 +102,13 @@ void Ufo::handleTakeoff()
 	bLandingImpulseDone = false;
 }
 
-void Ufo::handleDeathByContact(const ofVec3f contactNormal)
+void Ufo::handleDeath(const ofVec3f contactNormal)
 {
 	//ufoState = UFO_DEAD;
 	bDead = true;
 	float launchSpeed = 2000;
 	velocity = launchSpeed * contactNormal;
 }
-
 
 void Ufo::calculateAltitude(Octree& terrain)
 {

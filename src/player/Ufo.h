@@ -15,8 +15,7 @@ public:
 	void updateBoundingBox() override;
 	void handleLanding(const ofVec3f contactNormal);
 	void handleTakeoff();
-	void handleDeathByContact(const ofVec3f contactNormal);
-	void handleDeathByOutOfFuel();
+	void handleDeath(const ofVec3f contactNormal);
 	void calculateAltitude(Octree&);
 	bool hasFuel();
 	glm::vec3 getHeadingX();
@@ -41,7 +40,7 @@ public:
 	bool bLandingImpulseDone = false;
 
 	// Variables: fuel
-	float fuelTotalTime = 120.0;		// 2 minutes = 120 seconds
+	float fuelTotalTime = 20.0;		// 2 minutes = 120 seconds
 	float fuelLeftTime;
 	float fuelStartTime;
 	bool  bfuelActive = false;

@@ -115,6 +115,8 @@ class ofApp : public ofBaseApp
 		ofSoundPlayer titleMusic;
 		ofSoundPlayer bgMusic;
 		ofSoundPlayer goMusic;
+		ofSoundPlayer sparkSound;
+		bool bSparkSoundPlayed = false;
 
 };
 
