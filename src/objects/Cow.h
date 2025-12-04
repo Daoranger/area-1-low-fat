@@ -38,6 +38,6 @@ public:
 	TreeNode terrainHitNode;
 	ofVec3f terrainHitLocation;
 
-	bool bAlive;
+	bool bAlive = true;;
 
 };

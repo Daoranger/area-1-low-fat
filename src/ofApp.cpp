@@ -244,7 +244,7 @@ void ofApp::update()
 
 
 			// Thrust Forces
-			if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())													// down (ctrl)
+			if (keysMap[OF_KEY_SHIFT] && ufo.hasFuel())													// down (shift)
 			{
 				ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
@@ -327,6 +327,8 @@ void ofApp::update()
 			if (cowPlatform.octree.intersect(cow1.boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList))
 			{
 				cout << "Cow touched platform\n";
+				cow1.destroy();
+				cow1.free();
 			}
 
 			if (cowBoxList.size() >= 1)
@@ -428,7 +430,10 @@ void ofApp::draw()
 			station1.draw();
 			mothership.draw();
 			speedRing1.draw();
-			cow1.draw();
+			if (cow1.bAlive)
+			{
+				cow1.draw();
+			}
 			cowPlatform.draw();
 			beam.draw();
 
@@ -713,6 +718,10 @@ void ofApp::resetGame()
 
 	// Misc
 	bSparkSoundPlayed = false;
+
+	// Cow reset
+	cow1.bAlive = true;
+	cow1.position = ofVec3f(30, 250, 0);
 }
 
 /**
