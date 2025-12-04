@@ -324,6 +324,11 @@ void ofApp::update()
 			vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
 			terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
 			station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
+			if (cowPlatform.octree.intersect(cow1.boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList))
+			{
+				cout << "Cow touched platform\n";
+			}
+
 			if (cowBoxList.size() >= 1)
 			{
 				cow1.handleLanding();
@@ -433,6 +438,7 @@ void ofApp::draw()
 				ofSetColor(ofColor::white);
 				terrainOctree.drawLeafNodes(terrainOctree.root);
 				Octree::drawBox(ufo.boundingBox);
+				Octree::drawBox(cow1.boundingBox);
 			}
 
 			ofPopMatrix();

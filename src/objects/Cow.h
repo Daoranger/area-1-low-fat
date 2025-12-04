@@ -16,6 +16,7 @@ public:
 	void handleLanding();
 	void follow(glm::vec3 * Pos);
 	void free();
+	void destroy();
 
     enum STATE {FREE, ABDUCTED, LANDED};
 	STATE state = FREE;
@@ -36,5 +37,7 @@ public:
 
 	TreeNode terrainHitNode;
 	ofVec3f terrainHitLocation;
+
+	bool bAlive;
 
 };

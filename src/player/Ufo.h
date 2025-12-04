@@ -40,7 +40,7 @@ public:
 	bool bLandingImpulseDone = false;
 
 	// Variables: fuel
-	float fuelTotalTime = 20.0;		// 2 minutes = 120 seconds
+	float fuelTotalTime = 120.0;		// 2 minutes = 120 seconds
 	float fuelLeftTime;
 	float fuelStartTime;
 	bool  bfuelActive = false;
