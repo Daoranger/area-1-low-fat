@@ -259,13 +259,13 @@ void ofApp::update()
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
 
-			if (keysMap['w'] || keysMap['W']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();				// forward (w)
-			if (keysMap['s'] || keysMap['S']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();				// backward (d)
-			if (keysMap['a'] || keysMap['A']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();				// left (a)
-			if (keysMap['d'] || keysMap['D']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();				// right (d)
-			if (keysMap['e'] || keysMap['E']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
-			if (keysMap['q'] || keysMap['Q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
-
+			if (keysMap['w']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();				// forward (w)
+			if (keysMap['s']) ufo.force += -FORWARD_ACCEL * ufo.getHeadingZ();				// backward (d)
+			if (keysMap['a']) ufo.force += -STRAFE_ACCEL * ufo.getHeadingX();				// left (a)
+			if (keysMap['d']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();				// right (d)
+			if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
+			if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
+			
 			// Gravity Force: did not use moon gravity because it feel to low for gameplay
 			const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
 			ufo.force += ufo.mass * gravity;
@@ -583,7 +583,15 @@ void ofApp::keyPressed(int key)
 					break;
 				}
 
-				keysMap[key] = true;
+				// Normalize all key to lowercase (fix the bug where holding shift cause keys to beocome uppercase)
+				unsigned char c = static_cast<unsigned char>(key);
+
+				if (std::isalpha(c)) {
+					c = static_cast<unsigned char>(std::tolower(c));
+				}
+
+				keysMap[c] = true;
+
 				break;
 			}
 			case ufo.UFO_DEAD:
