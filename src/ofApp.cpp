@@ -106,13 +106,13 @@ void ofApp::setup()
 	cowPlatform.loadModel();
 	cowPlatform.createOctree();
 
-		// Debug Camera setup
-		debugCam.setTarget(mothership.position);
-		debugCam.setPosition(mothership.position + ofVec3f(0, 50, 0));
-		debugCam.setDistance(50.0f);
-		debugCam.setNearClip(0.1f);
-		debugCam.setFov(65.5);
-		debugCam.disableMouseInput();
+	// Debug Camera setup
+	debugCam.setTarget(mothership.position);
+	debugCam.setPosition(mothership.position + ofVec3f(0, 50, 0));
+	debugCam.setDistance(50.0f);
+	debugCam.setNearClip(0.1f);
+	debugCam.setFov(65.5);
+	debugCam.disableMouseInput();
 
 	// Beam Setup
 	//
@@ -385,6 +385,7 @@ void ofApp::update()
 		}
 		case STATE_DIAGNOSTIC:
 		{
+			debugCam.setTarget(mothership.position);
 			activeCam = &debugCam;
 			break;
 		}
@@ -498,18 +499,22 @@ void ofApp::draw()
 			fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
 			float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
 			
-			// Fuel bar
-			ofFill();
-			ofSetColor(ofColor::darkSlateGray);
-			ofDrawRectangle(18, 228, 154, 19);
-			ofSetColor(ofColor::black);
-			ofDrawRectangle(20, 230, 150, 15);
-			ofSetColor(ofColor::aqua);
-			ofDrawRectangle(20, 230, 150*fuelPercent, 15);
-			ofSetColor(ofColor::darkSlateGray);
-			ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
-
-			if (gameState == STATE_DIAGNOSTIC)
+			if (gameState == STATE_GAMESTART)
+			{
+				// Fuel bar
+				ofPushStyle();
+				ofFill();
+				ofSetColor(ofColor::darkSlateGray);
+				ofDrawRectangle(18, 228, 154, 19);
+				ofSetColor(ofColor::black);
+				ofDrawRectangle(20, 230, 150, 15);
+				ofSetColor(ofColor::aqua);
+				ofDrawRectangle(20, 230, 150 * fuelPercent, 15);
+				ofSetColor(ofColor::darkSlateGray);
+				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
+				ofPopStyle();
+			}
+			else if (gameState == STATE_DIAGNOSTIC)
 			{
 				// Draw the press R to start
 				ofPushStyle();
@@ -641,7 +646,9 @@ void ofApp::keyPressed(int key)
 					gameState = STATE_INSTRUCTION;
 					break;
 				case MENU_DIAG:
+					titleMusic.stop();
 					gameState = STATE_DIAGNOSTIC;
+					bgMusic.play();
 					break;
 				case MENU_QUIT:
 					ofExit();
