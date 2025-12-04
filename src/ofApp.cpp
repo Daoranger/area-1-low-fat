@@ -488,6 +488,7 @@ void ofApp::draw()
 
 			std::string strGameOver = "GAME OVER";
 			std::string strRestart = "Press R to Restart";
+			std::string strMainMenu = "Press M to Return to Main Menu";
 
 			// lambda to center each menu items text
 			auto centerX = [&](const std::string str)
@@ -503,7 +504,8 @@ void ofApp::draw()
 
 			float space = ofGetWindowHeight() / 12;
 
-			fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 2);
+			fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 1);
+			fontUI.drawString(strMainMenu, centerX(strMainMenu), centerY + space * 2);
 
 			break;
 		}
@@ -605,14 +607,21 @@ void ofApp::keyPressed(int key)
 		}
 		case STATE_GAMEOVER:
 		{
+			// reset all keys pressed when game over (to fix the key not being released when switching game mode)
+			for (auto& entry : keysMap)
+			{
+				entry.second = false;
+			}
 			if (key == 'r' || key == 'R')
 			{
-				// reset all keys pressed when game over (to fix the key not being released when switching game mode)
-				for (auto& entry : keysMap)
-				{
-					entry.second = false;
-				}
 				goMusic.stop();
+				gameState = STATE_GAMESTART;
+				resetGame();
+			}
+			if (key == 'm' || key == 'M')
+			{
+				goMusic.stop();
+				gameState = STATE_TITLE;
 				resetGame();
 			}
 			break;
@@ -711,8 +720,12 @@ ofVec3f ofApp::getNormalAtContactPoint()
 
 void ofApp::resetGame()
 {
-	gameState = STATE_GAMESTART;
-	bgMusic.play();
+	if (gameState == STATE_GAMESTART)
+		bgMusic.play();
+	else if (gameState == STATE_TITLE)
+		titleMusic.play();
+
+
 	ufo.bDead = false;
 	deathStartTime = 0.0f;
 	camView = CAM_THIRD;
