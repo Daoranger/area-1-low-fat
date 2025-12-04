@@ -71,7 +71,7 @@ class ofApp : public ofBaseApp
 		// UFO (Player)
 		Ufo ufo;
 		Beam beam;
-		ofVec3f startUfoPos = ofVec3f(0, 200, 0);
+		ofVec3f startUfoPos = ofVec3f(0, 220, 0);
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;

@@ -2,7 +2,7 @@
 
 Ufo::Ufo()
 {
-	position.set(0, 200, 0);
+	position.set(0, 0, 0);
 	rotation = 0.0;
 	scale.set(1, 1, 1);
 

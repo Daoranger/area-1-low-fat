@@ -106,11 +106,13 @@ void ofApp::setup()
 	cowPlatform.loadModel();
 	cowPlatform.createOctree();
 
-	// Debug Camera setup
-	debugCam.setDistance(10);
-	debugCam.setNearClip(.1);
-	debugCam.setFov(65.5);
-	debugCam.disableMouseInput();
+		// Debug Camera setup
+		debugCam.setTarget(mothership.position);
+		debugCam.setPosition(mothership.position + ofVec3f(0, 50, 0));
+		debugCam.setDistance(50.0f);
+		debugCam.setNearClip(0.1f);
+		debugCam.setFov(65.5);
+		debugCam.disableMouseInput();
 
 	// Beam Setup
 	//
@@ -182,6 +184,7 @@ void ofApp::update()
 	{
 		case STATE_TITLE:
 		{
+			resetGame();
 			break;
 		}
 		case STATE_GAMESTART:
@@ -381,6 +384,7 @@ void ofApp::update()
 		}
 		case STATE_DIAGNOSTIC:
 		{
+			activeCam = &debugCam;
 			break;
 		}
 	}
@@ -439,6 +443,7 @@ void ofApp::draw()
 			break;
 		}
 		case STATE_GAMESTART:
+		case STATE_DIAGNOSTIC:
 		{
 			ofBackground(ofColor::black);
 
@@ -596,21 +601,21 @@ void ofApp::keyPressed(int key)
 	{
 		case STATE_TITLE:
 		{
-			if (key == OF_KEY_UP)
+			if (key == 'w' || key == 'W')
 			{
 				if (currentMenuItem == MENU_START)
 					currentMenuItem = MENU_QUIT;
 				else
 					currentMenuItem = static_cast<MenuItem>(currentMenuItem - 1);
 			}
-			else if (key == OF_KEY_DOWN)
+			else if (key == 's' || key == 'S')
 			{
 				if (currentMenuItem == MENU_QUIT)
 					currentMenuItem = MENU_START;
 				else
 					currentMenuItem = static_cast<MenuItem>(currentMenuItem + 1);
 			}
-			else if (key == OF_KEY_RETURN)
+			else if (key == 'r' || key == 'R')
 			{
 				switch (currentMenuItem)
 				{
@@ -623,6 +628,7 @@ void ofApp::keyPressed(int key)
 					gameState = STATE_INSTRUCTION;
 					break;
 				case MENU_DIAG:
+					gameState = STATE_DIAGNOSTIC;
 					break;
 				case MENU_QUIT:
 					ofExit();
@@ -712,6 +718,14 @@ void ofApp::keyPressed(int key)
 		}
 		case STATE_DIAGNOSTIC:
 		{
+			switch (key)
+			{
+			case 'C':
+			case 'c':
+				if (debugCam.getMouseInputEnabled()) debugCam.disableMouseInput();
+				else debugCam.enableMouseInput();
+				break;
+			}
 			break;
 		}
 	}
@@ -810,7 +824,7 @@ void ofApp::resetGame()
 {
 	if (gameState == STATE_GAMESTART)
 		bgMusic.play();
-	else if (gameState == STATE_TITLE)
+	else if (gameState == STATE_TITLE && !titleMusic.isPlaying())
 		titleMusic.play();
 
 
