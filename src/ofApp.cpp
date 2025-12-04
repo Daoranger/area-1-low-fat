@@ -244,7 +244,7 @@ void ofApp::update()
 
 
 			// Thrust Forces
-			if (keysMap[OF_KEY_SHIFT] && ufo.hasFuel())														// down (shift)
+			if (keysMap[OF_KEY_CONTROL] && ufo.hasFuel())													// down (ctrl)
 			{
 				ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
@@ -266,7 +266,7 @@ void ofApp::update()
 			if (keysMap['e'] || keysMap['E']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
 			if (keysMap['q'] || keysMap['Q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
 
-			// Gravity Force
+			// Gravity Force: did not use moon gravity because it feel to low for gameplay
 			const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
 			ufo.force += ufo.mass * gravity;
 
@@ -294,6 +294,13 @@ void ofApp::update()
 			{
 				if (ufo.velocity.length() >= 4.0)
 				{
+					if (bFuelDeathPending)
+					{
+						bFuelDeathPending = false;
+						if (alarmSound.isPlaying())
+							alarmSound.stop();
+					}
+
 					ofVec3f contactNormal = getNormalAtContactPoint();
 					ufo.handleDeath(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
