@@ -780,11 +780,38 @@ void ofApp::keyReleased(int key)
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y )
 {
-
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
+void ofApp::mouseDragged(int x, int y, int button)
+{
+	switch (gameState)
+	{
+	case STATE_TITLE:
+		break;
+	case STATE_GAMESTART:
+		break;
+	case STATE_GAMEOVER:
+		break;
+	case STATE_INSTRUCTION:
+		break;
+	case STATE_DIAGNOSTIC:
+	{
+		if (debugCam.getMouseInputEnabled()) return;
+
+		if (bInDrag)
+		{
+			glm::vec3 ufoPos = ufo.position;
+
+			glm::vec3 mousePos = getMousePointOnPlane(ufoPos, debugCam.getZAxis());
+			glm::vec3 delta = mousePos - mouseLastPos;
+
+			ufoPos += delta;
+			ufo.position = ofVec3f(ufoPos.x, ufoPos.y, ufoPos.z);
+			mouseLastPos = mousePos;
+		}
+	}
+	}
 
 }
 
@@ -821,17 +848,23 @@ void ofApp::mousePressed(int x, int y, int button)
 
 		if (hit) {
 			bUfoSelected = true;
-			cout << "Ray hit UFO bounding box (in local space)\n";
+			mouseDownPos = getMousePointOnPlane(ufo.model.getPosition(), debugCam.getZAxis());
+			mouseLastPos = mouseDownPos;
+			bInDrag = true;
 		}
-
+		else
+		{
+			bUfoSelected = false;
+		}
 
 	}
 	
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
+void ofApp::mouseReleased(int x, int y, int button)
+{
+	bInDrag = false;
 }
 
 //--------------------------------------------------------------
@@ -962,4 +995,29 @@ void ofApp::updateGameCamera()
 void ofApp::nextGameCameraView()
 {
 	camView = static_cast<CamView>((camView + 1) % 4);
+}
+
+glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm)
+{
+	// Setup our rays
+	//
+	glm::vec3 origin = debugCam.getPosition();
+	glm::vec3 camAxis = debugCam.getZAxis();
+	glm::vec3 mouseWorld = debugCam.screenToWorld(glm::vec3(mouseX, mouseY, 0));
+	glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
+	float distance;
+
+	bool hit = glm::intersectRayPlane(origin, mouseDir, planePt, planeNorm, distance);
+
+	if (hit) {
+		// find the point of intersection on the plane using the distance 
+		// We use the parameteric line or vector representation of a line to compute
+		//
+		// p' = p + s * dir;
+		//
+		glm::vec3 intersectPoint = origin + distance * mouseDir;
+
+		return intersectPoint;
+	}
+	else return glm::vec3(0, 0, 0);
 }

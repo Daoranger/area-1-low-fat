@@ -72,7 +72,12 @@ class ofApp : public ofBaseApp
 		Ufo ufo;
 		Beam beam;
 		ofVec3f startUfoPos = ofVec3f(0, 220, 0);
+
+		// Diagnostic Mode
 		bool bUfoSelected = false;
+		glm::vec3 mouseDownPos, mouseLastPos;
+		bool bInDrag = false;
+		glm::vec3 getMousePointOnPlane(glm::vec3 p, glm::vec3 n);
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;
