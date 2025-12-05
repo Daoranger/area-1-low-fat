@@ -776,8 +776,39 @@ void ofApp::mouseDragged(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
+void ofApp::mousePressed(int x, int y, int button)
+{
+	switch (gameState)
+	{
+	case STATE_TITLE:
+		break;
+	case STATE_GAMESTART:
+		break;
+	case STATE_GAMEOVER:
+		break;
+	case STATE_INSTRUCTION:
+		break;
+	case STATE_DIAGNOSTIC:
+		
+		// If debug camera not enable, don't allow mouse interaction
+		if (debugCam.getMouseInputEnabled()) return;
 
+		cout << "Can Press in Diagnostic Mode\n";
+
+		glm::vec3 origin = debugCam.getPosition();
+		glm::vec3 mouseWorld = debugCam.screenToWorld(glm::vec3(mouseX, mouseY, 0));
+		glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
+
+		bool hit = ufo.boundingBox.intersect(Ray(Vector3(origin.x, origin.y, origin.z), Vector3(mouseDir.x, mouseDir.y, mouseDir.z)), 0, 10000);
+
+		if (hit)
+		{
+			cout << "Ray selecting the ufo bounding box\n";
+		}
+
+
+	}
+	
 }
 
 //--------------------------------------------------------------
