@@ -193,7 +193,6 @@ void ofApp::update()
 		case STATE_GAMESTART:
 		{			
 
-			activeCam = &gameCam;
 			// Calculating time since dead
 			if (ufo.bDead)
 			{
@@ -234,7 +233,7 @@ void ofApp::update()
 					if (alarmSound.isPlaying())
 						alarmSound.stop();
 
-					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
+					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
 					ufo.handleDeath(ufo.getHeadingY());
 					deathStartTime = ofGetElapsedTimef();
@@ -306,6 +305,8 @@ void ofApp::update()
 
 			// Gameplay Camera update
 			updateGameCamera();
+			// Tracking Camerea update
+			updateTrackCamera();
 
 			// Handle UFO Collision
 			ufo.updateBoundingBox();
@@ -344,7 +345,7 @@ void ofApp::update()
 
 					ofVec3f contactNormal = getNormalAtContactPoint();
 					ufo.handleDeath(contactNormal);
-					camTrackPosition = mothership.position + ofVec3f(0, 100, 0);
+					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
 					deathStartTime = ofGetElapsedTimef();			// save current death time in seconds
 				}
@@ -468,8 +469,14 @@ void ofApp::draw()
 		case STATE_GAMESTART:
 		case STATE_DIAGNOSTIC:
 		{
-
-
+			if (activeCam == &gameCam)
+			{
+				cout << "using game cam\n";
+			}
+			else if (activeCam == &trackCam)
+			{
+				cout << "using track cam\n";
+			}
 			ofDisableDepthTest();
 			ofDisableLighting();
 			ofBackground(ofColor::black);
@@ -726,7 +733,7 @@ void ofApp::keyPressed(int key)
 					beam.toggle();
 					break;
 				case '1':
-					if (activeCam == &trackCam) nextGameCameraView();
+					if (activeCam == &trackCam) nextTrackCameraView();
 					else activeCam = &trackCam;
 					break;
 				case '2':
@@ -990,7 +997,6 @@ void ofApp::resetGame()
  */
 void ofApp::updateGameCamera()
 {
-	
 	switch (camView)
 	{
 	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the ufo, looks 3 ahead
@@ -1018,16 +1024,17 @@ void ofApp::updateGameCamera()
 
 void ofApp::updateTrackCamera()
 {
-	switch (camView)
+	switch (trackView)
 	{
-	case TRACK_MOTHERSHIP: 
+	case TRACK_MOTHERSHIP:
+		trackCam.setPosition(mothership.position + ofVec3f(0, 30, 0));
+		trackCam.lookAt(ufo.position);
 		break;
 	case TRACK_MOUNTAIN: 
 		break;
 	case TRACK_GROUND:	
 		break;
 	case TRACK_LAKE:
-		
 		break;
 	case CAM_DEATH:
 		break;
