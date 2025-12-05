@@ -256,7 +256,8 @@ void ofApp::update()
 			ufo.calculateAltitude(terrainOctree);
 
 			// will move these variables outside later
-			constexpr float THRUST_ACCEL = 15.0f;
+			constexpr float THRUST_UP_ACCEL = 25.0f;
+			constexpr float THRUST_DOWN_ACCEL = 15.0f;
 			constexpr float FORWARD_ACCEL = 15.0f;
 			constexpr float STRAFE_ACCEL = 15.0f;
 			constexpr float YAW_TORQUE = 50.0f;
@@ -271,7 +272,7 @@ void ofApp::update()
 			// Thrust Forces
 			if (keysMap[OF_KEY_SHIFT] && ufo.hasFuel())													// down (shift)
 			{
-				ufo.force += -THRUST_ACCEL * ufo.getHeadingY();
+				ufo.force += -THRUST_UP_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
@@ -279,7 +280,7 @@ void ofApp::update()
 			if (keysMap[' '] && ufo.hasFuel())																// up (space)
 			{
 				ufo.handleTakeoff();
-				ufo.force += THRUST_ACCEL * ufo.getHeadingY();
+				ufo.force += THRUST_DOWN_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
@@ -631,6 +632,14 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
+	// Normalize all key to lowercase (fix the bug where holding shift cause keys to beocome uppercase)
+	unsigned char c = static_cast<unsigned char>(key);
+
+	if (std::isalpha(c)) {
+		c = static_cast<unsigned char>(std::tolower(c));
+	}
+	keysMap[c] = true;
+
 	switch (gameState)
 	{
 		case STATE_TITLE:
@@ -707,15 +716,6 @@ void ofApp::keyPressed(int key)
 					break;
 				}
 
-				// Normalize all key to lowercase (fix the bug where holding shift cause keys to beocome uppercase)
-				unsigned char c = static_cast<unsigned char>(key);
-
-				if (std::isalpha(c)) {
-					c = static_cast<unsigned char>(std::tolower(c));
-				}
-
-				keysMap[c] = true;
-
 				break;
 			}
 			case ufo.UFO_DEAD:
@@ -763,6 +763,7 @@ void ofApp::keyPressed(int key)
 				break;
 			case 'R':
 			case 'r':
+				bInDrag = false;
 				gameState = STATE_GAMESTART;
 			}
 			break;
@@ -774,7 +775,12 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-	keysMap[key] = false;
+	unsigned char c = static_cast<unsigned char>(key);
+
+	if (std::isalpha(c)) {
+		c = static_cast<unsigned char>(std::tolower(c));
+	}
+	keysMap[c] = false;
 }
 
 //--------------------------------------------------------------
@@ -848,7 +854,7 @@ void ofApp::mousePressed(int x, int y, int button)
 
 		if (hit) {
 			bUfoSelected = true;
-			mouseDownPos = getMousePointOnPlane(ufo.model.getPosition(), debugCam.getZAxis());
+			mouseDownPos = getMousePointOnPlane(ufo.position, debugCam.getZAxis());
 			mouseLastPos = mouseDownPos;
 			bInDrag = true;
 		}
