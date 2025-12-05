@@ -72,6 +72,7 @@ class ofApp : public ofBaseApp
 		Ufo ufo;
 		Beam beam;
 		ofVec3f startUfoPos = ofVec3f(0, 220, 0);
+		bool bUfoSelected = false;
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;

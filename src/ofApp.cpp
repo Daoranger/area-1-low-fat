@@ -385,6 +385,7 @@ void ofApp::update()
 		}
 		case STATE_DIAGNOSTIC:
 		{
+			ufo.updateBoundingBox();
 			debugCam.setTarget(mothership.position);
 			activeCam = &debugCam;
 			break;
@@ -472,6 +473,16 @@ void ofApp::draw()
 			cowPlatform.draw();
 			beam.draw();
 
+			if (bUfoSelected)
+			{
+				ofPushStyle();
+				ofNoFill();
+				ofSetColor(ofColor::white);
+				Octree::drawBox(ufo.boundingBox);
+				ofPopStyle();
+			}
+
+			// might remove this later
 			if (bDrawOctree)
 			{
 				ofNoFill();
@@ -799,11 +810,16 @@ void ofApp::mousePressed(int x, int y, int button)
 		glm::vec3 mouseWorld = debugCam.screenToWorld(glm::vec3(mouseX, mouseY, 0));
 		glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
 
-		bool hit = ufo.boundingBox.intersect(Ray(Vector3(origin.x, origin.y, origin.z), Vector3(mouseDir.x, mouseDir.y, mouseDir.z)), 0, 10000);
+		Ray mouseRay(
+			Vector3(origin.x, origin.y, origin.z),
+			Vector3(mouseDir.x, mouseDir.y, mouseDir.z)
+		);
 
-		if (hit)
-		{
-			cout << "Ray selecting the ufo bounding box\n";
+		bool hit = ufo.boundingBox.intersect(mouseRay, 0.0f, 10000.0f);
+
+		if (hit) {
+			bUfoSelected = true;
+			cout << "Ray hit UFO bounding box (in local space)\n";
 		}
 
 
