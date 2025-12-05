@@ -86,9 +86,11 @@ void ofApp::setup()
 	ufo.loadModel();
 
 	// Terrain setup
-	bTerrainLoaded = terrain.loadModel("geo/terrain.obj");
+	bTerrainLoaded = terrain.loadModel("geo/terrain-oct.obj");
+	terrainColor.loadModel("geo/terrain.obj");
 	terrain.setScaleNormalization(false);
-	terrainOctree.create(terrain.getMesh(0), 20);
+	terrainColor.setScaleNormalization(false);
+	terrainOctree.create(terrain.getMesh(1), 20);
 
 	// Game Object
 	//
@@ -462,7 +464,7 @@ void ofApp::draw()
 			ofPushMatrix();
 
 			ufo.draw();
-			terrain.drawFaces();
+			terrainColor.drawFaces();
 			station1.draw();
 			mothership.draw();
 			speedRing1.draw();
@@ -860,7 +862,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 ofVec3f ofApp::getNormalAtContactPoint()
 {
-	ofMesh mesh = terrain.getMesh(0);
+	ofMesh mesh = terrain.getMesh(1);
 	const auto numNormals = mesh.getNumNormals();
 
 	std::unordered_set<int> collidedVerts;

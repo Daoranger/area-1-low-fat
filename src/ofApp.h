@@ -76,6 +76,7 @@ class ofApp : public ofBaseApp
 
 		// Terrrain Model
 		ofxAssimpModelLoader terrain;
+		ofxAssimpModelLoader terrainColor;
 		bool bTerrainLoaded;
 
 		// Keys Map to help with keybinds

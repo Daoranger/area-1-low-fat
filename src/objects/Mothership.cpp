@@ -2,10 +2,15 @@
 
 void Mothership::loadModel()
 {
-    if (model.loadModel("geo/mothership.obj"))
+    if (model.loadModel("geo/mothership-oct.obj"))
     {
         model.setScaleNormalization(false);
     }
+    if (modelColor.loadModel("geo/mothership.obj"))
+    {
+        modelColor.setScaleNormalization(false);
+    }
+    cout << model.getMeshCount() << endl;
 }
 
 void Mothership::handleCollision(Ufo& ufo)

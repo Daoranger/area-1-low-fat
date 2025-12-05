@@ -31,6 +31,7 @@ public:
     ofVec3f scale;
 
     ofxAssimpModelLoader model;
+    ofxAssimpModelLoader modelColor;
     Box boundingBox;
     Octree octree;
 
