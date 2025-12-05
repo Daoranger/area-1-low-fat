@@ -787,30 +787,30 @@ void ofApp::mouseDragged(int x, int y, int button)
 {
 	switch (gameState)
 	{
-	case STATE_TITLE:
-		break;
-	case STATE_GAMESTART:
-		break;
-	case STATE_GAMEOVER:
-		break;
-	case STATE_INSTRUCTION:
-		break;
-	case STATE_DIAGNOSTIC:
-	{
-		if (debugCam.getMouseInputEnabled()) return;
-
-		if (bInDrag)
+		case STATE_TITLE:
+			break;
+		case STATE_GAMESTART:
+			break;
+		case STATE_GAMEOVER:
+			break;
+		case STATE_INSTRUCTION:
+			break;
+		case STATE_DIAGNOSTIC:
 		{
-			glm::vec3 ufoPos = ufo.position;
+			if (debugCam.getMouseInputEnabled()) return;
 
-			glm::vec3 mousePos = getMousePointOnPlane(ufoPos, debugCam.getZAxis());
-			glm::vec3 delta = mousePos - mouseLastPos;
+			if (bInDrag)
+			{
+				glm::vec3 ufoPos = ufo.position;
 
-			ufoPos += delta;
-			ufo.position = ofVec3f(ufoPos.x, ufoPos.y, ufoPos.z);
-			mouseLastPos = mousePos;
+				glm::vec3 mousePos = getMousePointOnPlane(ufoPos, debugCam.getZAxis());
+				glm::vec3 delta = mousePos - mouseLastPos;
+
+				ufoPos += delta;
+				ufo.position = ofVec3f(ufoPos.x, ufoPos.y, ufoPos.z);
+				mouseLastPos = mousePos;
+			}
 		}
-	}
 	}
 
 }
