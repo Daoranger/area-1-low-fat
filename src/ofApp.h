@@ -71,7 +71,7 @@ class ofApp : public ofBaseApp
 		// UFO (Player)
 		Ufo ufo;
 		Beam beam;
-		ofVec3f startUfoPos = ofVec3f(0, 220, 0);
+		ofVec3f startUfoPos = ofVec3f(0, 230, 0);
 
 		// Diagnostic Mode
 		bool bUfoSelected = false;

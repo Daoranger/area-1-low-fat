@@ -306,16 +306,30 @@ void ofApp::update()
 			// Gameplay Camera update
 			updateGameCamera();
 
-			// Handle Collision Terrain vs UFO
+			// Handle UFO Collision
 			ufo.updateBoundingBox();
 			colBoxList.clear();
 			colNodeList.clear();
+
+			// UFO vs Terrain
 			terrainOctree.intersect(ufo.boundingBox, terrainOctree.root, colBoxList, colNodeList);
+
+			// UFO vs Mothership
+			if (mothership.octree.intersect(ufo.boundingBox, mothership.octree.root, mothership, colBoxList, colNodeList))
+			{
+				mothership.handleCollision(ufo);
+			}
+
+			// UFO vs Charging Stations
+
+			// Station 1:
 			if (station1.octree.intersect(ufo.boundingBox, station1.octree.root, station1, colBoxList, colNodeList))
 			{
 				station1.handleCollision(ufo);
 			}
 
+
+			// Handle UFO vs octrees collision based on number of collided boxes
 			if (colBoxList.size() >= 1)
 			{
 				if (ufo.velocity.length() >= 4.0)
