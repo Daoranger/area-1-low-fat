@@ -11,7 +11,10 @@ void Object::draw()
 {
     ofPushMatrix();
     ofMultMatrix(getTransform());
-    modelColor.drawFaces();
+    if (modelColorsLoaded)
+        modelColor.drawFaces();
+    else
+        model.drawFaces();
     ofNoFill();
     ofSetColor(ofColor::white);
     octree.drawLeafNodes(octree.root);

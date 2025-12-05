@@ -35,6 +35,7 @@ public:
     Box boundingBox;
     Octree octree;
 
+    bool modelColorsLoaded = false;
 
 
 };

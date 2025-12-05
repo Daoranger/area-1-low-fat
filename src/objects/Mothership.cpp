@@ -8,6 +8,7 @@ void Mothership::loadModel()
     }
     if (modelColor.loadModel("geo/mothership.obj"))
     {
+        modelColorsLoaded = true;
         modelColor.setScaleNormalization(false);
     }
     cout << model.getMeshCount() << endl;
