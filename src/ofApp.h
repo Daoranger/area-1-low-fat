@@ -41,7 +41,9 @@ class ofApp : public ofBaseApp
 
 		// Helper functions for cameras:
 		void updateGameCamera();
+		void updateTrackCamera();
 		void nextGameCameraView();
+		void nextTrackCameraView();
 
 		// Game States
 		enum GameState { STATE_TITLE, STATE_GAMESTART, STATE_GAMEOVER, STATE_INSTRUCTION, STATE_DIAGNOSTIC };
@@ -63,8 +65,11 @@ class ofApp : public ofBaseApp
 		// Cameras
 		ofEasyCam debugCam;	// for debug/diagnostic
 		ofCamera gameCam;	// for gameplay
+		ofCamera trackCam;	// for tracking
 		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP, CAM_GROUND, CAM_DEATH };
 		CamView camView = CAM_THIRD;
+		enum TrackView { TRACK_MOTHERSHIP, TRACK_MOUNTAIN, TRACK_GROUND, TRACK_LAKE, TRACK_COW };
+		TrackView trackView = TRACK_MOTHERSHIP;
 		ofCamera* activeCam = &gameCam;	// pointer to camera that is currently being use
 		ofVec3f camTrackPosition;
 

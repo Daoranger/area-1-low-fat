@@ -116,6 +116,7 @@ void ofApp::setup()
 	debugCam.setFov(65.5);
 	debugCam.disableMouseInput();
 
+
 	// Beam Setup
 	//
 	beam.radius = 5;
@@ -256,10 +257,10 @@ void ofApp::update()
 			ufo.calculateAltitude(terrainOctree);
 
 			// will move these variables outside later
-			constexpr float THRUST_UP_ACCEL = 25.0f;
+			constexpr float THRUST_UP_ACCEL = 20.0f;
 			constexpr float THRUST_DOWN_ACCEL = 15.0f;
-			constexpr float FORWARD_ACCEL = 15.0f;
-			constexpr float STRAFE_ACCEL = 15.0f;
+			constexpr float FORWARD_ACCEL = 20.0f;
+			constexpr float STRAFE_ACCEL = 20.0f;
 			constexpr float YAW_TORQUE = 50.0f;
 
 			// Beam
@@ -272,7 +273,7 @@ void ofApp::update()
 			// Thrust Forces
 			if (keysMap[OF_KEY_SHIFT] && ufo.hasFuel())													// down (shift)
 			{
-				ufo.force += -THRUST_UP_ACCEL * ufo.getHeadingY();
+				ufo.force += -THRUST_DOWN_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
@@ -280,7 +281,7 @@ void ofApp::update()
 			if (keysMap[' '] && ufo.hasFuel())																// up (space)
 			{
 				ufo.handleTakeoff();
-				ufo.force += THRUST_DOWN_ACCEL * ufo.getHeadingY();
+				ufo.force += THRUST_UP_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
@@ -449,6 +450,7 @@ void ofApp::draw()
 					fontUI.drawString(label, centerX(label), y);
 				};
 
+			ofPushStyle();
 			ofSetColor(ofColor::lightCyan);
 
 			fontTitle.drawString(strGameTitle, (ofGetWindowWidth() - fontTitle.stringWidth(strGameTitle)) * 0.5f, ofGetWindowHeight() / 2.5);
@@ -459,6 +461,7 @@ void ofApp::draw()
 			drawMenuItem(MENU_INSTR, strInstr, centerY + space);
 			drawMenuItem(MENU_DIAG, strSand, centerY + space*2);
 			drawMenuItem(MENU_QUIT, strQuit, centerY + space*3);
+			ofPopStyle();
 
 			break;
 		}
@@ -579,6 +582,7 @@ void ofApp::draw()
 
 			auto centerY = ofGetWindowHeight() * 0.5f;
 
+			ofPushStyle();
 			ofSetColor(ofColor::lightCyan);
 
 			fontTitle.drawString(strGameOver, (ofGetWindowWidth() - fontTitle.stringWidth(strGameOver)) * 0.5f, ofGetWindowHeight() / 2.0);
@@ -587,7 +591,7 @@ void ofApp::draw()
 
 			fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 1);
 			fontUI.drawString(strMainMenu, centerX(strMainMenu), centerY + space * 2);
-
+			ofPopStyle();
 			break;
 		}
 		case STATE_INSTRUCTION:
@@ -722,7 +726,8 @@ void ofApp::keyPressed(int key)
 					beam.toggle();
 					break;
 				case '1':
-					activeCam = &debugCam;
+					if (activeCam == &trackCam) nextGameCameraView();
+					else activeCam = &trackCam;
 					break;
 				case '2':
 					if (activeCam == &gameCam) nextGameCameraView();
@@ -777,6 +782,7 @@ void ofApp::keyPressed(int key)
 				break;
 			case 'R':
 			case 'r':
+				bUfoSelected = false;
 				bInDrag = false;
 				gameState = STATE_GAMESTART;
 			}
@@ -1006,6 +1012,25 @@ void ofApp::updateGameCamera()
 	case CAM_DEATH:
 		gameCam.setPosition(camTrackPosition);
 		gameCam.lookAt(ufo.position);
+		break;
+	}
+}
+
+void ofApp::updateTrackCamera()
+{
+	switch (camView)
+	{
+	case TRACK_MOTHERSHIP: 
+		break;
+	case TRACK_MOUNTAIN: 
+		break;
+	case TRACK_GROUND:	
+		break;
+	case TRACK_LAKE:
+		
+		break;
+	case CAM_DEATH:
+		break;
 	}
 }
 
@@ -1015,6 +1040,14 @@ void ofApp::updateGameCamera()
 void ofApp::nextGameCameraView()
 {
 	camView = static_cast<CamView>((camView + 1) % 4);
+}
+
+/**
+ * Get next tracking view mode
+ */
+void ofApp::nextTrackCameraView()
+{
+	trackView = static_cast<TrackView>((trackView + 1) % 4);
 }
 
 glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm)
