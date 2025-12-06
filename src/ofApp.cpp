@@ -192,7 +192,6 @@ void ofApp::update()
 		}
 		case STATE_GAMESTART:
 		{			
-
 			// Calculating time since dead
 			if (ufo.bDead)
 			{
@@ -231,7 +230,9 @@ void ofApp::update()
 				if (elapsed >= 5.0f)
 				{
 					if (alarmSound.isPlaying())
+					{
 						alarmSound.stop();
+					}
 
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
@@ -469,14 +470,6 @@ void ofApp::draw()
 		case STATE_GAMESTART:
 		case STATE_DIAGNOSTIC:
 		{
-			if (activeCam == &gameCam)
-			{
-				cout << "using game cam\n";
-			}
-			else if (activeCam == &trackCam)
-			{
-				cout << "using track cam\n";
-			}
 			ofDisableDepthTest();
 			ofDisableLighting();
 			ofBackground(ofColor::black);
@@ -791,6 +784,7 @@ void ofApp::keyPressed(int key)
 			case 'r':
 				bUfoSelected = false;
 				bInDrag = false;
+				activeCam = &gameCam;
 				gameState = STATE_GAMESTART;
 			}
 			break;
@@ -1031,12 +1025,24 @@ void ofApp::updateTrackCamera()
 		trackCam.lookAt(ufo.position);
 		break;
 	case TRACK_MOUNTAIN: 
+		trackCam.setPosition(ofVec3f(935.0f, 693.0f, 248.0f));
+		trackCam.lookAt(ufo.position);
 		break;
-	case TRACK_GROUND:	
+	case TRACK_TREE:
+		trackCam.setPosition(ofVec3f(255.0f, 148.0f, 105.0f));
+		trackCam.lookAt(ufo.position);
 		break;
 	case TRACK_LAKE:
+		trackCam.setPosition(ofVec3f(-600.0f, 21.0f, -171.0f));
+		trackCam.lookAt(ufo.position);
 		break;
-	case CAM_DEATH:
+	case TRACK_SKY:
+		trackCam.setPosition(ofVec3f(0.0f, 1700.0f, 0.0f));
+		trackCam.lookAt(mothership.position);
+		break;
+	case TRACK_COW:
+		trackCam.setPosition(cow1.position);
+		trackCam.lookAt(ufo.position);
 		break;
 	}
 }
@@ -1054,7 +1060,7 @@ void ofApp::nextGameCameraView()
  */
 void ofApp::nextTrackCameraView()
 {
-	trackView = static_cast<TrackView>((trackView + 1) % 4);
+	trackView = static_cast<TrackView>((trackView + 1) % 6);
 }
 
 glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm)

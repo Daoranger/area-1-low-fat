@@ -68,7 +68,7 @@ class ofApp : public ofBaseApp
 		ofCamera trackCam;	// for tracking
 		enum CamView { CAM_THIRD, CAM_FIRST, CAM_TOP, CAM_GROUND, CAM_DEATH };
 		CamView camView = CAM_THIRD;
-		enum TrackView { TRACK_MOTHERSHIP, TRACK_MOUNTAIN, TRACK_GROUND, TRACK_LAKE, TRACK_COW };
+		enum TrackView { TRACK_MOTHERSHIP, TRACK_MOUNTAIN, TRACK_TREE, TRACK_LAKE, TRACK_SKY, TRACK_COW };
 		TrackView trackView = TRACK_MOTHERSHIP;
 		ofCamera* activeCam = &gameCam;	// pointer to camera that is currently being use
 		ofVec3f camTrackPosition;
