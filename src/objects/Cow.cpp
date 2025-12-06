@@ -73,6 +73,7 @@ void Cow::free() {
 void Cow::destroy()
 {
 	bAlive = false;
+	bHasBoundingBox = false;
 }
 
 void Cow::loadModel() {
@@ -87,6 +88,7 @@ void Cow::updateBoundingBox()
 {
 	if (bAlive)
 	{
+		bHasBoundingBox = true;
 		ofVec3f min = model.getSceneMin() + position;
 		ofVec3f max = model.getSceneMax() + position;
 		boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));

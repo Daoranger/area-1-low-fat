@@ -362,16 +362,19 @@ void ofApp::update()
 			}
 
 			// Handle collision of cow 
-			cow1.updateBoundingBox();
+			if (cow1.bAlive)
+			{
+				cow1.updateBoundingBox();
+			}
 			vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
 			vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
 			terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
 			station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
-			if (cowPlatform.octree.intersect(cow1.boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList))
+			if (cowPlatform.octree.intersect(cow1.boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList) && cow1.bHasBoundingBox)
 			{
-				cout << "Cow touched platform\n";
 				cow1.destroy();
 				cow1.free();
+				nCowAbducted += 1;
 			}
 
 			if (cowBoxList.size() >= 1)
@@ -524,6 +527,7 @@ void ofApp::draw()
 			{
 				// Fuel bar
 				ofPushStyle();
+
 				fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
 				ofPushStyle();
 				ofSetColor(ufo.velocity.length() >= 4.0f ? ofColor::red : ofColor::white);
@@ -532,6 +536,7 @@ void ofApp::draw()
 				fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
 				float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
 
+				ofPushStyle();
 				ofFill();
 				ofSetColor(ofColor::darkSlateGray);
 				ofDrawRectangle(18, 228, 154, 19);
@@ -541,6 +546,9 @@ void ofApp::draw()
 				ofDrawRectangle(20, 230, 150 * fuelPercent, 15);
 				ofSetColor(ofColor::darkSlateGray);
 				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
+				ofPopStyle();
+
+				fontUI.drawString("Cows abducted: " + std::to_string(nCowAbducted) + " / " + std::to_string(nCowRequired), 20, 300);
 
 				ofPopStyle();
 			}

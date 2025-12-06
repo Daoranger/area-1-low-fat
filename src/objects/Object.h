@@ -33,6 +33,7 @@ public:
     ofxAssimpModelLoader model;
     ofxAssimpModelLoader modelColor;
     Box boundingBox;
+    bool bHasBoundingBox;
     Octree octree;
 
     bool modelColorsLoaded = false;

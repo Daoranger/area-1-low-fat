@@ -61,6 +61,8 @@ class ofApp : public ofBaseApp
 		// World
 		ofImage skyBox;
 		ofImage titleBackground;
+		int nCowAbducted = 0;
+		int nCowRequired = 5;
 		
 		// Cameras
 		ofEasyCam debugCam;	// for debug/diagnostic
