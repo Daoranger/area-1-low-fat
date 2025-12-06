@@ -362,10 +362,7 @@ void ofApp::update()
 			}
 
 			// Handle collision of cow 
-			if (cow1.bAlive)
-			{
-				cow1.updateBoundingBox();
-			}
+			cow1.updateBoundingBox();
 			vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
 			vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
 			terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
@@ -990,7 +987,9 @@ void ofApp::resetGame()
 	bSparkSoundPlayed = false;
 
 	// Cow reset
+	nCowAbducted = 0;
 	cow1.bAlive = true;
+	cow1.free();
 	cow1.position = ofVec3f(30, 250, 0);
 }
 
