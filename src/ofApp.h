@@ -48,6 +48,7 @@ class ofApp : public ofBaseApp
 		// Game States
 		enum GameState { STATE_TITLE, STATE_GAMESTART, STATE_GAMEOVER, STATE_INSTRUCTION, STATE_DIAGNOSTIC };
 		GameState gameState = STATE_TITLE;
+		bool bVictory = false;
 
 		// Handle Gameover
 		float deathStartTime = 0.0f;
@@ -61,6 +62,8 @@ class ofApp : public ofBaseApp
 		// World
 		ofImage skyBox;
 		ofImage titleBackground;
+		ofImage victoryBackground;
+		ofImage defeatBackground;
 		int nCowAbducted = 0;
 		int nCowRequired = 5;
 		

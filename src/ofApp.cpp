@@ -43,6 +43,8 @@ void ofApp::setup()
 	
 	skyBox.load("images/stars.png");
 	titleBackground.load("images/titlebg.png");
+	victoryBackground.load("images/victorybg.png");
+	defeatBackground.load("images/defeatbg.png");
 	
 	ofPushStyle();
 	// Fonts setup
@@ -331,7 +333,16 @@ void ofApp::update()
 			// UFO vs Mothership
 			if (mothership.octree.intersect(ufo.boundingBox, mothership.octree.root, mothership, colBoxList, colNodeList))
 			{
-				mothership.handleCollision(ufo);
+				if (nCowAbducted >= nCowRequired)
+				{
+					cout << "Victory!\n";
+					bVictory = true;
+					gameState = STATE_GAMEOVER;
+				}
+				else
+				{ 
+					cout << "Meet the requirement first!\n";
+				}
 			}
 
 			// UFO vs Charging Stations
@@ -604,7 +615,11 @@ void ofApp::draw()
 			ofDisableLighting();
 
 			ofSetColor(ofColor::white);
-			titleBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+
+			if (bVictory)
+				victoryBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+			else
+				defeatBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
 			std::string strGameOver = "GAME OVER";
 			std::string strRestart = "Press R to Restart";
@@ -1022,6 +1037,10 @@ void ofApp::resetGame()
 	cow1.bAlive = true;
 	cow1.free();
 	cow1.position = ofVec3f(30, 250, 0);
+
+	// Other stuff
+	bVictory = false;
+
 }
 
 /**
