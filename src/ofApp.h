@@ -13,6 +13,7 @@
 #include "objects/Cow.h"
 #include "objects/CowPlatform.h"
 #include "player/beam/Beam.h"
+#include "particles/ParticleEmitter.h"
 #include <string>
 #include <filesystem>
 
@@ -77,6 +78,9 @@ class ofApp : public ofBaseApp
 		TrackView trackView = TRACK_MOTHERSHIP;
 		ofCamera* activeCam = &gameCam;	// pointer to camera that is currently being use
 		ofVec3f camTrackPosition;
+
+		// Shader
+		ofShader shader;
 
 		// UFO (Player)
 		Ufo ufo;

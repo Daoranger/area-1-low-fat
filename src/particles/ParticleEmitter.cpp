@@ -7,27 +7,86 @@ void ParticleEmitter::draw() {
     particleSys->draw();
 };
 
+void ParticleEmitter::start() {
+    active = true;
+};
+
+void ParticleEmitter::stop() {
+    active = false;
+};
+
 void ParticleEmitter::setLifespan(float life) {
     lifespan = life;
 };
 
-void ParticleEmitter::setShape(SHAPE s) {
+void ParticleEmitter::setParticleShape(PARTICLE_SHAPE s) {
     shape = s;
+};
+
+void ParticleEmitter::setEmitterShape(EMITTER_SHAPE s) {
+    emitterShape = s;
+};
+
+void ParticleEmitter::update() {
+    timer -= 1/ofGetFrameRate();
+    if (timer <= 0) {
+        emit();
+    }
+};
+
+void ParticleEmitter::emit() {
+    switch(emitterShape) {
+        case (DirectionalEmitter):
+            launchParticle();
+            break;
+        case (RadialEmitter):
+            float step = 360 / numParticles;
+            for (int i = 0; i < numParticles; i ++) {
+                launchParticle();
+                rotation += step;
+            }
+            break;
+        case (SphereEmitter):
+            ofVec3f origDir = direction;
+            for (int i = 0; i < numParticles; i ++) {
+                launchParticle();
+                direction = ofVec3f(ofRandom(-1, 1), ofRandom(-1, 1), ofRandom(-1, 1));
+            }
+            direction = origDir;
+            break;
+    }
 };
 
 void ParticleEmitter::integrateParticles() {
     particleSys->integrate();
 };
 
-void ParticleEmitter::launchParticle(float speed, float ang_speed, float acceleration) {
+void ParticleEmitter::launchParticle() {
             
     Particle particle;
     particle.color = color;
+    particle.setShape(shape);
     particle.position = position;
     particle.rotation = rotation;
-    particle.ang_velocity = ang_speed;
-    particle.velocity = speed * ofVec3f(0, -1, 0).rotate(rotation, ofVec3f(0,0,1));
-    particle.acceleration = acceleration * ofVec3f(0, -1, 0).rotate(rotation, ofVec3f(0,0,1));
+    particle.rotSpeed = rotSpeed;
+    particle.velocity = speed * direction;
+    particle.acceleration = acceleration * direction;
+    particle.damping = damping;
+    particle.setLifespan(lifespan);
+                
+    particleSys->add(particle);
+};
+
+void ParticleEmitter::launchParticle(float speed, float rotSpeed, float acceleration) {
+            
+    Particle particle;
+    particle.color = color;
+    particle.setShape(shape);
+    particle.position = position;
+    particle.rotation = rotation;
+    particle.rotSpeed = rotSpeed;
+    particle.velocity = speed * direction;
+    particle.acceleration = acceleration * direction;
     particle.damping = damping;
     particle.setLifespan(lifespan);
                 

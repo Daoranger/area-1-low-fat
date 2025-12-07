@@ -83,6 +83,13 @@ void ofApp::setup()
 	}
 	ofPopStyle();
 
+	// Shader Setup
+	#ifdef TARGET_OPENGLES
+	shader.load("shaders_gles/shader");
+	#else
+	shader.load("shaders/shader");
+	#endif
+
 
 	// UFO setup
 	ufo.loadModel();
@@ -584,6 +591,10 @@ void ofApp::draw()
 			station3.draw();
 			mothership.draw();
 			speedRing1.draw();
+
+			shader.begin();
+			// PARTICLES HERE 
+			shader.end();
 
 			// Draw the 10 cows
 			for (auto& cowPtr : cows)

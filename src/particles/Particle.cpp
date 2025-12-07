@@ -19,18 +19,32 @@ bool Particle::lifeExpired() {
 void Particle::setLifespan(int life) {
     lifespan = life * 1000;
 };
-
        
 
 void Particle::draw() {
     ofSetColor(color);
-    
+    ofFill();
+    switch(shape) {
+        case DISK:
+            ofDrawCylinder(position, radius, 0.1);
+            break;
+        case SPHERE:
+            ofDrawSphere(position, radius);
+            break;
+        case CUBE:
+            ofDrawBox(position, radius);
+            break;
+    }
 };
 
 void Particle::setForce(float x, float y, float z) {
     acceleration.x = x / mass;
     acceleration.y = y / mass;
     acceleration.z = z / mass;
+};
+
+void Particle::setShape(PARTICLE_SHAPE s) {
+    shape = s;
 };
 
 void Particle::integrate() {
@@ -41,5 +55,7 @@ void Particle::integrate() {
     rotation += rotSpeed * (1/ofGetFrameRate());
     rotSpeed += rotAcceleration * (1/ofGetFrameRate());
     rotSpeed = rotSpeed * damping;
+
+    scale *= scaleRate;
 };
 

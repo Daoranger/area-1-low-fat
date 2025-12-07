@@ -2,10 +2,13 @@
 
 #include "ofMain.h"
 
+enum PARTICLE_SHAPE {DISK, SPHERE, CUBE};
 
 class Particle {
     public:
         Particle();
+
+        PARTICLE_SHAPE shape = SPHERE;
 
         ofVec3f velocity;
         ofVec3f acceleration;
@@ -14,6 +17,8 @@ class Particle {
         float rotation;
         float rotSpeed;
         float rotAcceleration;
+        float scale = 1;
+        float scaleRate = 1;
         float lifespan = 5;
         float birthtime = ofGetElapsedTimeMillis();
         float radius = .5;
@@ -25,5 +30,6 @@ class Particle {
         void setLifespan(int life);
         void draw();
         void setForce(float x, float y, float z);
+        void setShape(PARTICLE_SHAPE s);
         void integrate();        
 };
