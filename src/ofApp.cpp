@@ -105,6 +105,8 @@ void ofApp::setup()
 
 	mothership.loadModel();
 	mothership.createOctree();
+	mothership.position = ofVec3f(0, 500, 0);
+
 	speedRing1.bVertical = true;
 	speedRing1.loadModel();
 	speedRing1.createOctree();
@@ -114,6 +116,7 @@ void ofApp::setup()
 	cow1.position.x += 30;
 	cowPlatform.loadModel();
 	cowPlatform.createOctree();
+	cowPlatform.position = ofVec3f(-400, 50, -216.059);
 
 	// Debug Camera setup
 	debugCam.setTarget(mothership.position);
@@ -531,11 +534,13 @@ void ofApp::draw()
 			// might remove this later
 			if (bDrawOctree)
 			{
+				ofPushStyle();
 				ofNoFill();
 				ofSetColor(ofColor::white);
 				terrainOctree.drawLeafNodes(terrainOctree.root);
 				Octree::drawBox(ufo.boundingBox);
 				Octree::drawBox(cow1.boundingBox);
+				ofPopStyle();
 			}
 
 			ofPopMatrix();
