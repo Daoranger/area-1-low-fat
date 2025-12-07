@@ -124,6 +124,8 @@ class ofApp : public ofBaseApp
 
 		Mothership mothership;
 		SpeedRing speedRing1;
+
+		std::vector<std::unique_ptr<Cow>> cows;
 		Cow cow1;
 		CowPlatform cowPlatform;
 

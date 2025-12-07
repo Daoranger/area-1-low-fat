@@ -112,10 +112,25 @@ void ofApp::setup()
 	speedRing1.bVertical = true;
 	speedRing1.loadModel();
 	speedRing1.createOctree();
-	cow1.loadModel();
+	
+	// Create 10 cows object
+	for (auto i = 0; i < 10; ++i)
+	{
+		cows.push_back(std::make_unique<Cow>());
+	}
 
+	for (auto& cowPtr : cows)
+	{
+		cowPtr->loadModel();
+		cowPtr->position.y += 50;
+		cowPtr->position.x += 30;
+	}
+
+	cow1.loadModel();
 	cow1.position.y += 50;
 	cow1.position.x += 30;
+	
+	// Cow platform
 	cowPlatform.loadModel();
 	cowPlatform.createOctree();
 	cowPlatform.position = ofVec3f(-400, 50, -216.059);
@@ -394,6 +409,46 @@ void ofApp::update()
 				}
 			}
 
+			for (auto& cowPtr : cows)
+			{
+				cowPtr->updateBoundingBox();
+				vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
+				vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
+				terrainOctree.intersect(cowPtr->boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
+				station1.octree.intersect(cowPtr->boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
+				station2.octree.intersect(cowPtr->boundingBox, station2.octree.root, station2, cowBoxList, cowNodeList);
+				station3.octree.intersect(cowPtr->boundingBox, station3.octree.root, station3, cowBoxList, cowNodeList);
+
+				// Handle cows interaction with cow platform
+				if (cowPlatform.octree.intersect(cowPtr->boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList) && cowPtr->bHasBoundingBox)
+				{
+					cowPtr->destroy();
+					cowPtr->free();
+					nCowAbducted += 1;
+				}
+
+				// Handle cows landing and physics (integrate)
+				if (cowBoxList.size() >= 1)
+				{
+					cowPtr->handleLanding();
+				}
+				else
+				{
+					cowPtr->integrate();
+				}
+
+				// Beam Collision with cow
+				// for every cow [TBD] make sure to free all other cows after finding 1st cow
+				if (beam.checkInside(cowPtr->boundingBox) && !cowCaptured) {
+					cowPtr->follow(&beam.capturePoint);
+					cowCaptured = true;
+				}
+				else if (!beam.active) {
+					cowCaptured = false;
+					cowPtr->free();
+				}
+			}
+
 			// Handle collision of cow 
 			cow1.updateBoundingBox();
 			vector<TreeNode> cowNodeList;		// Store all collided (leaf) nodes
@@ -404,7 +459,7 @@ void ofApp::update()
 			station3.octree.intersect(cow1.boundingBox, station3.octree.root, station3, cowBoxList, cowNodeList);
 
 			
-			
+			// Cow collide with cow platform
 			if (cowPlatform.octree.intersect(cow1.boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList) && cow1.bHasBoundingBox)
 			{
 				cow1.destroy();
@@ -526,6 +581,16 @@ void ofApp::draw()
 			station3.draw();
 			mothership.draw();
 			speedRing1.draw();
+
+			// Draw the 10 cows
+			for (auto& cowPtr : cows)
+			{
+				if (cowPtr->bAlive)
+				{
+					cowPtr->draw();
+				}
+			}
+
 			if (cow1.bAlive)
 			{
 				cow1.draw();
@@ -1098,8 +1163,8 @@ void ofApp::updateTrackCamera()
 		trackCam.lookAt(mothership.position);
 		break;
 	case TRACK_COW:
-		trackCam.setPosition(cow1.position);
-		trackCam.lookAt(ufo.position);
+		//trackCam.setPosition(cow1.position);
+		//trackCam.lookAt(ufo.position);
 		break;
 	}
 }
