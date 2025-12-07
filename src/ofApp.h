@@ -114,8 +114,11 @@ class ofApp : public ofBaseApp
 		float lastScaleX = 1;
 		float lastScaleY = 1;
 		
-		// Game Object
+		// Game Objects
 		ChargingStation station1;
+		ChargingStation station2;
+		ChargingStation station3;
+
 		Mothership mothership;
 		SpeedRing speedRing1;
 		Cow cow1;

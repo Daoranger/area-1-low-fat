@@ -96,6 +96,13 @@ void ofApp::setup()
 	//
 	station1.loadModel();
 	station1.createOctree();
+	station2.loadModel();
+	station2.createOctree();
+	station2.position = ofVec3f(596.157, 70, -476.551);
+	station3.loadModel();
+	station3.createOctree();
+	station3.position = ofVec3f(-442.068, 145, 470.853);
+
 	mothership.loadModel();
 	mothership.createOctree();
 	speedRing1.bVertical = true;
@@ -169,6 +176,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	cout << "Ufo's position: " << ufo.position << '\n';
 	float scaleX = ofGetWindowWidth() / (ORIGINAL_WIDTH*1.0);
 	float scaleY = ofGetWindowHeight() / (ORIGINAL_HEIGHT*1.0);
 
@@ -331,6 +339,17 @@ void ofApp::update()
 				station1.handleCollision(ufo);
 			}
 
+			// Station2:
+			if (station2.octree.intersect(ufo.boundingBox, station2.octree.root, station2, colBoxList, colNodeList))
+			{
+				station2.handleCollision(ufo);
+			}
+
+			// Station3:
+			if (station3.octree.intersect(ufo.boundingBox, station3.octree.root, station3, colBoxList, colNodeList))
+			{
+				station3.handleCollision(ufo);
+			}
 
 			// Handle UFO vs octrees collision based on number of collided boxes
 			if (colBoxList.size() >= 1)
@@ -367,6 +386,11 @@ void ofApp::update()
 			vector<Box> cowBoxList;				// Store all collided (leaf) nodes's boxes
 			terrainOctree.intersect(cow1.boundingBox, terrainOctree.root, cowBoxList, cowNodeList);
 			station1.octree.intersect(cow1.boundingBox, station1.octree.root, station1, cowBoxList, cowNodeList);
+			station2.octree.intersect(cow1.boundingBox, station2.octree.root, station2, cowBoxList, cowNodeList);
+			station3.octree.intersect(cow1.boundingBox, station3.octree.root, station3, cowBoxList, cowNodeList);
+
+			
+			
 			if (cowPlatform.octree.intersect(cow1.boundingBox, cowPlatform.octree.root, cowPlatform, cowBoxList, cowNodeList) && cow1.bHasBoundingBox)
 			{
 				cow1.destroy();
@@ -484,6 +508,8 @@ void ofApp::draw()
 			ufo.draw();
 			terrainColor.drawFaces();
 			station1.draw();
+			station2.draw();
+			station3.draw();
 			mothership.draw();
 			speedRing1.draw();
 			if (cow1.bAlive)
