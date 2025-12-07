@@ -125,7 +125,23 @@ class ofApp : public ofBaseApp
 		Mothership mothership;
 		SpeedRing speedRing1;
 
+		// List of cows
 		std::vector<std::unique_ptr<Cow>> cows;
+
+		// List of cows positions
+		std::vector<ofVec3f> cowsPositions 
+		{ 
+			ofVec3f(30, 50, 50), 
+			ofVec3f(30, 50, 30),
+			ofVec3f(30, 50, 40),
+			ofVec3f(536.157, 70, -476.551),
+			ofVec3f(550.157, 70, -476.551),
+			ofVec3f(575.157, 70, -476.551),
+			ofVec3f(-442.068, 145, 340),
+			ofVec3f(-432.068, 145, 360),
+			ofVec3f(-452.068, 145, 380),
+			ofVec3f(-462.068, 145, 400)
+		};
 		Cow cow1;
 		CowPlatform cowPlatform;
 

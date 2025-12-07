@@ -119,12 +119,15 @@ void ofApp::setup()
 		cows.push_back(std::make_unique<Cow>());
 	}
 
-	for (auto& cowPtr : cows)
+	// Load all 10 cows
+	// Assign each cows in the list with the preassigned positions list
+	for (auto i = 0; i < cows.size() && i < cowsPositions.size(); ++i)
 	{
-		cowPtr->loadModel();
-		cowPtr->position.y += 50;
-		cowPtr->position.x += 30;
+		cows[i]->loadModel();
+		//cows[i]->position = cowsPositions[i];
 	}
+
+
 
 	cow1.loadModel();
 	cow1.position.y += 50;
@@ -1099,6 +1102,15 @@ void ofApp::resetGame()
 
 	// Cow reset
 	nCowAbducted = 0;
+
+
+	for (auto i = 0; i < cows.size() && i < cowsPositions.size(); ++i)
+	{
+		cows[i]->bAlive = true;
+		cows[i]->free();
+		cows[i]->position = cowsPositions[i];
+	}
+
 	cow1.bAlive = true;
 	cow1.free();
 	cow1.position = ofVec3f(30, 250, 0);
@@ -1163,8 +1175,8 @@ void ofApp::updateTrackCamera()
 		trackCam.lookAt(mothership.position);
 		break;
 	case TRACK_COW:
-		//trackCam.setPosition(cow1.position);
-		//trackCam.lookAt(ufo.position);
+		trackCam.setPosition(cow1.position);
+		trackCam.lookAt(ufo.position);
 		break;
 	}
 }
