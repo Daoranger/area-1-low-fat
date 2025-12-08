@@ -201,12 +201,38 @@ void ofApp::setup()
 	sunLight3.setDiffuseColor(ofFloatColor(0.3, 0.4, 0.5));				
 	sunLight3.setAmbientColor(ofFloatColor(0.25, 0.3, 0.3)); 
 
+	// Particle Setup
+	//
+
+	// Particles when UFO is using its thruster
+	ufoMove.speed = 5;
+	ufoMove.setEmitterShape(DirectionalEmitter);
+	ufoMove.setParticleShape(DISK);
+	ufoMove.rate = 0.5;
+	ufoMove.numParticles = 1;
+	ufoMove.setLifespan(1);
+	ufoMove.color = ofColor::seaGreen;
+	ufoMove.direction = ofVec3f(0, -1, 0);
+	ufoMove.radius = 4;
+	ufoMove.start();
+	ufoMove.scale = 1;
+	ufoMove.scaleRate = 1.01;
+	
+	// Particles when UFO crashes
+	ufoExplosion.speed = 100;
+	ufoExplosion.acceleration = 40;
+	ufoExplosion.setEmitterShape(SphereEmitter);
+	ufoExplosion.setParticleShape(CUBE);
+	ufoExplosion.numParticles = 100;
+	ufoExplosion.setLifespan(3);
+	ufoExplosion.color = ofColor::orangeRed;
+	ufoExplosion.radius = 2;
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	cout << "Ufo's position: " << ufo.position << '\n';
+	//cout << "Ufo's position: " << ufo.position << '\n';
 	float scaleX = ofGetWindowWidth() / (ORIGINAL_WIDTH*1.0);
 	float scaleY = ofGetWindowHeight() / (ORIGINAL_HEIGHT*1.0);
 
@@ -274,6 +300,7 @@ void ofApp::update()
 
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
+					ufoExplosion.emit();
 					ufo.handleDeath(ufo.getHeadingY());
 					deathStartTime = ofGetElapsedTimef();
 					bFuelDeathPending = false;
@@ -316,12 +343,14 @@ void ofApp::update()
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
 
+			bool moving = false;
 			if (keysMap[' '] && ufo.hasFuel())																// up (space)
 			{
 				ufo.handleTakeoff();
 				ufo.force += THRUST_UP_ACCEL * ufo.getHeadingY();
 				float deltaTime = 1.0 / ofGetFrameRate();
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
+				moving = true;
 			}
 
 			if (keysMap['w']) ufo.force += FORWARD_ACCEL * ufo.getHeadingZ();				// forward (w)
@@ -330,6 +359,9 @@ void ofApp::update()
 			if (keysMap['d']) ufo.force += STRAFE_ACCEL * ufo.getHeadingX();				// right (d)
 			if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
 			if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
+
+			if (moving) ufoMove.start();
+			else ufoMove.stop();
 			
 			// Gravity Force: did not use moon gravity because it feel to low for gameplay
 			const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
@@ -403,6 +435,7 @@ void ofApp::update()
 					}
 
 					ofVec3f contactNormal = getNormalAtContactPoint();
+					ufoExplosion.emit();
 					ufo.handleDeath(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
@@ -496,6 +529,13 @@ void ofApp::update()
 				cowCaptured = false;
 				cow1.free();
 			}
+
+			ufoMove.position = ufo.position;
+			ufoMove.integrateParticles();
+			ufoMove.update();
+			
+			ufoExplosion.position = ufo.position;
+			ufoExplosion.integrateParticles();
 			break;
 		}
 		case STATE_GAMEOVER:
@@ -592,9 +632,12 @@ void ofApp::draw()
 			mothership.draw();
 			speedRing1.draw();
 
-			shader.begin();
-			// PARTICLES HERE 
-			shader.end();
+			//shader.begin();
+			ufoMove.draw();
+			ufoExplosion.draw();
+			//shader.end();
+
+			ofSetColor(ofColor::white);
 
 			// Draw the 10 cows
 			for (auto& cowPtr : cows)
@@ -846,6 +889,7 @@ void ofApp::keyPressed(int key)
 				case 'R':
 				case 'r':
 					bToggleUFOLight = !bToggleUFOLight;
+					ufoExplosion.emit();
 					break;
 				case 'L':
 				case 'l':

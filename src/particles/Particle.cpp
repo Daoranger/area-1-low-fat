@@ -1,5 +1,4 @@
 
-#pragma once
 
 #include "Particle.h"
 
@@ -26,13 +25,13 @@ void Particle::draw() {
     ofFill();
     switch(shape) {
         case DISK:
-            ofDrawCylinder(position, radius, 0.1);
+            ofDrawCylinder(position, radius*scale, 2);
             break;
         case SPHERE:
-            ofDrawSphere(position, radius);
+            ofDrawSphere(position, radius*scale);
             break;
         case CUBE:
-            ofDrawBox(position, radius);
+            ofDrawBox(position, radius*scale);
             break;
     }
 };

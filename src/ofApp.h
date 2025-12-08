@@ -82,6 +82,10 @@ class ofApp : public ofBaseApp
 		// Shader
 		ofShader shader;
 
+		// Particle Emitters
+		ParticleEmitter ufoMove;
+		ParticleEmitter ufoExplosion;
+
 		// UFO (Player)
 		Ufo ufo;
 		Beam beam;
@@ -149,7 +153,7 @@ class ofApp : public ofBaseApp
 		Cow cow1;
 		CowPlatform cowPlatform;
 
-		// Lightnings
+		// Lightings
 		ofLight ufoLight;			// Spotlight underneath the UFO like a beam
 		bool bToggleUFOLight = false;
 		ofLight sunLight;			// Directional light to represent sun light

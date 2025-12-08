@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "ofMain.h"
@@ -16,7 +15,10 @@ class ParticleEmitter {
         float rotation = 0;
         float timer = 1;
         float rate = 1;
+        float radius = 0.5;
         float numParticles = 10;
+        float scale= 1;
+        float scaleRate = 1;
         ofVec3f position;
         ofVec3f direction = ofVec3f(0, -1, 0);
 

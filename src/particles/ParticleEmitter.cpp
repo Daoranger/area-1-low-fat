@@ -1,4 +1,3 @@
-#pragma once
 
 #include "ParticleEmitter.h"
 
@@ -28,32 +27,38 @@ void ParticleEmitter::setEmitterShape(EMITTER_SHAPE s) {
 };
 
 void ParticleEmitter::update() {
-    timer -= 1/ofGetFrameRate();
-    if (timer <= 0) {
-        emit();
+    if (active) {
+        timer -= 1/ofGetFrameRate();
+        if (timer <= 0) {
+            emit();
+            timer = rate;
+        }
     }
 };
 
 void ParticleEmitter::emit() {
-    switch(emitterShape) {
-        case (DirectionalEmitter):
+    switch (emitterShape) {
+        case DirectionalEmitter: {
             launchParticle();
             break;
-        case (RadialEmitter):
+        }
+        case RadialEmitter: {
             float step = 360 / numParticles;
             for (int i = 0; i < numParticles; i ++) {
                 launchParticle();
                 rotation += step;
-            }
+            };
             break;
-        case (SphereEmitter):
+        }
+        case SphereEmitter: {
             ofVec3f origDir = direction;
             for (int i = 0; i < numParticles; i ++) {
                 launchParticle();
                 direction = ofVec3f(ofRandom(-1, 1), ofRandom(-1, 1), ofRandom(-1, 1));
-            }
+            };
             direction = origDir;
             break;
+        }
     }
 };
 
@@ -66,14 +71,17 @@ void ParticleEmitter::launchParticle() {
     Particle particle;
     particle.color = color;
     particle.setShape(shape);
+    particle.radius = radius;
     particle.position = position;
     particle.rotation = rotation;
     particle.rotSpeed = rotSpeed;
     particle.velocity = speed * direction;
     particle.acceleration = acceleration * direction;
+    particle.scale = scale;
+    particle.scaleRate = scaleRate;
     particle.damping = damping;
     particle.setLifespan(lifespan);
-                
+    
     particleSys->add(particle);
 };
 
@@ -82,6 +90,7 @@ void ParticleEmitter::launchParticle(float speed, float rotSpeed, float accelera
     Particle particle;
     particle.color = color;
     particle.setShape(shape);
+    particle.radius = radius;
     particle.position = position;
     particle.rotation = rotation;
     particle.rotSpeed = rotSpeed;

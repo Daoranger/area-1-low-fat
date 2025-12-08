@@ -6,7 +6,7 @@
 
 class ParticleSystem {
 public:
-    vector<Particle> particles;
+    vector<Particle> particles;           
 
 	void add(Particle particle);
 	void remove(int i);
