@@ -14,15 +14,15 @@ void ofApp::setup()
 		titleMusic.play();
 	}
 
-	if (bgMusic.load("sounds/bgMusic.mp3"))
+	if (bgMusic.load("sounds/gameBGMusic.mp3"))
 	{
 		bgMusic.setLoop(true);
 		bgMusic.setVolume(0.5f);
 	}
 
-	if (goMusic.load("sounds/goMusic.mp3"))
+	if (goMusic.load("sounds/gameOverMusic.mp3"))
 	{
-		goMusic.setLoop(true);
+		//goMusic.setLoop(true);
 		goMusic.setVolume(0.5f);
 	}
 
@@ -394,7 +394,11 @@ void ofApp::update()
 				{
 					cout << "Victory!\n";
 					bVictory = true;
+					if (bgMusic.isPlaying())
+						bgMusic.stop();
 					gameState = STATE_GAMEOVER;
+					if (!goMusic.isPlaying())
+						goMusic.play();
 				}
 				else
 				{ 
@@ -737,13 +741,18 @@ void ofApp::draw()
 			ofDisableLighting();
 
 			ofSetColor(ofColor::white);
-
+			std::string strGameOver = "";
 			if (bVictory)
+			{
 				victoryBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+				strGameOver = "YOU WIN!";
+			}
 			else
+			{
 				defeatBackground.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+				strGameOver = "GAME OVER!";
+			}
 
-			std::string strGameOver = "GAME OVER";
 			std::string strRestart = "Press R to Restart";
 			std::string strMainMenu = "Press M to Return to Main Menu";
 
@@ -755,16 +764,32 @@ void ofApp::draw()
 
 			auto centerY = ofGetWindowHeight() * 0.5f;
 
-			ofPushStyle();
-			ofSetColor(ofColor::lightCyan);
+			if (bVictory) 
+			{
+				ofPushStyle();
+				ofSetColor(ofColor::lightCyan);
 
-			fontTitle.drawString(strGameOver, (ofGetWindowWidth() - fontTitle.stringWidth(strGameOver)) * 0.5f, ofGetWindowHeight() / 2.0);
+				fontTitle.drawString(strGameOver, (ofGetWindowWidth() - fontTitle.stringWidth(strGameOver)) * 0.5f, ofGetWindowHeight() / 2.0 - 50);
 
-			float space = ofGetWindowHeight() / 12;
+				float space = ofGetWindowHeight() / 12;
 
-			fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 1);
-			fontUI.drawString(strMainMenu, centerX(strMainMenu), centerY + space * 2);
-			ofPopStyle();
+				fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 4.5);
+				fontUI.drawString(strMainMenu, centerX(strMainMenu), centerY + space * 5.5);
+				ofPopStyle();
+			} 
+			else
+			{
+				ofPushStyle();
+				ofSetColor(ofColor::lightCyan);
+
+				fontTitle.drawString(strGameOver, (ofGetWindowWidth() - fontTitle.stringWidth(strGameOver)) * 0.5f, ofGetWindowHeight() / 2.0);
+
+				float space = ofGetWindowHeight() / 12;
+
+				fontUI.drawString(strRestart, centerX(strRestart), centerY + space * 1);
+				fontUI.drawString(strMainMenu, centerX(strMainMenu), centerY + space * 2);
+				ofPopStyle();
+			}
 			break;
 		}
 		case STATE_INSTRUCTION:
@@ -1156,7 +1181,7 @@ void ofApp::resetGame()
 	bSparkSoundPlayed = false;
 
 	// Cow reset
-	nCowAbducted = 0;
+	nCowAbducted = 5;
 
 
 	for (auto i = 0; i < cows.size() && i < cowsPositions.size(); ++i)

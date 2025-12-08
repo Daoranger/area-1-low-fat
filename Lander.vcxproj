@@ -251,6 +251,9 @@
     <ClCompile Include="src\objects\Object.cpp" />
     <ClCompile Include="src\objects\SpeedRing.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\particles\Particle.cpp" />
+    <ClCompile Include="src\particles\ParticleEmitter.cpp" />
+    <ClCompile Include="src\particles\ParticleSystem.cpp" />
     <ClCompile Include="src\player\beam\Beam.cpp" />
     <ClCompile Include="src\player\Ufo.cpp" />
   </ItemGroup>
@@ -368,6 +371,9 @@
     <ClInclude Include="src\objects\Object.h" />
     <ClInclude Include="src\objects\SpeedRing.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\particles\Particle.h" />
+    <ClInclude Include="src\particles\ParticleEmitter.h" />
+    <ClInclude Include="src\particles\ParticleSystem.h" />
     <ClInclude Include="src\player\beam\Beam.h" />
     <ClInclude Include="src\player\Ufo.h" />
   </ItemGroup>
