@@ -23,17 +23,25 @@ void Particle::setLifespan(int life) {
 void Particle::draw() {
     ofSetColor(color);
     ofFill();
+    ofEnableAlphaBlending();
+    ofSetSphereResolution(64);
+    ofSetCylinderResolution(64, 1);
+    ofPushMatrix();
+    ofTranslate(position);
+    ofRotateDeg(rotation, rotAxis.x, rotAxis.y, rotAxis.z);
     switch(shape) {
         case DISK:
-            ofDrawCylinder(position, radius*scale, 2);
+            ofDrawCylinder(radius*scale, 2);
             break;
         case SPHERE:
-            ofDrawSphere(position, radius*scale);
+            ofDrawSphere(radius*scale);
             break;
         case CUBE:
-            ofDrawBox(position, radius*scale);
+            ofDrawBox(radius*scale);
             break;
     }
+    ofPopMatrix();
+    ofDisableAlphaBlending();
 };
 
 void Particle::setForce(float x, float y, float z) {

@@ -83,8 +83,11 @@ class ofApp : public ofBaseApp
 		ofShader shader;
 
 		// Particle Emitters
-		ParticleEmitter ufoMove;
+		ParticleEmitter ufoMoveV;
+		ParticleEmitter ufoMoveL;
+		ParticleEmitter ufoMoveR;
 		ParticleEmitter ufoExplosion;
+		ParticleEmitter ufoFireTrail;
 
 		// UFO (Player)
 		Ufo ufo;

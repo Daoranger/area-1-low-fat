@@ -10,6 +10,7 @@ class Particle {
 
         PARTICLE_SHAPE shape = SPHERE;
 
+        glm::vec3 rotAxis;
         ofVec3f velocity;
         ofVec3f acceleration;
         ofVec3f position;

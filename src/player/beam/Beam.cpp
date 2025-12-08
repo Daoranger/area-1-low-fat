@@ -36,6 +36,7 @@ void Beam::draw() {
     if (height == 0) return;
     ofEnableAlphaBlending();
     ofSetColor(50, 255, 85, 80);
+    ofSetCylinderResolution(64, 1);
     ofDrawCylinder(pos, radius, height);
     ofDisableAlphaBlending();
     ofSetColor(ofColor::white, 255);

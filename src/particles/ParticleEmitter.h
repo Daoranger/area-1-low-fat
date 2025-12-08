@@ -3,17 +3,17 @@
 #include "ofMain.h"
 #include "ParticleSystem.h"
 
-enum EMITTER_SHAPE {DirectionalEmitter, RadialEmitter, SphereEmitter};
+enum EMITTER_SHAPE {DirectionalEmitter, RadialEmitter, SphereEmitter, ConeEmitter};
 
 class ParticleEmitter {
     public:
         ParticleSystem*particleSys = new ParticleSystem();
 
-        ofColor color;
+        vector<ofColor> colors;
         float lifespan = 5;
         float damping = 0.99;
         float rotation = 0;
-        float timer = 1;
+        float timer = 0;
         float rate = 1;
         float radius = 0.5;
         float numParticles = 10;
@@ -24,6 +24,7 @@ class ParticleEmitter {
 
         float speed;
         float rotSpeed;
+        float rotAccel;
         float acceleration;
 
         bool active = false;

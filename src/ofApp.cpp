@@ -232,28 +232,69 @@ void ofApp::setup()
 	//
 
 	// Particles when UFO is using its thruster
-	ufoMove.speed = 20;
-	ufoMove.setEmitterShape(DirectionalEmitter);
-	ufoMove.setParticleShape(DISK);
-	ufoMove.rate = 0.5;
-	ufoMove.numParticles = 1;
-	ufoMove.setLifespan(1);
-	ufoMove.color = ofColor(0, 255, 255);
-	ufoMove.direction = ofVec3f(0, -1, 0);
-	ufoMove.radius = 4;
-	ufoMove.start();
-	ufoMove.scale = 1;
-	ufoMove.scaleRate = 1.01;
+	ufoMoveV.speed = 20;
+	ufoMoveV.setEmitterShape(DirectionalEmitter);
+	ufoMoveV.setParticleShape(DISK);
+	ufoMoveV.rate = 0.5;
+	ufoMoveV.numParticles = 1;
+	ufoMoveV.setLifespan(1);
+	ufoMoveV.colors.push_back(ofColor(0, 255, 255, 50));
+	ufoMoveV.direction = ofVec3f(0, -1, 0);
+	ufoMoveV.radius = 4;
+	ufoMoveV.start();
+	ufoMoveV.scale = 1;
+	ufoMoveV.scaleRate = 1.01;
+
+	// Particles for any UFO movement
+	ufoMoveL.speed = 0;
+	ufoMoveL.setEmitterShape(DirectionalEmitter);
+	ufoMoveL.setParticleShape(SPHERE);
+	ufoMoveL.rate = 0.01;
+	ufoMoveL.setLifespan(1);
+	ufoMoveL.colors.push_back(ofColor(0, 255, 255));
+	ufoMoveL.direction = ofVec3f(0, 0, 0);
+	ufoMoveL.radius = 0.6;
+	ufoMoveL.scaleRate = 0.9;
+
+	ufoMoveR.speed = 0;
+	ufoMoveR.setEmitterShape(DirectionalEmitter);
+	ufoMoveR.setParticleShape(SPHERE);
+	ufoMoveR.rate = 0.01;
+	ufoMoveR.setLifespan(1);
+	ufoMoveR.colors.push_back(ofColor(0, 255, 255));
+	ufoMoveR.direction = ofVec3f(0, 0, 0);
+	ufoMoveR.radius = 0.6;
+	ufoMoveR.scaleRate = 0.9;
 	
 	// Particles when UFO crashes
-	ufoExplosion.speed = 100;
-	ufoExplosion.acceleration = 40;
+	ufoExplosion.speed = 300;
+	ufoExplosion.acceleration = 60;
+	ufoExplosion.rotAccel = 100;
 	ufoExplosion.setEmitterShape(SphereEmitter);
 	ufoExplosion.setParticleShape(CUBE);
-	ufoExplosion.numParticles = 100;
-	ufoExplosion.setLifespan(3);
-	ufoExplosion.color = ofColor::orangeRed;
-	ufoExplosion.radius = 2;
+	ufoExplosion.numParticles = 500;
+	ufoExplosion.setLifespan(2);
+	ufoExplosion.colors.push_back(ofColor::orangeRed);
+	ufoExplosion.colors.push_back(ofColor::yellow);
+	ufoExplosion.colors.push_back(ofColor::black);
+	ufoExplosion.colors.push_back(ofColor::red);
+	ufoExplosion.scaleRate = 0.95;
+	ufoExplosion.radius = 3;
+
+	ufoFireTrail.speed = 20;
+	ufoFireTrail.setEmitterShape(ConeEmitter);
+	ufoFireTrail.setParticleShape(SPHERE);
+	ufoFireTrail.numParticles = 10;
+	ufoFireTrail.setLifespan(1);
+	ufoFireTrail.scaleRate = 1.01;
+	ufoFireTrail.radius = 0.1;
+	ufoFireTrail.rate = 0.001;
+	ufoFireTrail.direction = ofVec3f(0,-1,0);
+	ufoFireTrail.colors.push_back(ofColor::orangeRed);
+	ufoFireTrail.colors.push_back(ofColor::black);
+	ufoFireTrail.colors.push_back(ofColor(45, 45, 45));
+	ufoFireTrail.colors.push_back(ofColor(85, 85, 85));
+	ufoFireTrail.stop();
 }
 
 //--------------------------------------------------------------
@@ -328,9 +369,6 @@ void ofApp::update()
 
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
-					if (!ufoExplosionSound.isPlaying())
-						ufoExplosionSound.play();
-					ufoExplosion.emit();
 					ufo.handleDeath(ufo.getHeadingY());
 					deathStartTime = ofGetElapsedTimef();
 					bFuelDeathPending = false;
@@ -379,10 +417,14 @@ void ofApp::update()
 			{
 				if (!ufoSound.isPlaying())
 					ufoSound.play();
+				ufoMoveL.start();
+				ufoMoveR.start();
 			}
 			else
 			{
 				ufoSound.stop();
+				ufoMoveL.stop();
+				ufoMoveR.stop();
 			}
 
 			bool moving = false;
@@ -403,8 +445,18 @@ void ofApp::update()
 			if (keysMap['e']) ufo.rotationForce -= YAW_TORQUE;								// yaw right (q)
 			if (keysMap['q']) ufo.rotationForce += YAW_TORQUE;								// yaw left (e)
 
-			if (moving) ufoMove.start();
-			else ufoMove.stop();
+			if (moving) ufoMoveV.start();
+			else ufoMoveV.stop();
+
+			glm::vec3 right = glm::normalize(glm::cross(ufo.getHeadingZ(), glm::vec3(0,1,0)));
+			glm::vec3 left = -right;
+			ufoMoveL.position = ufo.position + left*8.8 + glm::vec3(0,1,0);
+			ufoMoveR.position = ufo.position + right*8.8 + glm::vec3(0,1,0);
+
+			ufoMoveL.update();
+			ufoMoveR.update();
+			ufoMoveL.integrateParticles();
+			ufoMoveR.integrateParticles();
 			
 			// Gravity Force: did not use moon gravity because it feel to low for gameplay
 			const glm::vec3 gravity = glm::vec3(0.0f, -5.0f, 0.0f);
@@ -486,6 +538,7 @@ void ofApp::update()
 					if (!ufoExplosionSound.isPlaying())
 						ufoExplosionSound.play();
 					ufoExplosion.emit();
+					ufoFireTrail.start();
 					ufo.handleDeath(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
@@ -580,11 +633,15 @@ void ofApp::update()
 				cow1.free();
 			}
 
-			ufoMove.position = ufo.position;
-			ufoMove.integrateParticles();
-			ufoMove.update();
+			ufoMoveV.position = ufo.position;
+			ufoMoveV.integrateParticles();
+			ufoMoveV.update();
+
+			ufoFireTrail.position = ufo.position;
+			ufoFireTrail.integrateParticles();
+			ufoFireTrail.update();
 			
-			ufoExplosion.position = ufo.position;
+			ufoExplosion.position = ufo.position + glm::vec3(0, 8, 0);
 			ufoExplosion.integrateParticles();
 			break;
 		}
@@ -683,8 +740,11 @@ void ofApp::draw()
 			speedRing1.draw();
 
 			//shader.begin();
-			ufoMove.draw();
+			ufoMoveV.draw();
 			ufoExplosion.draw();
+			ufoMoveL.draw();
+			ufoMoveR.draw();
+			ufoFireTrail.draw();
 			//shader.end();
 
 			ofSetColor(ofColor::white);
@@ -963,7 +1023,6 @@ void ofApp::keyPressed(int key)
 				case 'R':
 				case 'r':
 					bToggleUFOLight = !bToggleUFOLight;
-					//ufoExplosion.emit();
 					break;
 				case 'L':
 				case 'l':
@@ -1250,6 +1309,7 @@ void ofApp::resetGame()
 	cow1.position = ofVec3f(30, 250, 0);
 
 	// Other stuff
+	ufoFireTrail.stop();
 	bVictory = false;
 
 }

@@ -54,7 +54,17 @@ void ParticleEmitter::emit() {
             ofVec3f origDir = direction;
             for (int i = 0; i < numParticles; i ++) {
                 launchParticle();
-                direction = ofVec3f(ofRandom(-1, 1), ofRandom(-1, 1), ofRandom(-1, 1));
+                direction = glm::normalize(glm::vec3(ofRandom(-1, 1), ofRandom(-1, 1), ofRandom(-1, 1)));
+            };
+            direction = origDir;
+            break;
+        }
+        case ConeEmitter: {
+            ofVec3f origDir = direction;
+            for (int i = 0; i < numParticles; i ++) {
+                launchParticle();
+                direction = origDir;
+                direction = direction.rotate(ofRandom(-25, 26), ofVec3f(ofRandom(0, 1), ofRandom(0, 1), ofRandom(0, 1)));
             };
             direction = origDir;
             break;
@@ -69,12 +79,14 @@ void ParticleEmitter::integrateParticles() {
 void ParticleEmitter::launchParticle() {
             
     Particle particle;
-    particle.color = color;
+    particle.color = colors[ofRandom(0, colors.size())];
     particle.setShape(shape);
     particle.radius = radius;
     particle.position = position;
     particle.rotation = rotation;
     particle.rotSpeed = rotSpeed;
+    particle.rotAcceleration = rotAccel;
+    particle.rotAxis = glm::vec3(ofRandom(0, 1), ofRandom(0, 1), ofRandom(0, 1));
     particle.velocity = speed * direction;
     particle.acceleration = acceleration * direction;
     particle.scale = scale;
@@ -88,12 +100,14 @@ void ParticleEmitter::launchParticle() {
 void ParticleEmitter::launchParticle(float speed, float rotSpeed, float acceleration) {
             
     Particle particle;
-    particle.color = color;
+    particle.color = colors[ofRandom(0, colors.size())];
     particle.setShape(shape);
     particle.radius = radius;
     particle.position = position;
     particle.rotation = rotation;
     particle.rotSpeed = rotSpeed;
+    particle.rotAcceleration = rotAccel;
+    particle.rotAxis = glm::vec3(ofRandom(0, 1), ofRandom(0, 1), ofRandom(0, 1));
     particle.velocity = speed * direction;
     particle.acceleration = acceleration * direction;
     particle.damping = damping;
