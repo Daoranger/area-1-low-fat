@@ -1226,7 +1226,7 @@ void ofApp::resetGame()
 	bSparkSoundPlayed = false;
 
 	// Cow reset
-	nCowAbducted = 5;
+	nCowAbducted = 4;
 
 
 	for (auto i = 0; i < cows.size() && i < cowsPositions.size(); ++i)
