@@ -273,7 +273,7 @@ void ofApp::setup()
 	ufoExplosion.setEmitterShape(SphereEmitter);
 	ufoExplosion.setParticleShape(CUBE);
 	ufoExplosion.numParticles = 500;
-	ufoExplosion.setLifespan(2);
+	ufoExplosion.setLifespan(1);
 	ufoExplosion.colors.push_back(ofColor::orangeRed);
 	ufoExplosion.colors.push_back(ofColor::yellow);
 	ufoExplosion.colors.push_back(ofColor::black);
@@ -285,7 +285,7 @@ void ofApp::setup()
 	ufoFireTrail.setEmitterShape(ConeEmitter);
 	ufoFireTrail.setParticleShape(SPHERE);
 	ufoFireTrail.numParticles = 10;
-	ufoFireTrail.setLifespan(1);
+	ufoFireTrail.setLifespan(2);
 	ufoFireTrail.scaleRate = 1.01;
 	ufoFireTrail.radius = 0.1;
 	ufoFireTrail.rate = 0.001;
