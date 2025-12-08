@@ -127,6 +127,11 @@ class ofApp : public ofBaseApp
 
 		float lastScaleX = 1;
 		float lastScaleY = 1;
+
+		ofImage star;
+		bool drawStar = false;
+		float starScale = 0;
+		float starGrow = true;
 		
 		// Game Objects
 		ChargingStation station1;

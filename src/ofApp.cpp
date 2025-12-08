@@ -72,6 +72,7 @@ void ofApp::setup()
 	titleBackground.load("images/titlebg.png");
 	victoryBackground.load("images/victorybg.png");
 	defeatBackground.load("images/defeatbg.png");
+	star.load("images/Star.png");
 	
 	ofPushStyle();
 	// Fonts setup
@@ -286,8 +287,8 @@ void ofApp::setup()
 	ufoFireTrail.setParticleShape(SPHERE);
 	ufoFireTrail.numParticles = 10;
 	ufoFireTrail.setLifespan(2);
-	ufoFireTrail.scaleRate = 1.01;
-	ufoFireTrail.radius = 0.1;
+	ufoFireTrail.scaleRate = 1.02;
+	ufoFireTrail.radius = 0.2;
 	ufoFireTrail.rate = 0.001;
 	ufoFireTrail.direction = ofVec3f(0,-1,0);
 	ufoFireTrail.colors.push_back(ofColor::orangeRed);
@@ -340,8 +341,21 @@ void ofApp::update()
 				else if (deathElapsed >= 3.0f && !bSparkSoundPlayed)
 				{
 					cout << "Spark sound play\n";
+					drawStar = true;
 					sparkSound.play();
 					bSparkSoundPlayed = true;
+				}
+				if (drawStar && starGrow) {
+					starScale += 0.125;
+					if (starScale >= 1)
+						starGrow = false;
+				}
+				else if (drawStar) {
+					starScale -= 0.125;
+					if (starScale <= 0) {
+						drawStar = false;
+						starGrow = true;
+					}
 				}
 			}
 
@@ -818,6 +832,9 @@ void ofApp::draw()
 				ofSetColor(ofColor::darkSlateGray);
 				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 250, 0), glm::vec3(40, 228, 0));
 				ofPopStyle();
+
+				if (drawStar)
+					star.draw((ofGetWindowWidth()/2) - (star.getWidth()/16.0)*starScale, ofGetWindowHeight()/2 - (star.getHeight()/16.0)*starScale, (star.getWidth()/8.0)*starScale, (star.getHeight()/8.0)*starScale);
 
 				fontUI.drawString("Cows abducted: " + std::to_string(nCowAbducted) + " / " + std::to_string(nCowRequired), 20, 300);
 
