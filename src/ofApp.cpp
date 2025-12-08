@@ -17,7 +17,7 @@ void ofApp::setup()
 	if (bgMusic.load("sounds/gameBGMusic.mp3"))
 	{
 		bgMusic.setLoop(true);
-		bgMusic.setVolume(0.3f);
+		bgMusic.setVolume(0.2f);
 	}
 
 	if (goMusic.load("sounds/gameOverMusic.mp3"))
@@ -40,7 +40,7 @@ void ofApp::setup()
 	if (ufoSound.load("sounds/ufo-noise.mp3"))
 	{
 		ufoSound.setLoop(true);
-		ufoSound.setVolume(0.3);
+		ufoSound.setVolume(0.4);
 	}
 
 	if (menuHoverSound.load("sounds/menu-hover.mp3"))
@@ -56,6 +56,11 @@ void ofApp::setup()
 	if (ufoBeamSound.load("sounds/beam-active.mp3"))
 	{
 		ufoBeamSound.setVolume(1.0);
+	}
+
+	if (ufoExplosionSound.load("sounds/explosion.mp3"))
+	{
+		ufoExplosionSound.setVolume(0.5);
 	}
 
 	
@@ -227,13 +232,13 @@ void ofApp::setup()
 	//
 
 	// Particles when UFO is using its thruster
-	ufoMove.speed = 5;
+	ufoMove.speed = 20;
 	ufoMove.setEmitterShape(DirectionalEmitter);
 	ufoMove.setParticleShape(DISK);
 	ufoMove.rate = 0.5;
 	ufoMove.numParticles = 1;
 	ufoMove.setLifespan(1);
-	ufoMove.color = ofColor::seaGreen;
+	ufoMove.color = ofColor(0, 255, 255);
 	ufoMove.direction = ofVec3f(0, -1, 0);
 	ufoMove.radius = 4;
 	ufoMove.start();
@@ -323,6 +328,8 @@ void ofApp::update()
 
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
+					if (!ufoExplosionSound.isPlaying())
+						ufoExplosionSound.play();
 					ufoExplosion.emit();
 					ufo.handleDeath(ufo.getHeadingY());
 					deathStartTime = ofGetElapsedTimef();
@@ -476,6 +483,8 @@ void ofApp::update()
 					}
 
 					ofVec3f contactNormal = getNormalAtContactPoint();
+					if (!ufoExplosionSound.isPlaying())
+						ufoExplosionSound.play();
 					ufoExplosion.emit();
 					ufo.handleDeath(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
@@ -741,13 +750,13 @@ void ofApp::draw()
 				ofPushStyle();
 				ofFill();
 				ofSetColor(ofColor::darkSlateGray);
-				ofDrawRectangle(18, 228, 154, 19);
+				ofDrawRectangle(18, 228, 304, 34);
 				ofSetColor(ofColor::black);
-				ofDrawRectangle(20, 230, 150, 15);
+				ofDrawRectangle(20, 230, 300, 30);
 				ofSetColor(ofColor::aqua);
-				ofDrawRectangle(20, 230, 150 * fuelPercent, 15);
+				ofDrawRectangle(20, 230, 300 * fuelPercent, 30);
 				ofSetColor(ofColor::darkSlateGray);
-				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 240, 0), glm::vec3(30, 228, 0));
+				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 250, 0), glm::vec3(40, 228, 0));
 				ofPopStyle();
 
 				fontUI.drawString("Cows abducted: " + std::to_string(nCowAbducted) + " / " + std::to_string(nCowRequired), 20, 300);
@@ -954,7 +963,7 @@ void ofApp::keyPressed(int key)
 				case 'R':
 				case 'r':
 					bToggleUFOLight = !bToggleUFOLight;
-					ufoExplosion.emit();
+					//ufoExplosion.emit();
 					break;
 				case 'L':
 				case 'l':
@@ -1253,7 +1262,7 @@ void ofApp::updateGameCamera()
 	switch (camView)
 	{
 	case CAM_THIRD: // 3rd person: camera sits 6 up and 12 behind the ufo, looks 3 ahead
-		gameCam.setPosition(ufo.position + ufo.getHeadingY() * 20 - ufo.getHeadingZ() * 25);
+		gameCam.setPosition(ufo.position + ufo.getHeadingY() * 40 - ufo.getHeadingZ() * 45);
 		gameCam.lookAt(ufo.position + ufo.getHeadingZ() * 3);
 		break;
 	case CAM_FIRST: //1st person: camera at ufo position, looks straight forward

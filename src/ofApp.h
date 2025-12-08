@@ -172,6 +172,7 @@ class ofApp : public ofBaseApp
 		ofSoundPlayer ufoBeamSound;
 		ofSoundPlayer menuHoverSound;
 		ofSoundPlayer menuSelectedSound;
+		ofSoundPlayer ufoExplosionSound;
 
 };
 
