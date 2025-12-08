@@ -10,14 +10,14 @@ void ofApp::setup()
 	if (titleMusic.load("sounds/titleMusic.mp3"))
 	{   
 		titleMusic.setLoop(true);
-		titleMusic.setVolume(0.5f);
+		titleMusic.setVolume(0.3f);
 		titleMusic.play();
 	}
 
 	if (bgMusic.load("sounds/gameBGMusic.mp3"))
 	{
 		bgMusic.setLoop(true);
-		bgMusic.setVolume(0.5f);
+		bgMusic.setVolume(0.3f);
 	}
 
 	if (goMusic.load("sounds/gameOverMusic.mp3"))
@@ -37,6 +37,28 @@ void ofApp::setup()
 		alarmSound.setVolume(1.0f);
 	}
 
+	if (ufoSound.load("sounds/ufo-noise.mp3"))
+	{
+		ufoSound.setLoop(true);
+		ufoSound.setVolume(0.3);
+	}
+
+	if (menuHoverSound.load("sounds/menu-hover.mp3"))
+	{
+		menuHoverSound.setVolume(1.0);
+	}
+
+	if (menuSelectedSound.load("sounds/menu-select.mp3"))
+	{
+		menuSelectedSound.setVolume(1.5);
+	}
+
+	if (ufoBeamSound.load("sounds/beam-active.mp3"))
+	{
+		ufoBeamSound.setVolume(1.0);
+	}
+
+	
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	ofEnableDepthTest();
@@ -262,6 +284,7 @@ void ofApp::update()
 				float deathElapsed = ofGetElapsedTimef() - deathStartTime;
 				if (deathElapsed >= 5.0f)
 				{
+					ufoSound.stop();
 					if (bgMusic.isPlaying())
 						bgMusic.stop();
 					gameState = STATE_GAMEOVER;
@@ -319,9 +342,11 @@ void ofApp::update()
 				ufoLight.disable();
 			}
 
+			// AGL
 			ufo.calculateAltitude(terrainOctree);
 
-			// will move these variables outside later
+
+			// Ufo physics movement acceleration
 			constexpr float THRUST_UP_ACCEL = 20.0f;
 			constexpr float THRUST_DOWN_ACCEL = 15.0f;
 			constexpr float FORWARD_ACCEL = 20.0f;
@@ -343,7 +368,18 @@ void ofApp::update()
 				ufo.fuelLeftTime = max(static_cast<float>(0.0), ufo.fuelLeftTime - deltaTime);
 			}
 
+			if (ufo.velocity.length() >= 0.01f)
+			{
+				if (!ufoSound.isPlaying())
+					ufoSound.play();
+			}
+			else
+			{
+				ufoSound.stop();
+			}
+
 			bool moving = false;
+
 			if (keysMap[' '] && ufo.hasFuel())																// up (space)
 			{
 				ufo.handleTakeoff();
@@ -393,6 +429,7 @@ void ofApp::update()
 				if (nCowAbducted >= nCowRequired)
 				{
 					cout << "Victory!\n";
+					ufoSound.stop();
 					bVictory = true;
 					if (bgMusic.isPlaying())
 						bgMusic.stop();
@@ -862,6 +899,7 @@ void ofApp::keyPressed(int key)
 		{
 			if (key == 'w' || key == 'W')
 			{
+				menuHoverSound.play();
 				if (currentMenuItem == MENU_START)
 					currentMenuItem = MENU_QUIT;
 				else
@@ -869,6 +907,7 @@ void ofApp::keyPressed(int key)
 			}
 			else if (key == 's' || key == 'S')
 			{
+				menuHoverSound.play();
 				if (currentMenuItem == MENU_QUIT)
 					currentMenuItem = MENU_START;
 				else
@@ -876,6 +915,7 @@ void ofApp::keyPressed(int key)
 			}
 			else if (key == 'r' || key == 'R')
 			{
+				menuSelectedSound.play();
 				switch (currentMenuItem)
 				{
 				case MENU_START:
@@ -922,6 +962,11 @@ void ofApp::keyPressed(int key)
 					break;
 				case 'F':
 				case 'f':
+					
+					if (!ufoBeamSound.isPlaying() && !beam.active)
+						ufoBeamSound.play();
+					else
+						ufoBeamSound.stop();
 					beam.toggle();
 					break;
 				case '1':

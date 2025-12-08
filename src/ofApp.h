@@ -168,6 +168,10 @@ class ofApp : public ofBaseApp
 		ofSoundPlayer sparkSound;
 		ofSoundPlayer alarmSound;
 		bool bSparkSoundPlayed = false;
+		ofSoundPlayer ufoSound;
+		ofSoundPlayer ufoBeamSound;
+		ofSoundPlayer menuHoverSound;
+		ofSoundPlayer menuSelectedSound;
 
 };
 
