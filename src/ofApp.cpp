@@ -753,13 +753,16 @@ void ofApp::draw()
 			mothership.draw();
 			speedRing1.draw();
 
-			//shader.begin();
+			ofSetColor(ofColor::white);
+			shader.begin();
+			
 			ufoMoveV.draw();
 			ufoExplosion.draw();
 			ufoMoveL.draw();
 			ufoMoveR.draw();
 			ufoFireTrail.draw();
-			//shader.end();
+			
+			shader.end();
 
 			ofSetColor(ofColor::white);
 
