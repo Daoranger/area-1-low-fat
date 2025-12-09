@@ -1,7 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib speed-ring.mtl
-g default
+mtllib speed-ring-horizontal.mtl
 v 10.978288 0.000000 -0.690695
 v 10.913256 0.000000 -1.378664
 v 10.805154 0.000000 -2.061193
@@ -5877,7 +5876,6 @@ vn 0.281734 -0.959493 -0.000001
 vn -0.281734 0.959492 0.000001
 vn -0.281734 0.959492 0.000001
 s 1
-g pTorus1
 usemtl standardSurface2SG
 f 2/2/1 1/1/2 101/102/3 102/103/4
 f 3/3/5 2/2/1 102/103/4 103/104/6

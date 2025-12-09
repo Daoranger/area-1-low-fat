@@ -1,7 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
 mtllib cow-platform.mtl
-g default
 v 5.706343 -0.750000 -1.854103
 v 4.854105 -0.750000 -3.526714
 v 3.526714 -0.750000 -4.854105
@@ -1645,7 +1644,6 @@ vn 0.156432 0.000000 0.987689
 vn 0.156432 0.000000 0.987689
 vn 0.156432 0.000000 0.987689
 s off
-g pCylinder1
 usemtl blinn1SG
 f 259/301/1 260/302/2 261/303/3 262/304/4
 f 263/302/5 264/305/6 265/306/7 266/303/8

@@ -119,9 +119,10 @@ void Ufo::calculateAltitude(Octree& terrain)
 		terrainHitLocation = terrain.mesh.getVertex(terrainHitNode.points[0]);
 		altitude = max(static_cast<float>(0.0), position.y - terrainHitLocation.y);
 	}
-	else
+	else if (!(position.x <= terrain.root.box.max().x() && position.x >= terrain.root.box.min().x() 
+				&& position.z <= terrain.root.box.max().z() && position.z >= terrain.root.box.min().z())) 
 	{
-		altitude = 0.0;
+		altitude = 0;
 	}
 }
 bool Ufo::hasFuel()

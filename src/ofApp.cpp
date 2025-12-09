@@ -127,7 +127,7 @@ void ofApp::setup()
 	terrainColor.loadModel("geo/terrain.obj");
 	terrain.setScaleNormalization(false);
 	terrainColor.setScaleNormalization(false);
-	terrainOctree.create(terrain.getMesh(1), 20);
+	terrainOctree.create(terrain.getMesh(0), 20);
 
 	// Game Object
 	//
@@ -1254,7 +1254,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 ofVec3f ofApp::getNormalAtContactPoint()
 {
-	ofMesh mesh = terrain.getMesh(1);
+	ofMesh mesh = terrain.getMesh(0);
 	const auto numNormals = mesh.getNumNormals();
 
 	std::unordered_set<int> collidedVerts;

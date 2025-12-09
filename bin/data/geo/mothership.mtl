@@ -1,52 +1,52 @@
 newmtl blinn2SG
 illum 4
 Kd 0.00 0.50 0.47
-Ka 0.00 0.00 0.00
+Ka 0.15 0.36 0.33
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 newmtl blinn3SG
 illum 4
 Kd 0.35 0.42 0.32
-Ka 0.00 0.00 0.00
+Ka 0.29 0.35 0.27
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 newmtl blinn4SG
 illum 4
 Kd 0.31 0.43 0.21
-Ka 0.00 0.00 0.00
+Ka 0.27 0.38 0.19
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 newmtl lambert2SG
 illum 4
 Kd 0.02 0.02 0.03
-Ka 0.00 0.00 0.00
+Ka 0.05 0.05 0.08
 Tf 1.00 1.00 1.00
 Ni 1.00
 newmtl standardSurface2SG
 illum 4
 Kd 0.34 0.82 1.00
-Ka 0.00 0.00 0.00
+Ka 0.29 0.69 0.84
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 newmtl standardSurface3SG
 illum 4
 Kd 0.04 0.04 0.07
-Ka 0.00 0.00 0.00
+Ka 0.05 0.06 0.09
 Tf 1.00 1.00 1.00
 Ni 1.00
 newmtl standardSurface5SG
 illum 4
 Kd 0.04 0.04 0.07
-Ka 0.00 0.00 0.00
+Ka 0.04 0.04 0.07
 Tf 1.00 1.00 1.00
 Ni 1.00
 newmtl standardSurface6SG
 illum 4
 Kd 0.02 0.02 0.03
-Ka 0.00 0.00 0.00
+Ka 0.02 0.02 0.03
 Tf 1.00 1.00 1.00
 Ni 1.00
