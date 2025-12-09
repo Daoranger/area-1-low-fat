@@ -9,9 +9,14 @@ ChargingStation::ChargingStation()
 
 void ChargingStation::loadModel()
 {
-    if (model.loadModel("geo/charging-station.obj"))
+    if (model.loadModel("geo/charging-station-oct.obj"))
     {
         model.setScaleNormalization(false);
+    }
+    if (modelColor.loadModel("geo/charging-station.obj"))
+    {
+        modelColorsLoaded = true;
+        modelColor.setScaleNormalization(false);
     }
 }
 

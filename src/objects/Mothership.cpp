@@ -11,7 +11,6 @@ void Mothership::loadModel()
         modelColorsLoaded = true;
         modelColor.setScaleNormalization(false);
     }
-    cout << model.getMeshCount() << endl;
 }
 
 void Mothership::handleCollision(Ufo& ufo)
