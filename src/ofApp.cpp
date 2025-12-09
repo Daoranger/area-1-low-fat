@@ -538,12 +538,13 @@ void ofApp::update()
 			}
 
 			// Speed Ring:
-			if (speedRing1.octree.intersect(ufo.boundingBox, speedRing1.octree.root, speedRing1, colBoxList, colNodeList)) 
+			if (speedRing1.octree.intersect(ufo.boundingBox, speedRing1.octree.root, speedRing1, colSpeedBoxList, colSpeedNodeList))
 			{
+				cout << "Colliding with speedRing\n";
 				speedRing1.handleCollision(ufo);
 			}
 
-			speedRing1.handleSpeedBoost(ufo);
+			//speedRing1.handleSpeedBoost(ufo);
 
 			// Handle UFO vs octrees collision based on number of collided boxes
 			if (colBoxList.size() >= 1)

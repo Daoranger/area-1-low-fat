@@ -116,6 +116,11 @@ class ofApp : public ofBaseApp
 		vector<Box> colBoxList;				// Store all collided (leaf) nodes's boxes
 		bool cowCaptured = false;
 
+
+		vector<TreeNode> colSpeedNodeList;		// Store all collided (leaf) nodes
+		vector<Box> colSpeedBoxList;
+
+
 		// UI 
 		ofTrueTypeFont fontUI;
 		ofTrueTypeFont fontTitle;
