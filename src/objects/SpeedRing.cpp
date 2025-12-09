@@ -33,7 +33,7 @@ void SpeedRing::handleSpeedBoost(Ufo& ufo)
     Box boostBox = octree.root.box;
     if (ufo.boundingBox.overlap(boostBox)) {
         if (bVertical) {
-            ufo.velocity.x *= 1.08;
+            ufo.velocity.z *= 1.08;
         }
         else {
             ufo.velocity.y *= 1.08;
@@ -45,7 +45,7 @@ void SpeedRing::handleCollision(Ufo& ufo)
 {
     cout << "Collided with speed ring" << endl;
     if (bVertical) {
-        ufo.velocity.x *= 1.08;
+        ufo.velocity.z *= 1.08;
     }
     else {
         ufo.velocity.y *= 1.08;
