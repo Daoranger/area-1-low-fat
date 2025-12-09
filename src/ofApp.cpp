@@ -63,6 +63,15 @@ void ofApp::setup()
 		ufoExplosionSound.setVolume(0.5);
 	}
 
+	if (cowMooSound.load("sounds/cow-moo.mp3"))
+	{
+		cowMooSound.setVolume(0.5);
+	}
+
+	if (cowTeleportSound.load("sounds/cow-teleport.mp3"))
+	{
+		cowTeleportSound.setVolume(0.5);
+	}
 	
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
@@ -135,7 +144,7 @@ void ofApp::setup()
 	station1.createOctree();
 	station2.loadModel();
 	station2.createOctree();
-	station2.position = ofVec3f(596.157, 70, -476.551);
+	station2.position = ofVec3f(536.866, 165, -436.84);
 	station3.loadModel();
 	station3.createOctree();
 	station3.position = ofVec3f(-442.068, 145, 470.853);
@@ -366,6 +375,10 @@ void ofApp::update()
 
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
+					if (!ufoExplosionSound.isPlaying() && !bVictory)
+						ufoExplosionSound.play();
+					ufoExplosion.emit();
+					ufoFireTrail.start();
 					ufo.handleDeath(ufo.getHeadingY());
 					deathStartTime = ofGetElapsedTimef();
 					bFuelDeathPending = false;
@@ -531,7 +544,7 @@ void ofApp::update()
 			// Handle UFO vs octrees collision based on number of collided boxes
 			if (colBoxList.size() >= 1)
 			{
-				if (ufo.velocity.length() >= 4.0)
+				if (ufo.velocity.length() >= 5.0)
 				{
 					if (bFuelDeathPending)
 					{
@@ -541,7 +554,7 @@ void ofApp::update()
 					}
 
 					ofVec3f contactNormal = getNormalAtContactPoint();
-					if (!ufoExplosionSound.isPlaying())
+					if (!ufoExplosionSound.isPlaying() && !bVictory)
 						ufoExplosionSound.play();
 					ufoExplosion.emit();
 					ufoFireTrail.start();
@@ -577,6 +590,8 @@ void ofApp::update()
 					cowPtr->destroy();
 					cowPtr->free();
 					nCowAbducted += 1;
+					if (!cowTeleportSound.isPlaying())
+						cowTeleportSound.play();
 				}
 
 				// Handle cows landing and physics (integrate)
@@ -592,6 +607,8 @@ void ofApp::update()
 				// Beam Collision with cow
 				// for every cow [TBD] make sure to free all other cows after finding 1st cow
 				if (beam.checkInside(cowPtr->boundingBox) && !cowCaptured) {
+					if (!cowMooSound.isPlaying())
+						cowMooSound.play();
 					cowPtr->follow(&beam.capturePoint);
 					cowCaptured = true;
 				}
@@ -631,6 +648,8 @@ void ofApp::update()
 			// Beam Collision with cow
 			// for every cow [TBD] make sure to free all other cows after finding 1st cow
 			if (beam.checkInside(cow1.boundingBox) && !cowCaptured) {
+				if (!cowMooSound.isPlaying())
+					cowMooSound.play();
 				cow1.follow(&beam.capturePoint);
 				cowCaptured = true;
 			}
@@ -805,35 +824,38 @@ void ofApp::draw()
 			
 			if (gameState == STATE_GAMESTART)
 			{
-				// Fuel bar
-				ofPushStyle();
+				if (bHideHUD)
+				{
+					// Fuel bar
+					ofPushStyle();
 
-				fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
-				ofPushStyle();
-				ofSetColor(ufo.velocity.length() >= 4.0f ? ofColor::red : ofColor::white);
-				fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
-				ofPopStyle();
-				fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
-				float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
+					fontUI.drawString("Altitude: " + ofToString(ufo.altitude, 2), 20, 70);
+					ofPushStyle();
+					ofSetColor(ufo.velocity.length() >= 5.0f ? ofColor::red : ofColor::white);
+					fontUI.drawString("Velocity: " + ofToString(ufo.velocity.length(), 2), 20, 140);
+					ofPopStyle();
+					fontUI.drawString("Fuel time left: " + (ufo.hasFuel() ? ofToString(ufo.fuelLeftTime, 2) + " s" : "Out of Fuel!"), 20, 210);
+					float fuelPercent = ufo.fuelLeftTime / ufo.fuelTotalTime;
 
-				ofPushStyle();
-				ofFill();
-				ofSetColor(ofColor::darkSlateGray);
-				ofDrawRectangle(18, 228, 304, 34);
-				ofSetColor(ofColor::black);
-				ofDrawRectangle(20, 230, 300, 30);
-				ofSetColor(ofColor::aqua);
-				ofDrawRectangle(20, 230, 300 * fuelPercent, 30);
-				ofSetColor(ofColor::darkSlateGray);
-				ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 250, 0), glm::vec3(40, 228, 0));
-				ofPopStyle();
+					ofPushStyle();
+					ofFill();
+					ofSetColor(ofColor::darkSlateGray);
+					ofDrawRectangle(18, 228, 304, 34);
+					ofSetColor(ofColor::black);
+					ofDrawRectangle(20, 230, 300, 30);
+					ofSetColor(ofColor::aqua);
+					ofDrawRectangle(20, 230, 300 * fuelPercent, 30);
+					ofSetColor(ofColor::darkSlateGray);
+					ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 250, 0), glm::vec3(40, 228, 0));
+					ofPopStyle();
 
-				if (drawStar)
-					star.draw((ofGetWindowWidth()/2) - (star.getWidth()/16.0)*starScale, ofGetWindowHeight()/2 - (star.getHeight()/16.0)*starScale, (star.getWidth()/8.0)*starScale, (star.getHeight()/8.0)*starScale);
+					if (drawStar)
+						star.draw((ofGetWindowWidth() / 2) - (star.getWidth() / 16.0) * starScale, ofGetWindowHeight() / 2 - (star.getHeight() / 16.0) * starScale, (star.getWidth() / 8.0) * starScale, (star.getHeight() / 8.0) * starScale);
 
-				fontUI.drawString("Cows abducted: " + std::to_string(nCowAbducted) + " / " + std::to_string(nCowRequired), 20, 300);
+					fontUI.drawString("Cows abducted: " + std::to_string(nCowAbducted) + " / " + std::to_string(nCowRequired), 20, 300);
 
-				ofPopStyle();
+					ofPopStyle();
+				}
 			}
 			else if (gameState == STATE_DIAGNOSTIC)
 			{
@@ -1057,6 +1079,9 @@ void ofApp::keyPressed(int key)
 					if (activeCam == &gameCam) nextGameCameraView();
 					else activeCam = &gameCam;
 					break;
+				case 'h':
+				case 'H':
+					bHideHUD = !bHideHUD;
 				}
 
 				break;

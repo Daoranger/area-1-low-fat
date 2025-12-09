@@ -126,6 +126,7 @@ class ofApp : public ofBaseApp
 		ofTrueTypeFont fontTitle;
 		ofTrueTypeFont fontInstruction;
 		ofTrueTypeFont fontSmallText;
+		bool bHideHUD = false;
 
 		int ORIGINAL_WIDTH = ofGetWindowWidth();
 		int ORIGINAL_HEIGHT = ofGetWindowHeight();
@@ -155,9 +156,9 @@ class ofApp : public ofBaseApp
 			ofVec3f(30, 50, 50), 
 			ofVec3f(30, 50, 30),
 			ofVec3f(30, 50, 40),
-			ofVec3f(536.157, 70, -476.551),
-			ofVec3f(550.157, 70, -476.551),
-			ofVec3f(575.157, 70, -476.551),
+			ofVec3f(536.157, 165, -476.551),
+			ofVec3f(550.157, 165, -476.551),
+			ofVec3f(575.157, 165, -476.551),
 			ofVec3f(-442.068, 145, 340),
 			ofVec3f(-432.068, 145, 360),
 			ofVec3f(-452.068, 145, 380),
@@ -184,6 +185,8 @@ class ofApp : public ofBaseApp
 		ofSoundPlayer menuHoverSound;
 		ofSoundPlayer menuSelectedSound;
 		ofSoundPlayer ufoExplosionSound;
+		ofSoundPlayer cowMooSound;
+		ofSoundPlayer cowTeleportSound;
 
 };
 
