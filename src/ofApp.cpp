@@ -153,10 +153,37 @@ void ofApp::setup()
 	mothership.createOctree();
 	mothership.position = ofVec3f(0, 500, 0);
 
-	speedRing1.bVertical = true;
+	// Up to mothership
+	speedRing1.bVertical = false;
 	speedRing1.loadModel();
 	speedRing1.createOctree();
-	speedRing1.position = ofVec3f(100, 300, 0);
+	speedRing1.position = ofVec3f(50, 300, 50);
+
+	// Down to ground from mothership
+	speedRing2.bVertical = false;
+	speedRing2.loadModel();
+	speedRing2.createOctree();
+	speedRing2.position = ofVec3f(50, 500, 50);
+
+	// station 3 to cow platform
+	speedRing3.bVertical = true;
+	speedRing3.loadModel();
+	speedRing3.createOctree();
+	speedRing3.position = ofVec3f(-420, 175, 0);
+
+	// station 2 to station 1
+	speedRing4.bVertical = true;
+	speedRing4.loadModel();
+	speedRing4.createOctree();
+	speedRing4.position = ofVec3f(260, 200, -250);
+	speedRing4.rotation = 135;
+
+	// cow platform to mothership
+	speedRing5.bVertical = true;
+	speedRing5.loadModel();
+	speedRing5.createOctree();
+	speedRing5.position = ofVec3f(-250, 200, -200);
+	speedRing5.rotation = 90;
 	
 	// Create 10 cows object
 	for (auto i = 0; i < 10; ++i)
@@ -536,11 +563,39 @@ void ofApp::update()
 			}
 			station3.updateLight(ufo);
 
-			// Speed Ring:
+			// SpeedRing1:
 			if (speedRing1.octree.intersect(ufo.boundingBox, speedRing1.octree.root, speedRing1, colSpeedBoxList, colSpeedNodeList))
 			{
 				cout << "Colliding with speedRing\n";
 				speedRing1.handleCollision(ufo);
+			}
+
+			// SpeedRing2:
+			if (speedRing2.octree.intersect(ufo.boundingBox, speedRing2.octree.root, speedRing2, colSpeedBoxList, colSpeedNodeList))
+			{
+				cout << "Colliding with speedRing2\n";
+				speedRing2.handleCollision(ufo);
+			}
+
+			// SpeedRing3:
+			if (speedRing3.octree.intersect(ufo.boundingBox, speedRing3.octree.root, speedRing3, colSpeedBoxList, colSpeedNodeList))
+			{
+				cout << "Colliding with speedRing3\n";
+				speedRing3.handleCollision(ufo);
+			}
+
+			// SpeedRing4:
+			if (speedRing4.octree.intersect(ufo.boundingBox, speedRing4.octree.root, speedRing4, colSpeedBoxList, colSpeedNodeList))
+			{
+				cout << "Colliding with speedRing4\n";
+				speedRing4.handleCollision(ufo);
+			}
+
+			// SpeedRing5:
+			if (speedRing5.octree.intersect(ufo.boundingBox, speedRing5.octree.root, speedRing5, colSpeedBoxList, colSpeedNodeList))
+			{
+				cout << "Colliding with speedRing5\n";
+				speedRing5.handleCollision(ufo);
 			}
 
 			//speedRing1.handleSpeedBoost(ufo);
@@ -767,6 +822,10 @@ void ofApp::draw()
 			station3.draw();
 			mothership.draw();
 			speedRing1.draw();
+			speedRing2.draw();
+			speedRing3.draw();
+			speedRing4.draw();
+			speedRing5.draw();
 
 			ofSetColor(ofColor::white);
 			shader.begin();
@@ -853,13 +912,13 @@ void ofApp::draw()
 					ofDrawTriangle(glm::vec3(18, 228, 0), glm::vec3(18, 250, 0), glm::vec3(40, 228, 0));
 					ofPopStyle();
 
-					if (drawStar)
-						star.draw((ofGetWindowWidth() / 2) - (star.getWidth() / 16.0) * starScale, ofGetWindowHeight() / 2 - (star.getHeight() / 16.0) * starScale, (star.getWidth() / 8.0) * starScale, (star.getHeight() / 8.0) * starScale);
-
 					fontUI.drawString("Cows abducted: " + std::to_string(nCowAbducted) + " / " + std::to_string(nCowRequired), 20, 300);
 
 					ofPopStyle();
 				}
+				if (drawStar)
+					star.draw((ofGetWindowWidth() / 2) - (star.getWidth() / 16.0) * starScale, ofGetWindowHeight() / 2 - (star.getHeight() / 16.0) * starScale, (star.getWidth() / 8.0) * starScale, (star.getHeight() / 8.0) * starScale);
+
 			}
 			else if (gameState == STATE_DIAGNOSTIC)
 			{

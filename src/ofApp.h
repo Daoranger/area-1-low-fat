@@ -145,7 +145,12 @@ class ofApp : public ofBaseApp
 		ChargingStation station3;
 
 		Mothership mothership;
+
 		SpeedRing speedRing1;
+		SpeedRing speedRing2;
+		SpeedRing speedRing3;
+		SpeedRing speedRing4;
+		SpeedRing speedRing5;
 
 		// List of cows
 		std::vector<std::unique_ptr<Cow>> cows;

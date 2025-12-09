@@ -3,7 +3,7 @@
 SpeedRing::SpeedRing()
 {
     position.set(100, 200, 0);
-    rotation = 30;
+    rotation = 0;
     scale.set(1, 1, 1);
 }
 
@@ -48,10 +48,23 @@ void SpeedRing::handleCollision(Ufo& ufo)
         glm::vec3 dir = glm::vec3(0, 0, 1);
         dir = glm::rotate(dir, glm::radians(rotation), glm::vec3(0,1,0));
         dir = glm::abs(dir);
-        ufo.velocity.z += (5 * dir.z);
-        ufo.velocity.x += (5 * dir.x);
+        float forceZ = 6*dir.z;
+        float forceX = 6*dir.x;
+
+        if (ufo.velocity.z < 0)
+            ufo.velocity.z -= forceZ;
+        else
+            ufo.velocity.z += forceZ;
+
+        if (ufo.velocity.x < 0)
+            ufo.velocity.x -= forceX;
+        else 
+            ufo.velocity.x += forceX;
     }
     else {
-        ufo.velocity.y *= 1.08;
+        if (ufo.velocity.y < 0)
+            ufo.velocity.y -= 5;
+        else
+            ufo.velocity.y += 5;
     }
 }
