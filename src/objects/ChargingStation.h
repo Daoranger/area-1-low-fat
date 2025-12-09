@@ -13,4 +13,7 @@ public:
     ChargingStation();
     void loadModel() override;
     void handleCollision(Ufo&) override;
+    void updateLight(Ufo&);
+
+    ofLight light;
 };

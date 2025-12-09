@@ -511,6 +511,7 @@ void ofApp::update()
 					cout << "Meet the requirement first!\n";
 				}
 			}
+			mothership.updateLight(ufo);
 
 			// UFO vs Charging Stations
 
@@ -519,18 +520,21 @@ void ofApp::update()
 			{
 				station1.handleCollision(ufo);
 			}
+			station1.updateLight(ufo);
 
 			// Station2:
 			if (station2.octree.intersect(ufo.boundingBox, station2.octree.root, station2, colBoxList, colNodeList))
 			{
 				station2.handleCollision(ufo);
 			}
+			station2.updateLight(ufo);
 
 			// Station3:
 			if (station3.octree.intersect(ufo.boundingBox, station3.octree.root, station3, colBoxList, colNodeList))
 			{
 				station3.handleCollision(ufo);
 			}
+			station3.updateLight(ufo);
 
 			// Speed Ring:
 			if (speedRing1.octree.intersect(ufo.boundingBox, speedRing1.octree.root, speedRing1, colSpeedBoxList, colSpeedNodeList))
@@ -1016,7 +1020,7 @@ void ofApp::keyPressed(int key)
 				else
 					currentMenuItem = static_cast<MenuItem>(currentMenuItem + 1);
 			}
-			else if (key == 'r' || key == 'R')
+			else if (key == 'r' || key == 'R' || key == ' ')
 			{
 				menuSelectedSound.play();
 				switch (currentMenuItem)
