@@ -15,10 +15,10 @@ void Object::draw()
         modelColor.drawFaces();
     else
         model.drawFaces();
-    //ofNoFill();
-    //ofSetColor(ofColor::white);
-    //octree.drawLeafNodes(octree.root);
-    //ofFill();
+    ofNoFill();
+    ofSetColor(ofColor::white);
+    octree.drawLeafNodes(octree.root);
+    ofFill();
     ofPopMatrix();
 }
 
