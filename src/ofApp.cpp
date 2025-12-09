@@ -147,6 +147,7 @@ void ofApp::setup()
 	speedRing1.bVertical = true;
 	speedRing1.loadModel();
 	speedRing1.createOctree();
+	speedRing1.position = ofVec3f(100, 300, 0);
 	
 	// Create 10 cows object
 	for (auto i = 0; i < 10; ++i)
@@ -535,6 +536,14 @@ void ofApp::update()
 			{
 				station3.handleCollision(ufo);
 			}
+
+			// Speed Ring:
+			if (speedRing1.octree.intersect(ufo.boundingBox, speedRing1.octree.root, speedRing1, colBoxList, colNodeList)) 
+			{
+				speedRing1.handleCollision(ufo);
+			}
+
+			speedRing1.handleSpeedBoost(ufo);
 
 			// Handle UFO vs octrees collision based on number of collided boxes
 			if (colBoxList.size() >= 1)

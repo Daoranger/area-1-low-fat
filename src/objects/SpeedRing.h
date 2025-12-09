@@ -13,6 +13,7 @@ public:
     SpeedRing();
     void loadModel() override;
     void handleCollision(Ufo&) override;
+    void handleSpeedBoost(Ufo&);
 
 public:
     bool bVertical = false;
