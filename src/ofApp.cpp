@@ -828,7 +828,7 @@ void ofApp::draw()
 			
 			if (gameState == STATE_GAMESTART)
 			{
-				if (bHideHUD)
+				if (!bHideHUD)
 				{
 					// Fuel bar
 					ofPushStyle();
