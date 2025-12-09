@@ -28,6 +28,10 @@ void Ufo::draw()
 	// Draw the UFO model faces
 	model.drawFaces();
 
+	ofSetColor(0, 150, 150, 40);
+	ofEnableAlphaBlending();
+	window.drawFaces();
+	ofDisableAlphaBlending();
 	ofPopMatrix();
 
 	// DEBUG: Draw the UFO bounding box
@@ -67,6 +71,11 @@ void Ufo::loadModel()
 	if (model.loadModel("geo/newUFO.obj"))
 	{
 		model.setScaleNormalization(false);
+	}
+	if (window.loadModel("geo/UFOwindow.obj"))
+	{	
+		window.disableMaterials();
+		window.setScaleNormalization(false);
 	}
 }
 void Ufo::updateBoundingBox()

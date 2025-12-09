@@ -33,6 +33,8 @@ public:
 	float mass;
 	float damping;
 
+	ofxAssimpModelLoader window;
+
 	// Variables: collision
 	TreeNode terrainHitNode;
 	ofVec3f terrainHitLocation;
