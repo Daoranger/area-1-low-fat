@@ -170,8 +170,11 @@ class ofApp : public ofBaseApp
 		ofLight ufoLight;			// Spotlight underneath the UFO like a beam
 		bool bToggleUFOLight = false;
 		ofLight sunLight;			// Directional light to represent sun light
-		ofLight sunLight2;			// Backup light to light scene better
-		ofLight sunLight3;			// Backup light to light scene better
+		
+		ofLight stationLight1;
+		ofLight stationLight2;
+		ofLight stationLight3;
+		ofLight mothershipLight;
 
 
 		// Sounds
