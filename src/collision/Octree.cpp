@@ -302,25 +302,56 @@ bool Octree::intersect(const Box &box, TreeNode & node, vector<Box> & boxListRtn
 
 bool Octree::intersect(const Box& box, TreeNode& node, Object& object, vector<Box>& boxListRtn, vector<TreeNode>& nodeListRtn)
 {
-	// Inverse Transformation Matrix
+	// Inverse Transformation Matrix (world -> object's local space)
 	glm::mat4 Tinv = glm::inverse(object.getTransform());
 
 	// Get the Min and Max corners of the bounding box
 	Vector3 worldBoxMin = box.parameters[0];
 	Vector3 worldBoxMax = box.parameters[1];
 
-	// Convert the Min and Max corners to vector 4 using glm::vec4
-	glm::vec4 worldMin4 = glm::vec4(worldBoxMin.x(), worldBoxMin.y(), worldBoxMin.z(), 1.0);
-	glm::vec4 worldMax4 = glm::vec4(worldBoxMax.x(), worldBoxMax.y(), worldBoxMax.z(), 1.0);
+	// Get all 8 corners of the world space AABB
+	glm::vec4 worldCorners[8] = {
+		glm::vec4(worldBoxMin.x(), worldBoxMin.y(), worldBoxMin.z(), 1.0f),
+		glm::vec4(worldBoxMin.x(), worldBoxMin.y(), worldBoxMax.z(), 1.0f),
+		glm::vec4(worldBoxMin.x(), worldBoxMax.y(), worldBoxMin.z(), 1.0f),
+		glm::vec4(worldBoxMin.x(), worldBoxMax.y(), worldBoxMax.z(), 1.0f),
+		glm::vec4(worldBoxMax.x(), worldBoxMax.y(), worldBoxMax.z(), 1.0f),
+		glm::vec4(worldBoxMax.x(), worldBoxMax.y(), worldBoxMin.z(), 1.0f),
+		glm::vec4(worldBoxMax.x(), worldBoxMin.y(), worldBoxMax.z(), 1.0f),
+		glm::vec4(worldBoxMax.x(), worldBoxMin.y(), worldBoxMin.z(), 1.0f)
+	};
 
-	// Transform the the Min and Max corner from world to object's local (coordinate) space
-	glm::vec4 localMin4 = Tinv * worldMin4;
-	glm::vec4 localMax4 = Tinv * worldMax4;
+	// Transform to local space and compute local AABB
+	// localMin should end up with the smallest x, y, z values out of all corners
+	// localMax should end up with the largest x, y, z values out of all corners
+	// Start with positive infinite localMin because any value will be smaller
+	// Start with negative infinite localMax because any value will be larger
+	// Infinity in C++: https://stackoverflow.com/questions/8690567/setting-an-int-to-infinity-in-c
+	glm::vec3 localMin(std::numeric_limits<float>::infinity());
+	glm::vec3 localMax(-std::numeric_limits<float>::infinity());
 
-	// Create a new box with the local Min and local Max corners
+	// Loop through all 8 corners to find the local x, y, z min and max
+	// When object is rotated, we must transform all 8 corners and recompute the true min/max in local space
+	// This is because when rotated, the world axis-aligned box is no longer axis-aligned in local space
+	for (int i = 0; i < 8; ++i)
+	{
+		// Transform corner to local space by multiplying with inverse transformation matrix
+		glm::vec4 local = Tinv * worldCorners[i];
+
+		// Update localMin and localMax (x, y, z) with the true min/max values 
+		localMin.x = std::min(localMin.x, local.x);
+		localMin.y = std::min(localMin.y, local.y);
+		localMin.z = std::min(localMin.z, local.z);
+
+		localMax.x = std::max(localMax.x, local.x);
+		localMax.y = std::max(localMax.y, local.y);
+		localMax.z = std::max(localMax.z, local.z);
+	}
+
+	// Create a new box with the updated localMin and localMax corners
 	Box localBox;
-	localBox.parameters[0] = Vector3(localMin4.x, localMin4.y, localMin4.z);
-	localBox.parameters[1] = Vector3(localMax4.x, localMax4.y, localMax4.z);
+	localBox.parameters[0] = Vector3(localMin.x, localMin.y, localMin.z);
+	localBox.parameters[1] = Vector3(localMax.x, localMax.y, localMax.z);
 
 	// Use the new local box with the original intersect function
 	return intersect(localBox, node, boxListRtn, nodeListRtn);
