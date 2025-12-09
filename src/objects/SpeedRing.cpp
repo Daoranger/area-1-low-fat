@@ -48,8 +48,8 @@ void SpeedRing::handleCollision(Ufo& ufo)
         glm::vec3 dir = glm::vec3(0, 0, 1);
         dir = glm::rotate(dir, glm::radians(rotation), glm::vec3(0,1,0));
         dir = glm::abs(dir);
-        ufo.velocity.z *= (1+ (0.08 * dir.z));
-        ufo.velocity.x *= (1+ (0.08 * dir.x));
+        ufo.velocity.z += (5 * dir.z);
+        ufo.velocity.x += (5 * dir.x);
     }
     else {
         ufo.velocity.y *= 1.08;
