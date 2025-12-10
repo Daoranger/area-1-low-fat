@@ -617,6 +617,7 @@ void ofApp::update()
 						ufoExplosionSound.play();
 					ufoExplosion.emit();
 					ufoFireTrail.start();
+					ufoSound.stop();
 					ufo.handleDeath(contactNormal);
 					camTrackPosition = mothership.position + ofVec3f(0, 50, 0);
 					camView = CAM_DEATH;
@@ -1063,6 +1064,7 @@ void ofApp::keyPressed(int key)
 	{
 		case STATE_TITLE:
 		{
+			ufoSound.stop();
 			if (key == 'w' || key == 'W')
 			{
 				menuHoverSound.play();
@@ -1156,6 +1158,7 @@ void ofApp::keyPressed(int key)
 		}
 		case STATE_GAMEOVER:
 		{
+			ufoSound.stop();
 			// reset all keys pressed when game over (to fix the key not being released when switching game mode)
 			for (auto& entry : keysMap)
 			{
@@ -1389,6 +1392,8 @@ void ofApp::resetGame()
 	ufo.ufoState = ufo.UFO_ALIVE; 
 	ufo.fuelLeftTime = ufo.fuelTotalTime;
 	ufo.bLandingImpulseDone = false;
+	if (ufoSound.isPlaying())
+		ufoSound.stop();
 
 	// Misc
 	bSparkSoundPlayed = false;

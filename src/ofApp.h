@@ -126,7 +126,7 @@ class ofApp : public ofBaseApp
 		ofTrueTypeFont fontTitle;
 		ofTrueTypeFont fontInstruction;
 		ofTrueTypeFont fontSmallText;
-		bool bHideHUD = false;
+		bool bHideHUD	 = false;
 
 		int ORIGINAL_WIDTH = ofGetWindowWidth();
 		int ORIGINAL_HEIGHT = ofGetWindowHeight();
