@@ -1,3 +1,10 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
+
 #pragma once
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"

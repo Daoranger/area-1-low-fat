@@ -1013,7 +1013,7 @@ void ofApp::draw()
 				"produces something called “milk” and it makes us grow bigger and stronger.\n"
 				"You are assigned a very important mission: abduct cows from Earth.\n"
 				"Please deliver each cow to the transport platform and they will be automatically\n"
-				"transferred to the mothership.After you finish, return to the mothership.\n"
+				"transferred to the mothership. After you finish, return to the mothership.\n"
 				"Good luck on your mission! Try not to blow up!\n"
 				"\n\n\n"
 				"Space: go up\n"
@@ -1027,7 +1027,10 @@ void ofApp::draw()
 				"Q: yaw left\n"
 				"\n"
 				"F: use beam (abduct the cow!)\n"
-				"R: turn on light (just for aesthetics)\n";
+				"R: turn on light (just for aesthetics)\n"
+				"\n"
+				"1: switch and cycle tracking camera views\n"
+				"2: switch and cycle game camera views\n";
 			
 			ofRectangle boundInstr = fontInstruction.getStringBoundingBox(strInstr, 0, 0); // Bouding box of the instruction string
 			float x = (ofGetWidth() - boundInstr.getWidth()) * 0.5f - boundInstr.x;
@@ -1399,7 +1402,7 @@ void ofApp::resetGame()
 	bSparkSoundPlayed = false;
 
 	// Cow reset
-	nCowAbducted = 4;
+	nCowAbducted = 0;
 
 
 	for (auto i = 0; i < cows.size() && i < cowsPositions.size(); ++i)
