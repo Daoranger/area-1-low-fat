@@ -20,7 +20,7 @@ public:
     bool checkInside(Box box);
 
     glm::vec3 pos;
-    glm::vec3 capturePoint;
+    glm::vec3 capturePoint; // Point where an object would follow if it was captured
     bool active;
 
     float radius;

@@ -1,15 +1,27 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Originally created by Kevin Smith
+ * Edited by Alison Schonauer
+ * Fall 2025
+ */
+
 #pragma once
 
 #include "ofMain.h"
 
+// Particle shapes
 enum PARTICLE_SHAPE {DISK, SPHERE, CUBE};
 
 class Particle {
     public:
         Particle();
 
-        PARTICLE_SHAPE shape = SPHERE;
+        PARTICLE_SHAPE shape = SPHERE;  // Shape of particles
 
+        // Particle Attributes
+        //
         glm::vec3 rotAxis;
         ofVec3f velocity;
         ofVec3f acceleration;
@@ -19,7 +31,7 @@ class Particle {
         float rotSpeed;
         float rotAcceleration;
         float scale = 1;
-        float scaleRate = 1;
+        float scaleRate = 1;    // Used for particles to increase/decrease in size over time
         float lifespan = 5;
         float birthtime = ofGetElapsedTimeMillis();
         float radius = .5;

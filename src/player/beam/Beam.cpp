@@ -66,6 +66,7 @@ bool Beam::checkInside(Box box) {
     float cylMinY = pos.y - height/2;
     float cylMaxY = pos.y + height/2;
 
+    // Used to calculate xz side of box point closest to the beam
     float boxX = pos.x;
     float boxZ = pos.z;
 
@@ -83,7 +84,9 @@ bool Beam::checkInside(Box box) {
         boxZ = box.min().z();
     }
 
+    // Used to see if the distance on the xz plane between the beam and box is within the radius of the beam
     float distance = glm::distance(glm::vec3(boxX, 0, boxZ), glm::vec3(pos.x, 0, pos.z));
 
+    // Checks the radius vs distance as well as the y-range of the box overlapping the cylinder
     return ((cylMinY <= boxMaxY && cylMaxY >= boxMinY) && (distance <= radius));
 };
