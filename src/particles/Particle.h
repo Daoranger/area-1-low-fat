@@ -3,7 +3,6 @@
  * CS 134: Computer Game Design and Programming
  * Professor Kevin Smith
  * Originally created by Kevin Smith
- * Edited by Alison Schonauer
  * Fall 2025
  */
 

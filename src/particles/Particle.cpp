@@ -1,4 +1,10 @@
-
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Originally Created by Kevin Smith
+ * Fall 2025
+ */
 
 #include "Particle.h"
 
