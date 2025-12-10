@@ -1,3 +1,9 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
 
 #include "Beam.h"
 
@@ -10,10 +16,14 @@ Beam::Beam() {
     retractRate = 4;
 };
 
+// Toggle the beam on or off 
+//
 void Beam::toggle() {
     active = !active;
 }
 
+// Update the beam's height based on its active state
+//
 void Beam::update() {
     capturePoint.x = pos.x;
     capturePoint.z = pos.z;
@@ -32,6 +42,8 @@ void Beam::update() {
     }
 };
 
+// Draw the beam as a semi-transparent cylinder
+//
 void Beam::draw() {
     if (height == 0) return;
     ofEnableAlphaBlending();
@@ -42,6 +54,11 @@ void Beam::draw() {
     ofSetColor(ofColor::white, 255);
 };
 
+// Check if there is a bouding box within the beam.
+// This will be use for checking if the cow's bouding box
+// is within the beam so we can start abducting the cow and apply
+// physics and other thing to the cow.
+//
 bool Beam::checkInside(Box box) {
     if (!active) return false;
     float boxMinY = box.min().y();

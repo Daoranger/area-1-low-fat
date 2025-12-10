@@ -8,6 +8,14 @@
 //  Copyright (c) by Kevin M. Smith
 //  Copying or use without permission is prohibited by law.
 //
+
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
+
 #pragma once
 #include "ofMain.h"
 #include "box.h"

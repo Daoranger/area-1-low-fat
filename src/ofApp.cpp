@@ -1,4 +1,11 @@
-﻿#include "ofApp.h"
+﻿/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
+
+#include "ofApp.h"
 #include "collision/Util.h"
 
 //--------------------------------------------------------------
@@ -7,6 +14,7 @@ void ofApp::setup()
 {
 
 	// Sounds & Musics setup
+	//
 	if (titleMusic.load("sounds/titleMusic.mp3"))
 	{   
 		titleMusic.setLoop(true);
@@ -77,6 +85,8 @@ void ofApp::setup()
 	ofEnableSmoothing();
 	ofEnableDepthTest();
 	
+	// Load images
+	//
 	skyBox.load("images/stars.png");
 	titleBackground.load("images/titlebg.png");
 	victoryBackground.load("images/victorybg.png");
@@ -84,7 +94,9 @@ void ofApp::setup()
 	star.load("images/Star.png");
 	
 	ofPushStyle();
+
 	// Fonts setup
+	//
 	if (fontUI.load("font/Stardock.ttf", 18, true, true))
 	{
 		ofSetLineWidth(5);
@@ -301,6 +313,7 @@ void ofApp::setup()
 	ufoExplosion.scaleRate = 0.95;
 	ufoExplosion.radius = 3;
 
+	// Particles for UFO fire trail
 	ufoFireTrail.speed = 20;
 	ufoFireTrail.setEmitterShape(ConeEmitter);
 	ufoFireTrail.setParticleShape(SPHERE);
@@ -1005,7 +1018,7 @@ void ofApp::draw()
 			ofBackground(ofColor::black);
 			ofSetColor(ofColor::white);
 
-			// Draw the itro and keybinds text
+			// Draw the intro and keybinds text
 			std::string strInstr =
 				"Hi Mr. Green Gremlin,\n"
 				"We will invade Earth in a few years. Our species is small compared to humans.\n"
@@ -1337,7 +1350,10 @@ void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
 
-
+// Get the normal at the ufo contact points
+// We do this by get the average of all vertex normals 
+// and then normalize it.
+//
 ofVec3f ofApp::getNormalAtContactPoint()
 {
 	ofMesh mesh = terrain.getMesh(0);
@@ -1373,6 +1389,10 @@ ofVec3f ofApp::getNormalAtContactPoint()
 	return avgVertexNormal;
 }
 
+
+// Will be call whenever the game is over, and we need to reset the game state for next session
+// This included the UFO and cows positions, musics, and any other miscs that need to be reset
+//
 void ofApp::resetGame()
 {
 	if (gameState == STATE_GAMESTART)
@@ -1422,9 +1442,8 @@ void ofApp::resetGame()
 
 }
 
-/**
- * Update the gameplay camera based on the current view mode
- */
+// Update the gameplay camera position and angles based on the views type
+//
 void ofApp::updateGameCamera()
 {
 	switch (camView)
@@ -1452,6 +1471,8 @@ void ofApp::updateGameCamera()
 	}
 }
 
+// Update the tracking camera position and angles based on the views type
+//
 void ofApp::updateTrackCamera()
 {
 	switch (trackView)
@@ -1499,6 +1520,7 @@ void ofApp::nextTrackCameraView()
 	trackView = static_cast<TrackView>((trackView + 1) % 6);
 }
 
+// Used to be able to select the UFO and mouse it around with mouse in diagnostic mode
 glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm)
 {
 	// Setup our rays

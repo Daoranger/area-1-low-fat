@@ -1,3 +1,10 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
+
 #include "Ufo.h"
 
 Ufo::Ufo()
@@ -39,6 +46,9 @@ void Ufo::draw()
 	//ofSetColor(ofColor::white);
 	//Octree::drawBox(ufoBoundingBox);
 }
+
+// Integrate UFO's motion using Euler integration
+//
 void Ufo::integrate()
 {
 	if (ofGetFrameRate() == 0) return;
@@ -65,6 +75,9 @@ void Ufo::integrate()
 		rotationForce = 0;
 	}
 }
+
+// Load the UFO model and setup its properties
+//
 void Ufo::loadModel()
 {
 	
@@ -78,6 +91,9 @@ void Ufo::loadModel()
 		window.setScaleNormalization(false);
 	}
 }
+
+// Update the UFO's bounding box based on its current position
+//
 void Ufo::updateBoundingBox()
 {
 	// Might be useful if want to rotate the bouding box
@@ -87,6 +103,9 @@ void Ufo::updateBoundingBox()
 	boundingBox = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
 }
 
+// Handle landing collision. Apply impulse force once upon first contact.
+// Stop all motion after first contact.
+//
 void Ufo::handleLanding(const ofVec3f contactNormal)
 {
 
@@ -106,11 +125,15 @@ void Ufo::handleLanding(const ofVec3f contactNormal)
 	bLandingImpulseDone = true; 
 }
 
+// Reset landing impulse flag on takeoff
+//
 void Ufo::handleTakeoff()
 {
 	bLandingImpulseDone = false;
 }
 
+// Handle death collision. Launch UFO away from contact point.
+//
 void Ufo::handleDeath(const ofVec3f contactNormal)
 {
 	//ufoState = UFO_DEAD;
@@ -119,6 +142,9 @@ void Ufo::handleDeath(const ofVec3f contactNormal)
 	velocity = launchSpeed * contactNormal;
 }
 
+// Used ray casting to calculate altitude above terrain (AGL)
+// If no intersection (out of bounds), set altitude to 0
+//
 void Ufo::calculateAltitude(Octree& terrain)
 {
 	// Origin is the UFO's position, Direction is downward (-Y)
@@ -134,11 +160,16 @@ void Ufo::calculateAltitude(Octree& terrain)
 		altitude = 0;
 	}
 }
+
+// Check if UFO has fuel left
+//
 bool Ufo::hasFuel()
 {
 	return fuelLeftTime > 0.0;
 }
 
+// Heading X, Y, and Z of the UFO in world coordinates
+//
 glm::vec3 Ufo::getHeadingX()
 {
 	return glm::normalize(glm::vec3(getTransform() * glm::vec4(1, 0, 0, 0)));

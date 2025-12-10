@@ -9,6 +9,12 @@
 //  Copying or use without permission is prohibited by law. 
 //
 
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
 
 #include "Octree.h"
 #include "../objects/Object.h" 
@@ -300,6 +306,12 @@ bool Octree::intersect(const Box &box, TreeNode & node, vector<Box> & boxListRtn
 	return hit;	
 }
 
+// This intersect function solve the world space vs local space problem
+// Because the octree is built in the object's local space, but the ufo's bouding box we want to test
+// is in world space. So we need to transform the world space box into the object's local space.
+// This is done by using the inverse transformation matrix of the object that own the octree.
+// And then we can use the local space bouding box to test against the octree.
+//
 bool Octree::intersect(const Box& box, TreeNode& node, Object& object, vector<Box>& boxListRtn, vector<TreeNode>& nodeListRtn)
 {
 	// Inverse Transformation Matrix (world -> object's local space)

@@ -1,3 +1,10 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
+
 #include "SpeedRing.h"
 
 SpeedRing::SpeedRing()
@@ -7,6 +14,8 @@ SpeedRing::SpeedRing()
     scale.set(1, 1, 1);
 }
 
+// Load the speed ring model, either vertical or horizontal based on bVertical
+//
 void SpeedRing::loadModel()
 {
     if (bVertical)
@@ -25,6 +34,8 @@ void SpeedRing::loadModel()
     }
 }
 
+// ARCHIVED: the UFO's speed boost when it overlaps with the speed ring's bounding box
+//
 void SpeedRing::handleSpeedBoost(Ufo& ufo)
 {
     /*boundingBox = octree.root.box;
@@ -41,6 +52,9 @@ void SpeedRing::handleSpeedBoost(Ufo& ufo)
     }
 }
 
+// When UFO collides with SpeedRing's octree, apply a speed boost in the appropriate direction
+// depending on whether the ring is vertical or horizontal and the ufo's current velocity
+//
 void SpeedRing::handleCollision(Ufo& ufo)
 {
     cout << "Collided with speed ring" << endl;

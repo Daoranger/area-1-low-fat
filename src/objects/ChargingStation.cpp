@@ -1,3 +1,10 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
+
 #include "ChargingStation.h"
 
 ChargingStation::ChargingStation()
@@ -12,6 +19,8 @@ ChargingStation::ChargingStation()
 
 }
 
+// Load the charging station model and its color model
+//
 void ChargingStation::loadModel()
 {
     if (model.loadModel("geo/charging-station-oct.obj"))
@@ -25,12 +34,16 @@ void ChargingStation::loadModel()
     }
 }
 
+// When UFO collides with ChargingStation, increase its fuel time by 20 units per second, up to the maximum fuel time
+//
 void ChargingStation::handleCollision(Ufo& ufo)
 {
     float deltaTime = 1.0 / ofGetFrameRate();
     ufo.fuelLeftTime = std::min(ufo.fuelLeftTime + 20 * deltaTime, ufo.fuelTotalTime);
 }
 
+// If the UFO is within 15 units of the charging station, enable the light; otherwise, disable it
+//
 void ChargingStation::updateLight(Ufo& ufo)
 {
     light.setPosition(position + glm::vec3(0, 10, 0));

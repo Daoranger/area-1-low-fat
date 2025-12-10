@@ -4,6 +4,7 @@
  * Professor Kevin Smith
  * Fall 2025
  */
+
 #pragma once
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"

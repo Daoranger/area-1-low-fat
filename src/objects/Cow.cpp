@@ -1,6 +1,11 @@
+/**
+ * Alison Schonauer and Hoang Nguyen
+ * CS 134: Computer Game Design and Programming
+ * Professor Kevin Smith
+ * Fall 2025
+ */
 
 #include "Cow.h"
-
 
 Cow::Cow() {
 	velocity.set(0, 0, 0);
@@ -15,7 +20,11 @@ Cow::Cow() {
 	mass = 1;
 };
 
-
+// Integrate function to update position and rotation based on forces and state
+// If the cow is alive, apply forces based on its state (FREE or ABDUCTED)
+// If the cow is free, apply gravity force downwards
+// If the cow is abducted, apply force towards the followed point and rotational acceleration
+// 
 void Cow::integrate() {
 	if (bAlive)
 	{
@@ -53,6 +62,8 @@ void Cow::integrate() {
 	}	
 };
 
+// Make the cow follow a given position pointer
+//
 void Cow::follow(glm::vec3 * Pos) {
 	if (bAlive)
 	{
@@ -62,6 +73,9 @@ void Cow::follow(glm::vec3 * Pos) {
 	}
 };
 
+
+// Make the cow free from being abducted
+//
 void Cow::free() {
 	if (bAlive)
 	{
@@ -70,12 +84,16 @@ void Cow::free() {
 	}
 };
 
+// Destroy the cow (set alive to false and remove bounding box)
+//
 void Cow::destroy()
 {
 	bAlive = false;
 	bHasBoundingBox = false;
 }
 
+// Load the cow model
+//
 void Cow::loadModel() {
     if (model.loadModel("geo/cow.obj", true))
 	{
@@ -84,6 +102,9 @@ void Cow::loadModel() {
 	}
 };
 
+
+// Update the bounding box of the cow based on its position and model's scene min/max
+//
 void Cow::updateBoundingBox()
 {
 	if (bAlive)
@@ -95,6 +116,8 @@ void Cow::updateBoundingBox()
 	}
 };
 
+// Handle landing of the cow
+//
 void Cow::handleLanding()
 {
 	if (bAlive)
